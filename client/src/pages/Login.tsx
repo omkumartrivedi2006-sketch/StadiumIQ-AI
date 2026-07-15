@@ -42,6 +42,25 @@ export default function Login() {
     setLocation("/role-selection");
   };
 
+  const handleDemoLogin = async (role: "fan" | "volunteer" | "organizer" | "admin") => {
+    setError("");
+    try {
+      const demoEmail = `${role}@demo.stadiumiq.ai`;
+      const user = await login(demoEmail, "demo1234");
+      if (user.role === "admin") {
+        setLocation("/admin");
+      } else if (user.role === "volunteer") {
+        setLocation("/volunteer");
+      } else if (user.role === "organizer") {
+        setLocation("/organizer");
+      } else {
+        setLocation("/dashboard");
+      }
+    } catch (err: any) {
+      setError(err.message || `Failed to log in as demo ${role}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Navigation />
@@ -116,6 +135,51 @@ export default function Login() {
             >
               Sign In with Manus
             </Button>
+
+            <div className="relative flex py-2 items-center">
+              <div className="flex-grow border-t border-slate-200"></div>
+              <span className="flex-shrink mx-4 text-slate-500 text-xs uppercase tracking-wider">Demo Quick Login</span>
+              <div className="flex-grow border-t border-slate-200"></div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 mb-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDemoLogin("fan")}
+                disabled={loading}
+                className="text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 border-slate-300"
+              >
+                Fan Demo
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDemoLogin("volunteer")}
+                disabled={loading}
+                className="text-xs font-semibold text-slate-700 hover:bg-green-50 hover:text-green-600 border-slate-300"
+              >
+                Volunteer Demo
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDemoLogin("organizer")}
+                disabled={loading}
+                className="text-xs font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-600 border-slate-300"
+              >
+                Organizer Demo
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDemoLogin("admin")}
+                disabled={loading}
+                className="text-xs font-semibold text-slate-700 hover:bg-purple-50 hover:text-purple-600 border-slate-300"
+              >
+                Admin Demo
+              </Button>
+            </div>
 
             <div className="text-center text-sm text-slate-600">
               Don't have an account?{" "}

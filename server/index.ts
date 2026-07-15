@@ -8,6 +8,16 @@ import helmet from "helmet";
 import morgan from "morgan";
 import compression from "compression";
 import dotenv from "dotenv";
+import { logger } from "./utils/logger";
+
+// Centralized process exception logging
+process.on("uncaughtException", (error) => {
+  logger.error("CRITICAL: Uncaught Exception detected:", error);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  logger.error("CRITICAL: Unhandled Promise Rejection detected:", { reason, promise });
+});
 
 import { connectDB } from "./config/db";
 import { apiLimiter } from "./middleware/rateLimiter";
