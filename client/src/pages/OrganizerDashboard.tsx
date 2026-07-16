@@ -110,7 +110,7 @@ export default function OrganizerDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -122,7 +122,7 @@ export default function OrganizerDashboard() {
                 <Calendar className="text-indigo-600" />
                 Organizer Dashboard
               </h1>
-              <p className="text-slate-600">
+              <p className="text-muted-foreground">
                 Live tournament operations, announcements, and crowd management control panel
               </p>
             </div>
@@ -149,7 +149,7 @@ export default function OrganizerDashboard() {
 
             {/* Search Results Display */}
             {searchResults && searchQuery.trim() && (
-              <div className="mt-2 p-6 bg-white rounded-lg border border-slate-200 shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
+              <div className="mt-2 p-6 bg-card rounded-lg border border-border shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
                 <h3 className="font-semibold text-slate-800 text-sm mb-4 border-b pb-2">Search Results</h3>
                 
                 {/* Matches */}
@@ -158,7 +158,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Matches</h4>
                     <div className="space-y-1.5">
                       {searchResults.matches.map((m) => (
-                        <div key={m._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={m._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {m.homeTeam} vs {m.awayTeam} ({m.status}) - {new Date(m.date).toLocaleDateString()}
                         </div>
                       ))}
@@ -172,7 +172,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Stadiums</h4>
                     <div className="space-y-1.5">
                       {searchResults.stadiums.map((s) => (
-                        <div key={s._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={s._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {s.name} in {s.city} (Capacity: {s.capacity})
                         </div>
                       ))}
@@ -186,7 +186,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Food Stalls</h4>
                     <div className="space-y-1.5">
                       {searchResults.foodVendors.map((f) => (
-                        <div key={f._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={f._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {f.name} ({f.category}) at {f.location} - {f.rating}★
                         </div>
                       ))}
@@ -200,7 +200,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Transportation</h4>
                     <div className="space-y-1.5">
                       {searchResults.transport.map((t) => (
-                        <div key={t._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={t._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {t.type} ({t.routeName}) to {t.destination} - Status: {t.status}
                         </div>
                       ))}
@@ -219,7 +219,7 @@ export default function OrganizerDashboard() {
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Live Announcements Panel */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                   <Send size={22} className="text-indigo-600" />
                   Broadcast Live Announcement
@@ -239,7 +239,7 @@ export default function OrganizerDashboard() {
                 </div>
               </div>
 
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
                 <h3 className="text-xl font-bold text-slate-900 mb-4">Current Active Broadcasts</h3>
                 <div className="space-y-3">
                   {announcementsList.map((ann, idx) => (
@@ -257,24 +257,24 @@ export default function OrganizerDashboard() {
 
             {/* Live Stats & Incidents */}
             <div className="space-y-6">
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
                   <BarChart3 size={18} className="text-indigo-600" />
                   Live Operational Overview
                 </h3>
                 <div className="space-y-4 text-sm">
                   <div className="flex justify-between border-b border-slate-100 pb-2">
-                    <span className="text-slate-600">Total Volunteers Active</span>
+                    <span className="text-muted-foreground">Total Volunteers Active</span>
                     <span className="font-bold text-slate-900">{stats.volunteers}</span>
                   </div>
                   <div className="flex justify-between border-b border-slate-100 pb-2">
-                    <span className="text-slate-600">Active SOS Distress Alerts</span>
+                    <span className="text-muted-foreground">Active SOS Distress Alerts</span>
                     <span className={`font-bold ${stats.activeSOS > 0 ? "text-red-600" : "text-green-600"}`}>
                       {stats.activeSOS}
                     </span>
                   </div>
                   <div className="flex justify-between border-b border-slate-100 pb-2">
-                    <span className="text-slate-600">Avg. Medical Response Time</span>
+                    <span className="text-muted-foreground">Avg. Medical Response Time</span>
                     <span className="font-bold text-slate-900">{stats.medicalResponse}</span>
                   </div>
                 </div>

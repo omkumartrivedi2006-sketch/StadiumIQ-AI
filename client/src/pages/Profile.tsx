@@ -235,7 +235,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -246,7 +246,7 @@ export default function Profile() {
               <User className="text-indigo-600" />
               My Profile
             </h1>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               Manage your personal FIFA World Cup 2026 avatar and profile credentials
             </p>
           </div>
@@ -254,7 +254,7 @@ export default function Profile() {
           <div className="grid md:grid-cols-3 gap-6 animate-slide-in-up">
             {/* Left Column: Avatar & Quick Stats */}
             <div className="space-y-6">
-              <Card className="shadow border border-slate-200 bg-white">
+              <Card className="shadow border border-border bg-card">
                 <CardContent className="pt-6 text-center space-y-4">
                   <div className="relative inline-block mx-auto group">
                     <img
@@ -304,7 +304,7 @@ export default function Profile() {
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}
-                        className="border border-slate-200 rounded-lg cursor-move bg-slate-100 touch-none shadow-inner"
+                        className="border border-border rounded-lg cursor-move bg-slate-100 touch-none shadow-inner"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -350,7 +350,7 @@ export default function Profile() {
             {/* Right Column: Personal details & Settings */}
             <div className="md:col-span-2 space-y-6">
               <form onSubmit={handleSave} className="space-y-6">
-                <Card className="shadow border border-slate-200 bg-white">
+                <Card className="shadow border border-border bg-card">
                   <CardHeader>
                     <CardTitle className="text-xl font-bold">Personal Details</CardTitle>
                     <CardDescription>Update your personal information and contact credentials</CardDescription>
@@ -393,7 +393,7 @@ export default function Profile() {
                 </Card>
 
                 {/* Preferences */}
-                <Card className="shadow border border-slate-200 bg-white">
+                <Card className="shadow border border-border bg-card">
                   <CardHeader>
                     <CardTitle className="text-xl font-bold">Preferences</CardTitle>
                     <CardDescription>Select language and alerts configurations</CardDescription>
@@ -405,7 +405,7 @@ export default function Profile() {
                         value={language}
                         onChange={(e) => setLanguage(e.target.value)}
                         disabled={saving}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                        className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                       >
                         {SUPPORTED_LANGUAGES.map((lang) => (
                           <option key={lang.code} value={lang.code}>
@@ -476,7 +476,7 @@ export default function Profile() {
 
       {/* Custom AlertDialog for Deactivation */}
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent className="max-w-md bg-white border border-slate-200 rounded-xl shadow-2xl p-6">
+        <DialogContent className="max-w-md bg-white border border-border rounded-xl shadow-2xl p-6">
           <DialogHeader className="space-y-3">
             <div className="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto">
               <ShieldAlert size={24} />

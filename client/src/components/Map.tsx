@@ -256,8 +256,8 @@ export function MapView({
   return (
     <div className="flex flex-col md:flex-row gap-6 w-full min-h-[500px]">
       {/* Sidebar Controls */}
-      <div className="flex flex-col gap-2 w-full md:w-64 bg-slate-50 p-4 rounded-lg border border-slate-200">
-        <h3 className="font-semibold text-slate-800 text-sm uppercase tracking-wider mb-3">Map Controls</h3>
+      <div className="flex flex-col gap-2 w-full md:w-64 bg-slate-50 p-4 rounded-lg border border-border">
+        <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider mb-3">Map Controls</h3>
         
         <Button 
           variant={activeCategory === "venue" ? "default" : "outline"}
@@ -328,7 +328,7 @@ export function MapView({
         </Button>
 
         <div className="h-px bg-slate-200 my-2" />
-        <h4 className="font-semibold text-slate-800 text-xs uppercase tracking-wider mb-1">Route Wayfinding</h4>
+        <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider mb-1">Route Wayfinding</h4>
 
         <Button 
           variant="outline"
@@ -364,11 +364,11 @@ export function MapView({
       </div>
 
       {/* Map Area */}
-      <div className="flex-1 flex flex-col relative bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+      <div className="flex-1 flex flex-col relative bg-slate-100 rounded-lg overflow-hidden border border-border">
         <div ref={mapContainer} className={cn("w-full h-[500px]", className)} />
         
         {routeInfo && (
-          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur px-4 py-2 rounded-md shadow-md border border-slate-200 text-xs font-semibold text-slate-700 flex items-center gap-2 max-w-sm animate-slide-in-up">
+          <div className="absolute top-4 left-4 bg-card/95 backdrop-blur px-4 py-2 rounded-md shadow-md border border-border text-xs font-semibold text-foreground flex items-center gap-2 max-w-sm animate-slide-in-up">
             <Route size={14} className="text-indigo-600 animate-pulse" />
             <span>{routeInfo}</span>
           </div>

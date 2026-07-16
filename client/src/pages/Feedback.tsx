@@ -32,7 +32,7 @@ export default function Feedback() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
 
       <div className="flex-1 pt-24 pb-12">
@@ -40,12 +40,12 @@ export default function Feedback() {
           {/* Header */}
           <div className="mb-10 text-center animate-slide-in-down">
             <h1 className="text-4xl font-bold text-slate-900 mb-2">Share Feedback</h1>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               Help us improve StadiumIQ AI for FIFA World Cup 2026.
             </p>
           </div>
 
-          <Card className="shadow border border-slate-200 bg-white animate-slide-in-up">
+          <Card className="shadow border border-border bg-card animate-slide-in-up">
             <CardHeader className="flex flex-row items-center gap-3">
               <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600">
                 <MessageSquare size={20} />
@@ -103,7 +103,7 @@ export default function Feedback() {
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       disabled={loading}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                      className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                     >
                       <option value="app">App Features & AI Chatbot</option>
                       <option value="crowd">Crowd & Queue Information</option>

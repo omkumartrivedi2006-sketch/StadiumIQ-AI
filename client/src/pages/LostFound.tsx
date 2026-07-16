@@ -76,7 +76,7 @@ export default function LostFound() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -85,10 +85,10 @@ export default function LostFound() {
           <div className="mb-12 animate-slide-in-down">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h1 className="text-4xl font-bold text-slate-900 mb-2">
+                <h1 className="text-4xl font-bold text-foreground mb-2">
                   Lost & Found
                 </h1>
-                <p className="text-slate-600">
+                <p className="text-muted-foreground">
                   Report lost items or check found property at FIFA World Cup 2026
                 </p>
               </div>
@@ -103,13 +103,13 @@ export default function LostFound() {
 
             {/* Report Form */}
             {showForm && (
-              <div className="animate-scale-in p-6 bg-white rounded-lg border border-slate-200 shadow-md mb-8 max-w-xl">
-                <h3 className="font-bold text-slate-900 mb-4 text-lg">
+              <div className="animate-scale-in p-6 bg-card rounded-lg border border-border shadow-md mb-8 max-w-xl">
+                <h3 className="font-bold text-foreground mb-4 text-lg">
                   Report Lost Property
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-1">
-                    <label className="text-sm font-medium text-slate-700">
+                    <label className="text-sm font-medium text-foreground">
                       Description of Item
                     </label>
                     <Textarea
@@ -124,7 +124,7 @@ export default function LostFound() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">
+                      <label className="text-sm font-medium text-foreground">
                         Last Known Location
                       </label>
                       <Input
@@ -138,7 +138,7 @@ export default function LostFound() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">
+                      <label className="text-sm font-medium text-foreground">
                         Item Color (Optional)
                       </label>
                       <Input
@@ -187,7 +187,7 @@ export default function LostFound() {
 
           {/* Items Grid */}
           {loading ? (
-            <div className="text-center py-12 text-slate-500">Loading lost & found catalog...</div>
+            <div className="text-center py-12 text-muted-foreground">Loading lost & found catalog...</div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredItems.map((item, idx) => (
@@ -196,7 +196,7 @@ export default function LostFound() {
                   style={{
                     animation: `slide-in-up 0.5s ease-out ${idx * 0.1}s both`,
                   }}
-                  className="card-hover p-6 bg-white rounded-lg border border-slate-200"
+                  className="card-hover p-6 bg-card rounded-lg border border-border"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <span
@@ -206,27 +206,27 @@ export default function LostFound() {
                     >
                       {item.status.toUpperCase()}
                     </span>
-                    <span className="text-xs text-slate-600">{item.reportedTime}</span>
+                    <span className="text-xs text-muted-foreground">{item.reportedTime}</span>
                   </div>
 
-                  <h3 className="font-semibold text-slate-950 text-lg mb-2">
+                  <h3 className="font-semibold text-foreground text-lg mb-2">
                     {item.description}
                   </h3>
 
-                  <div className="space-y-2 text-sm text-slate-700 mb-4 pb-4 border-b border-slate-100">
+                  <div className="space-y-2 text-sm text-foreground mb-4 pb-4 border-b border-border">
                     <p>
-                      <span className="font-medium text-slate-600">Location:</span>{" "}
+                      <span className="font-medium text-muted-foreground">Location:</span>{" "}
                       {item.location}
                     </p>
                     {item.color && (
                       <p>
-                        <span className="font-medium text-slate-600">Color:</span>{" "}
+                        <span className="font-medium text-muted-foreground">Color:</span>{" "}
                         {item.color}
                       </p>
                     )}
                   </div>
 
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-muted-foreground">
                     {item.status === "pending" && (
                       <p className="flex items-center gap-1.5 text-amber-700">
                         <AlertCircle size={14} /> Waiting for matching found item
@@ -238,7 +238,7 @@ export default function LostFound() {
                       </p>
                     )}
                     {item.status === "claimed" && (
-                      <p className="text-slate-600">Claimed by owner</p>
+                      <p className="text-muted-foreground">Claimed by owner</p>
                     )}
                   </div>
                 </div>
@@ -249,7 +249,7 @@ export default function LostFound() {
           {/* Empty State */}
           {!loading && filteredItems.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-slate-600">No lost items found matching your query.</p>
+              <p className="text-muted-foreground">No lost items found matching your query.</p>
             </div>
           )}
         </div>

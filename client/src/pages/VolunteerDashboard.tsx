@@ -147,7 +147,7 @@ export default function VolunteerDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -159,7 +159,7 @@ export default function VolunteerDashboard() {
                 <Heart className="text-indigo-600 animate-pulse-soft" />
                 Volunteer Hub
               </h1>
-              <p className="text-slate-600">
+              <p className="text-muted-foreground">
                 You are logged in as a Volunteer. Help make FIFA 2026 amazing!
               </p>
             </div>
@@ -172,7 +172,7 @@ export default function VolunteerDashboard() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Active Assignments */}
             <div className="md:col-span-2 space-y-6">
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                   <AlertCircle size={22} className="text-indigo-600" />
                   Your Assignments
@@ -182,7 +182,7 @@ export default function VolunteerDashboard() {
                 ) : (
                   <div className="space-y-4">
                     {tasks.map((task) => (
-                      <div key={task.id} className="p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between gap-4">
+                      <div key={task.id} className="p-4 bg-muted rounded-lg border border-border flex items-center justify-between gap-4">
                         <div>
                           <h3 className="font-semibold text-slate-900 mb-1">{task.title}</h3>
                           <p className="text-xs text-slate-600">{task.location} • {task.time}</p>
@@ -216,7 +216,7 @@ export default function VolunteerDashboard() {
             {/* Quick Actions Sidebar */}
             <div className="space-y-6">
               {/* Crowd Reporting Card */}
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
                   <Users size={18} className="text-indigo-600" />
                   Report Crowd Density
@@ -229,7 +229,7 @@ export default function VolunteerDashboard() {
                       onChange={(e) => setSelectedStadium(e.target.value)}
                       required
                       disabled={reporting}
-                      className="w-full px-2 py-1.5 bg-white border border-slate-200 rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
+                      className="w-full px-2 py-1.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
                     >
                       {stadiums.map((s) => (
                         <option key={s._id} value={s._id}>
@@ -245,7 +245,7 @@ export default function VolunteerDashboard() {
                       onChange={(e) => setSelectedGate(e.target.value)}
                       required
                       disabled={reporting}
-                      className="w-full px-2 py-1.5 bg-white border border-slate-200 rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
+                      className="w-full px-2 py-1.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
                     >
                       <option value="">-- Choose Gate --</option>
                       <option value="Gate 1">Gate 1</option>
@@ -261,7 +261,7 @@ export default function VolunteerDashboard() {
                       onChange={(e) => setCrowdLevel(e.target.value)}
                       required
                       disabled={reporting}
-                      className="w-full px-2 py-1.5 bg-white border border-slate-200 rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
+                      className="w-full px-2 py-1.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -287,7 +287,7 @@ export default function VolunteerDashboard() {
                 </form>
               </div>
 
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
                 <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
                   <Languages size={18} className="text-indigo-600" />
                   Translation Assistant

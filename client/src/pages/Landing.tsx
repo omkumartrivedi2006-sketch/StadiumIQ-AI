@@ -216,7 +216,7 @@ export default function Landing() {
             ].map((group, idx) => (
               <div
                 key={idx}
-                className="card-hover p-6 bg-white rounded-lg border border-slate-200"
+                className="card-hover p-6 bg-card rounded-lg border border-border"
               >
                 <h3 className="text-xl font-bold text-indigo-600 mb-4">
                   {group.role}
@@ -266,7 +266,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 py-12 px-4 md:px-0 bg-slate-50">
+      <footer className="border-t border-border py-12 px-4 md:px-0 bg-background">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
@@ -331,7 +331,7 @@ export default function Landing() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-slate-200 pt-8 text-center text-sm text-slate-600">
+          <div className="border-t border-border pt-8 text-center text-sm text-slate-600">
             <p>&copy; 2026 StadiumIQ AI. All rights reserved.</p>
           </div>
         </div>

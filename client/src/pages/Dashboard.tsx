@@ -313,7 +313,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -325,7 +325,7 @@ export default function Dashboard() {
                 <h1 className="text-4xl font-bold text-slate-900 mb-2">
                   Welcome, {user?.fullName || "Fan"}
                 </h1>
-                <p className="text-slate-600">
+                <p className="text-muted-foreground">
                   Your personalized stadium assistant is ready to help
                 </p>
               </div>
@@ -367,7 +367,7 @@ export default function Dashboard() {
 
               {/* Suggestions / Recent Searches Dropdown */}
               {showSuggestions && (
-                <div className="absolute left-0 right-0 z-20 mt-1 bg-white rounded-lg border border-slate-200 shadow-lg p-4 animate-scale-in">
+                <div className="absolute left-0 right-0 z-20 mt-1 bg-card rounded-lg border border-border shadow-lg p-4 animate-scale-in">
                   <div className="flex items-center justify-between border-b pb-2 mb-3">
                     <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Search Assistant</span>
                     <button
@@ -439,7 +439,7 @@ export default function Dashboard() {
 
               {/* Search Results Display */}
               {searchResults && searchQuery.trim() && (
-                <div className="mt-2 p-6 bg-white rounded-lg border border-slate-200 shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
+                <div className="mt-2 p-6 bg-card rounded-lg border border-border shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
                   <h3 className="font-semibold text-slate-800 text-sm mb-4 border-b pb-2">Search Results</h3>
                   
                   {/* Matches */}
@@ -448,7 +448,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Matches</h4>
                       <div className="space-y-1.5">
                         {searchResults.matches.map((m) => (
-                          <div key={m._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                          <div key={m._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                             {highlightText(`${m.homeTeam} vs ${m.awayTeam}`, searchQuery)} ({m.status}) - {new Date(m.date).toLocaleDateString()}
                           </div>
                         ))}
@@ -462,7 +462,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Stadiums</h4>
                       <div className="space-y-1.5">
                         {searchResults.stadiums.map((s) => (
-                          <div key={s._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                          <div key={s._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                             {highlightText(s.name, searchQuery)} in {highlightText(s.city, searchQuery)} (Capacity: {s.capacity})
                           </div>
                         ))}
@@ -476,7 +476,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Food Stalls</h4>
                       <div className="space-y-1.5">
                         {searchResults.foodVendors.map((f) => (
-                          <div key={f._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                          <div key={f._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                             {highlightText(f.name, searchQuery)} ({highlightText(f.category, searchQuery)}) at {f.location} - {f.rating}★
                           </div>
                         ))}
@@ -490,7 +490,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Transportation</h4>
                       <div className="space-y-1.5">
                         {searchResults.transport.map((t) => (
-                          <div key={t._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                          <div key={t._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                             {highlightText(t.type, searchQuery)} ({highlightText(t.routeName, searchQuery)}) to {highlightText(t.destination, searchQuery)} - Status: {t.status}
                           </div>
                         ))}
@@ -511,7 +511,7 @@ export default function Dashboard() {
               {displayGates.map((item, idx) => (
                 <div
                   key={idx}
-                  className="card-hover p-4 bg-white rounded-lg border border-slate-200"
+                  className="card-hover p-4 bg-card rounded-lg border border-border"
                 >
                   <p className="text-sm text-slate-600 mb-2">{item.gate}</p>
                   <StatusBadge
@@ -549,7 +549,7 @@ export default function Dashboard() {
                       <button
                         onClick={() => handleActionClick(item.id)}
                         className={`card-hover w-full p-6 bg-white rounded-lg border text-left transition-colors ${
-                          activeSection === item.id ? "border-indigo-500 bg-indigo-50/10" : "border-slate-200 hover:border-indigo-300"
+                          activeSection === item.id ? "border-indigo-500 bg-indigo-50/10" : "border-border hover:border-indigo-300"
                         }`}
                       >
                         <div
@@ -572,7 +572,7 @@ export default function Dashboard() {
 
             {/* Right: Sidebar */}
             <div>
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200 mb-6 animate-slide-in-up">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border mb-6 animate-slide-in-up">
                 <h3 className="font-semibold text-slate-900 mb-4">
                   Your Profile
                 </h3>
@@ -581,7 +581,7 @@ export default function Dashboard() {
                     <img
                       src={user?.profileImage || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop"}
                       alt="Avatar"
-                      className="w-10 h-10 rounded-full border border-slate-200 object-cover"
+                      className="w-10 h-10 rounded-full border border-border object-cover"
                     />
                     <div>
                       <p className="text-slate-900 font-bold text-sm">{user?.fullName || "John Doe"}</p>
@@ -627,7 +627,7 @@ export default function Dashboard() {
           {/* Content Section */}
           <div id="content-section" className="mt-12 animate-fade-in">
             {activeSection === "overview" && (
-              <div className="card-hover p-8 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-8 bg-card rounded-lg border border-border">
                 <h2 className="text-2xl font-bold text-slate-900 mb-4">
                   Stadium Overview
                 </h2>
@@ -638,14 +638,14 @@ export default function Dashboard() {
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Home Team</span>
+                        <span className="text-muted-foreground">Home Team</span>
                         <span className="font-semibold">{match?.homeTeam || "Team A"}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Away Team</span>
+                        <span className="text-muted-foreground">Away Team</span>
                         <span className="font-semibold">{match?.awayTeam || "Team B"}</span>
                       </div>
-                      <div className="border-t border-slate-200 pt-3">
+                      <div className="border-t border-border pt-3">
                         <p className="text-sm text-slate-600">
                           Kickoff: {match?.kickoffTime || "8:00 PM"} • Stadium: {match?.stadiumId?.name || "MetLife Stadium"}
                         </p>
@@ -658,19 +658,19 @@ export default function Dashboard() {
                     </h3>
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Attendance</span>
+                        <span className="text-muted-foreground">Attendance</span>
                         <span className="font-semibold">
                           {match?.attendance ? match.attendance.toLocaleString() : "45,230"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Capacity</span>
+                        <span className="text-muted-foreground">Capacity</span>
                         <span className="font-semibold">
                           {match?.stadiumId?.capacity ? match.stadiumId.capacity.toLocaleString() : "50,000"}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-slate-600">Occupancy</span>
+                        <span className="text-muted-foreground">Occupancy</span>
                         <span className="font-semibold text-green-600">{occupancyPercent}</span>
                       </div>
                     </div>
@@ -680,7 +680,7 @@ export default function Dashboard() {
             )}
 
             {activeSection === "map" && (
-              <div className="card-hover p-8 bg-white rounded-lg border border-slate-200">
+              <div className="card-hover p-8 bg-card rounded-lg border border-border">
                 <h2 className="text-2xl font-bold text-slate-900 mb-4">
                   Live Stadium Map
                 </h2>
@@ -692,7 +692,7 @@ export default function Dashboard() {
             {activeSection === "tickets" && (
               <div className="space-y-6">
                 {/* Tickets list */}
-                <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+                <div className="card-hover p-6 bg-card rounded-lg border border-border">
                   <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <TicketIcon size={24} className="text-indigo-600" />
                     My Booked Tickets
@@ -700,7 +700,7 @@ export default function Dashboard() {
                   {ticketsLoading ? (
                     <div className="grid md:grid-cols-2 gap-4">
                       {[1, 2].map((i) => (
-                        <div key={i} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50/50">
+                        <div key={i} className="p-4 border border-border rounded-lg space-y-3 bg-muted/50">
                           <div className="flex justify-between">
                             <Skeleton className="h-4 w-20" />
                             <Skeleton className="h-3 w-16" />
@@ -719,7 +719,7 @@ export default function Dashboard() {
                     </div>
                   ) : tickets.length === 0 ? (
                     <div className="py-8">
-                      <Empty className="bg-slate-50/50 border-dashed border-slate-200">
+                      <Empty className="bg-muted/50 border-dashed border-border">
                         <EmptyHeader>
                           <EmptyMedia className="bg-indigo-50 text-indigo-600 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <TicketIcon size={18} />
@@ -734,7 +734,7 @@ export default function Dashboard() {
                   ) : (
                     <div className="grid md:grid-cols-2 gap-4">
                       {tickets.map((t) => (
-                        <div key={t._id} className="p-4 bg-slate-50 border border-slate-200 rounded-lg flex flex-col justify-between hover:border-indigo-300 transition-colors">
+                        <div key={t._id} className="p-4 bg-slate-50 border border-border rounded-lg flex flex-col justify-between hover:border-indigo-300 transition-colors">
                           <div className="border-b border-dashed border-slate-300 pb-3 mb-3">
                             <div className="flex justify-between items-start mb-2">
                               <span className="text-xs font-semibold px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-full">
@@ -761,14 +761,14 @@ export default function Dashboard() {
                               <p className="text-xs text-slate-600">Entrance: {t.gate}</p>
                             </div>
                             {/* Barcode/QR Code Sim */}
-                            <div className="flex flex-col items-center gap-1.5 p-1 bg-white border border-slate-200 rounded">
+                            <div className="flex flex-col items-center gap-1.5 p-1 bg-white border border-border rounded">
                               <div className="h-10 w-24 bg-slate-900 flex items-center justify-center text-[8px] text-white tracking-widest font-mono select-none">
                                 ||||||||||||||
                               </div>
                               <span className="text-[8px] text-slate-400 font-mono">{t.QRCode?.split("-")?.[3] || "QR"}</span>
                             </div>
                           </div>
-                          <div className="mt-4 pt-3 border-t border-slate-200 flex justify-end">
+                          <div className="mt-4 pt-3 border-t border-border flex justify-end">
                             <Button
                               variant="outline"
                               size="sm"
@@ -785,7 +785,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Available Matches to book */}
-                <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+                <div className="card-hover p-6 bg-card rounded-lg border border-border">
                   <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
                     <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
                       <Calendar size={24} className="text-indigo-600" />
@@ -805,7 +805,7 @@ export default function Dashboard() {
                   {ticketsLoading ? (
                     <div className="space-y-4">
                       {[1, 2, 3].map((i) => (
-                        <div key={i} className="p-4 border border-slate-200 rounded-lg flex flex-col md:flex-row justify-between gap-4 bg-slate-50/50">
+                        <div key={i} className="p-4 border border-border rounded-lg flex flex-col md:flex-row justify-between gap-4 bg-muted/50">
                           <div className="space-y-2">
                             <Skeleton className="h-5 w-48" />
                             <Skeleton className="h-3.5 w-32" />
@@ -820,7 +820,7 @@ export default function Dashboard() {
                     </div>
                   ) : filteredMatches.length === 0 ? (
                     <div className="py-8">
-                      <Empty className="bg-slate-50/50 border-dashed border-slate-200">
+                      <Empty className="bg-muted/50 border-dashed border-border">
                         <EmptyHeader>
                           <EmptyMedia className="bg-slate-100 text-slate-500 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <Calendar size={18} />
@@ -835,7 +835,7 @@ export default function Dashboard() {
                   ) : (
                     <div className="space-y-4">
                       {filteredMatches.map((m) => (
-                        <div key={m._id} className="p-4 bg-slate-50 border border-slate-200 rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div key={m._id} className="p-4 bg-slate-50 border border-border rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
                           <div>
                             <h3 className="font-bold text-slate-900 text-base">
                               {m.homeTeam} vs {m.awayTeam}
@@ -872,7 +872,7 @@ export default function Dashboard() {
 
                 {/* Booking dialog */}
                 <Dialog open={bookingOpen} onOpenChange={setBookingOpen}>
-                  <DialogContent className="sm:max-w-md bg-white border border-slate-200 shadow-xl rounded-lg">
+                  <DialogContent className="sm:max-w-md bg-white border border-border shadow-xl rounded-lg">
                     <DialogHeader>
                       <DialogTitle className="text-lg font-bold">Book Match Ticket</DialogTitle>
                       <DialogDescription className="text-xs text-slate-500">
@@ -898,7 +898,7 @@ export default function Dashboard() {
                           onChange={(e) => setGateNumber(e.target.value)}
                           required
                           disabled={bookingSubmit}
-                          className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                          className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                         >
                           <option value="">Select a Gate</option>
                           {(selectedMatch?.stadiumId?.gates || ["Gate 1", "Gate 2", "Gate 3", "Gate 4"]).map((gate: string) => (

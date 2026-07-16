@@ -96,7 +96,7 @@ export default function AIChat() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
 
       <div className="flex-1 pt-24 pb-12">
@@ -108,10 +108,10 @@ export default function AIChat() {
                 <MessageSquare size={20} />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-slate-900">
+                <h1 className="text-3xl font-bold text-foreground">
                   AI Stadium Assistant
                 </h1>
-                <p className="text-slate-600 text-sm">
+                <p className="text-muted-foreground text-sm">
                   Ask me anything about the stadium, navigation, food, or emergencies
                 </p>
               </div>
@@ -121,7 +121,7 @@ export default function AIChat() {
                 variant="outline"
                 size="sm"
                 onClick={handleClearHistory}
-                className="btn-press flex items-center gap-2 border-red-200 text-red-600 hover:bg-red-50"
+                className="btn-press flex items-center gap-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"
               >
                 <Trash2 size={16} />
                 Clear Chat
@@ -130,7 +130,7 @@ export default function AIChat() {
           </div>
 
           {/* Chat Container */}
-          <div className="flex-1 bg-white rounded-lg border border-slate-200 shadow-sm mb-6 overflow-hidden flex flex-col">
+          <div className="flex-1 bg-card rounded-lg border border-border shadow-sm mb-6 overflow-hidden flex flex-col">
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {messages.length === 0 ? (
@@ -138,9 +138,9 @@ export default function AIChat() {
                   <div>
                     <MessageSquare
                       size={48}
-                      className="mx-auto text-slate-300 mb-4"
+                      className="mx-auto text-muted-foreground/50 mb-4"
                     />
-                    <p className="text-slate-600">
+                    <p className="text-muted-foreground">
                       Start a conversation with StadiumIQ AI
                     </p>
                   </div>
@@ -157,7 +157,7 @@ export default function AIChat() {
                       className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
                         message.role === "user"
                           ? "bg-indigo-600 text-white rounded-br-none"
-                          : "bg-slate-100 text-slate-900 rounded-bl-none"
+                          : "bg-muted text-foreground rounded-bl-none"
                       }`}
                     >
                       <p className="text-sm">{message.content}</p>
@@ -165,7 +165,7 @@ export default function AIChat() {
                         className={`text-xs mt-1 ${
                           message.role === "user"
                             ? "text-indigo-100"
-                            : "text-slate-500"
+                            : "text-muted-foreground"
                         }`}
                       >
                         {new Date(message.timestamp).toLocaleTimeString([], {
@@ -179,18 +179,18 @@ export default function AIChat() {
               )}
               {isLoading && (
                 <div className="animate-slide-in-up flex justify-start">
-                  <div className="bg-slate-100 text-slate-500 px-4 py-3.5 rounded-lg rounded-bl-none flex items-center gap-1.5 shadow-sm border border-slate-100">
+                  <div className="bg-muted text-muted-foreground px-4 py-3.5 rounded-lg rounded-bl-none flex items-center gap-1.5 shadow-sm border border-border">
                     <span className="sr-only">AI is typing...</span>
-                    <div className="w-2.5 h-2.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                    <div className="w-2.5 h-2.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                    <div className="w-2.5 h-2.5 bg-slate-400 rounded-full animate-bounce" />
+                    <div className="w-2.5 h-2.5 bg-muted-foreground/60 rounded-full bounce-dot" />
+                    <div className="w-2.5 h-2.5 bg-muted-foreground/60 rounded-full bounce-dot" />
+                    <div className="w-2.5 h-2.5 bg-muted-foreground/60 rounded-full bounce-dot" />
                   </div>
                 </div>
               )}
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-slate-200 p-4 bg-slate-50">
+            <div className="border-t border-border p-4 bg-muted/50">
               <div className="flex gap-2">
                 <Input
                   placeholder="Ask me anything..."
@@ -218,7 +218,7 @@ export default function AIChat() {
           {/* Suggested Questions */}
           {messages.length <= 1 && (
             <div className="animate-fade-in">
-              <p className="text-sm text-slate-600 mb-3 font-medium">
+              <p className="text-sm text-muted-foreground mb-3 font-medium">
                 Try asking:
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -228,7 +228,7 @@ export default function AIChat() {
                     onClick={() => {
                       handleSendMessage(question);
                     }}
-                    className="card-hover p-3 bg-white rounded-lg border border-slate-200 text-left text-sm text-slate-700 hover:border-indigo-300 transition-colors"
+                    className="card-hover p-3 bg-card rounded-lg border border-border text-left text-sm text-foreground hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors"
                   >
                     {question}
                   </button>

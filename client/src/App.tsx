@@ -39,7 +39,7 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 
 function LoadingFallback() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 animate-fade-in">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background animate-fade-in">
       <div className="relative flex flex-col items-center gap-4">
         <div className="fixed top-0 left-0 right-0 h-1 bg-slate-100 overflow-hidden">
           <div className="h-full bg-gradient-to-r from-indigo-600 to-cyan-500 animate-pulse-soft" style={{ width: "80%" }} />

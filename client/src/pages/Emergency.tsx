@@ -109,14 +109,14 @@ export default function Emergency() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
         <div className="container mx-auto px-4">
           {/* SOS Button */}
           <div className="mb-12 animate-slide-in-down">
-            <h1 className="text-4xl font-bold text-slate-900 mb-8 text-center">
+            <h1 className="text-4xl font-bold text-foreground mb-8 text-center">
               Emergency Assistance
             </h1>
 
@@ -137,7 +137,7 @@ export default function Emergency() {
             </div>
 
             {sosActive && (
-              <div className="animate-scale-in text-center mb-8 p-4 bg-red-50 rounded-lg border border-red-200">
+              <div className="animate-scale-in text-center mb-8 p-4 bg-red-50 dark:bg-red-950/50 rounded-lg border border-red-200 dark:border-red-800">
                 <p className="text-red-700 font-semibold">
                   Emergency services have been alerted. Your location is being shared with
                   stadium staff.
@@ -147,10 +147,10 @@ export default function Emergency() {
           </div>
 
           {/* AI Emergency Assistant Card */}
-          <div className="mb-8 animate-slide-in-up p-6 bg-white rounded-lg border border-red-200 bg-gradient-to-r from-red-50/30 to-amber-50/30">
+          <div className="mb-8 animate-slide-in-up p-6 bg-card rounded-lg border border-red-200 dark:border-red-900">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="text-red-600 animate-pulse" size={20} />
-              <h2 className="text-lg font-semibold text-slate-900">AI Emergency Guide</h2>
+              <h2 className="text-lg font-semibold text-foreground">AI Emergency Guide</h2>
             </div>
             <div className="flex gap-2 mb-3">
               <Input
@@ -161,7 +161,7 @@ export default function Emergency() {
                   if (e.key === "Enter" && !aiLoading) handleQueryAI();
                 }}
                 disabled={aiLoading}
-                className="bg-white"
+                className="bg-card"
               />
               <Button
                 onClick={handleQueryAI}
@@ -172,7 +172,7 @@ export default function Emergency() {
               </Button>
             </div>
             {aiReply && (
-              <div className="mt-4 p-4 bg-white rounded-lg border border-red-200 text-sm text-slate-700 leading-relaxed shadow-sm">
+              <div className="mt-4 p-4 bg-muted rounded-lg border border-border text-sm text-foreground leading-relaxed shadow-sm">
                 <span className="font-semibold text-red-600 block mb-1">AI Safety Recommendation:</span>
                 {aiReply}
               </div>
@@ -189,17 +189,17 @@ export default function Emergency() {
                   style={{
                     animation: `slide-in-up 0.5s ease-out ${idx * 0.1}s both`,
                   }}
-                  className="card-hover p-6 bg-white rounded-lg border border-slate-200"
+                  className="card-hover p-6 bg-card rounded-lg border border-border"
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                       <Icon size={24} className="text-red-600" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-slate-900 mb-1">
+                      <h3 className="font-semibold text-foreground mb-1">
                         {service.title}
                       </h3>
-                      <p className="text-sm text-slate-600 mb-3">
+                      <p className="text-sm text-muted-foreground mb-3">
                         {service.description}
                       </p>
                       <p className="text-sm font-medium text-red-600">
@@ -213,23 +213,23 @@ export default function Emergency() {
           </div>
 
           {/* Emergency Contacts */}
-          <div className="animate-slide-in-up p-8 bg-white rounded-lg border border-slate-200 mb-12">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">
+          <div className="animate-slide-in-up p-8 bg-card rounded-lg border border-border mb-12">
+            <h2 className="text-2xl font-bold text-foreground mb-6">
               Emergency Contacts
             </h2>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                <p className="text-sm text-slate-600 mb-2">Emergency Services</p>
-                <p className="text-2xl font-bold text-slate-900">911</p>
+              <div className="p-4 bg-muted rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground mb-2">Emergency Services</p>
+                <p className="text-2xl font-bold text-foreground">911</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                <p className="text-sm text-slate-600 mb-2">Stadium Security</p>
-                <p className="text-2xl font-bold text-slate-900">+1-555-0100</p>
+              <div className="p-4 bg-muted rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground mb-2">Stadium Security</p>
+                <p className="text-2xl font-bold text-foreground">+1-555-0100</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                <p className="text-sm text-slate-600 mb-2">Medical Assistance</p>
-                <p className="text-2xl font-bold text-slate-900">+1-555-0101</p>
+              <div className="p-4 bg-muted rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground mb-2">Medical Assistance</p>
+                <p className="text-2xl font-bold text-foreground">+1-555-0101</p>
               </div>
             </div>
           </div>
@@ -239,10 +239,10 @@ export default function Emergency() {
             <div className="flex gap-4">
               <AlertCircle className="text-amber-600 flex-shrink-0" size={24} />
               <div>
-                <h3 className="font-semibold text-slate-900 mb-2">
+                <h3 className="font-semibold text-foreground mb-2">
                   Important Information
                 </h3>
-                <ul className="space-y-2 text-sm text-slate-700">
+                <ul className="space-y-2 text-sm text-foreground/80">
                   <li>• Always keep your phone charged during the match</li>
                   <li>• Share your location with trusted contacts</li>
                   <li>• Know the location of nearest exits and medical facilities</li>

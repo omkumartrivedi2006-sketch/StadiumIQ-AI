@@ -124,7 +124,7 @@ export function NotificationCenter() {
       case "ticket":
         return <Ticket size={16} className="text-teal-600" />;
       default:
-        return <Info size={16} className="text-slate-600" />;
+        return <Info size={16} className="text-muted-foreground" />;
     }
   };
 
@@ -141,7 +141,7 @@ export function NotificationCenter() {
     <Popover>
       <PopoverTrigger asChild>
         <button className="relative p-2 rounded-full hover:bg-slate-100 transition-colors btn-press focus:outline-none">
-          <Bell size={20} className="text-slate-700" />
+          <Bell size={20} className="text-foreground" />
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white rounded-full text-[9px] font-bold flex items-center justify-center animate-pulse-soft">
               {unreadCount}
@@ -149,9 +149,9 @@ export function NotificationCenter() {
           )}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0 bg-white border border-slate-200 shadow-xl rounded-lg z-50">
+      <PopoverContent className="w-80 p-0 bg-card border border-border shadow-xl rounded-lg z-50">
         <div className="p-3 border-b border-slate-100 flex items-center justify-between">
-          <span className="font-bold text-sm text-slate-800">Notifications</span>
+          <span className="font-bold text-sm text-foreground">Notifications</span>
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
@@ -166,13 +166,13 @@ export function NotificationCenter() {
         <div className="max-h-64 overflow-y-auto divide-y divide-slate-100">
           {notifications.length === 0 ? (
             <div className="p-6">
-              <Empty className="p-4 md:p-6 bg-slate-50/50 border border-slate-100 rounded-lg">
+              <Empty className="p-4 md:p-6 bg-muted/50 border border-slate-100 rounded-lg">
                 <EmptyHeader>
                   <EmptyMedia className="bg-indigo-50 text-indigo-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">
                     <Bell size={14} />
                   </EmptyMedia>
-                  <EmptyTitle className="text-xs font-semibold text-slate-800">No Notifications</EmptyTitle>
-                  <EmptyDescription className="text-[10px] text-slate-500 max-w-[180px] mx-auto mt-0.5 leading-normal">
+                  <EmptyTitle className="text-xs font-semibold text-foreground">No Notifications</EmptyTitle>
+                  <EmptyDescription className="text-[10px] text-muted-foreground max-w-[180px] mx-auto mt-0.5 leading-normal">
                     You're all caught up! There are no announcements or alerts at this time.
                   </EmptyDescription>
                 </EmptyHeader>
@@ -191,7 +191,7 @@ export function NotificationCenter() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-start gap-1">
-                    <span className={`text-xs font-semibold text-slate-900 block truncate ${
+                    <span className={`text-xs font-semibold text-foreground block truncate ${
                       !notif.readStatus ? "font-bold" : ""
                     }`}>
                       {notif.title}
@@ -200,7 +200,7 @@ export function NotificationCenter() {
                       {formatTime(notif.createdAt)}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-700 mt-1 break-words leading-relaxed">
+                  <p className="text-xs text-foreground mt-1 break-words leading-relaxed">
                     {notif.message}
                   </p>
                   <div className="flex gap-2 justify-end mt-2 pt-1">

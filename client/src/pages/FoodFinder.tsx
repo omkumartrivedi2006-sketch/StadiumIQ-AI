@@ -64,17 +64,17 @@ export default function FoodFinder() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="mb-12 animate-slide-in-down">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">
+            <h1 className="text-4xl font-bold text-foreground mb-2">
               Food Finder
             </h1>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               Discover food stalls with real-time queue times and ratings
             </p>
           </div>
@@ -93,10 +93,10 @@ export default function FoodFinder() {
           </div>
 
           {/* AI Food Recommender Card */}
-          <div className="mb-8 animate-slide-in-up p-6 bg-white rounded-lg border border-indigo-200 bg-gradient-to-r from-indigo-50/50 to-cyan-50/50">
+          <div className="mb-8 animate-slide-in-up p-6 bg-card rounded-lg border border-indigo-200 dark:border-indigo-800">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="text-indigo-600 animate-pulse" size={20} />
-              <h2 className="text-lg font-semibold text-slate-900">AI Food Recommender</h2>
+              <h2 className="text-lg font-semibold text-foreground">AI Food Recommender</h2>
             </div>
             <div className="flex gap-2 mb-3">
               <Input
@@ -107,7 +107,7 @@ export default function FoodFinder() {
                   if (e.key === "Enter" && !aiLoading) handleQueryAI();
                 }}
                 disabled={aiLoading}
-                className="bg-white"
+                className="bg-card"
               />
               <Button
                 onClick={handleQueryAI}
@@ -118,7 +118,7 @@ export default function FoodFinder() {
               </Button>
             </div>
             {aiReply && (
-              <div className="mt-4 p-4 bg-white rounded-lg border border-slate-200 text-sm text-slate-700 leading-relaxed shadow-sm">
+              <div className="mt-4 p-4 bg-muted rounded-lg border border-border text-sm text-foreground leading-relaxed shadow-sm">
                 <span className="font-semibold text-indigo-600 block mb-1">AI Recommendation:</span>
                 {aiReply}
               </div>
@@ -127,7 +127,7 @@ export default function FoodFinder() {
 
           {/* Food Stalls Grid */}
           {loading ? (
-            <div className="text-center py-12 text-slate-500">Loading food stalls...</div>
+            <div className="text-center py-12 text-muted-foreground">Loading food stalls...</div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredStalls.map((stall, idx) => (
@@ -136,16 +136,16 @@ export default function FoodFinder() {
                   style={{
                     animation: `slide-in-up 0.5s ease-out ${idx * 0.1}s both`,
                   }}
-                  className="card-hover p-6 bg-white rounded-lg border border-slate-200"
+                  className="card-hover p-6 bg-card rounded-lg border border-border"
                 >
                   {/* Header */}
                   <div className="mb-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h3 className="font-semibold text-slate-900 text-lg">
+                        <h3 className="font-semibold text-foreground text-lg">
                           {stall.name}
                         </h3>
-                        <p className="text-sm text-slate-600">{stall.category}</p>
+                        <p className="text-sm text-muted-foreground">{stall.category}</p>
                       </div>
                       <div className="flex items-center gap-1 bg-amber-50 px-2 py-1 rounded">
                         <Star size={16} className="text-amber-500 fill-amber-500" />
@@ -157,20 +157,20 @@ export default function FoodFinder() {
                   </div>
 
                   {/* Info Grid */}
-                  <div className="space-y-3 mb-4 pb-4 border-b border-slate-200">
+                  <div className="space-y-3 mb-4 pb-4 border-b border-border">
                     <div className="flex items-center gap-2">
                       <Clock size={16} className="text-cyan-600" />
-                      <span className="text-sm text-slate-700">
+                      <span className="text-sm text-foreground">
                         <span className="font-semibold">{stall.queueTime} min</span> wait
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin size={16} className="text-indigo-600" />
-                      <span className="text-sm text-slate-700">
+                      <span className="text-sm text-foreground">
                         {stall.distance} • {stall.location}
                       </span>
                     </div>
-                    <div className="text-sm text-slate-700">
+                    <div className="text-sm text-foreground">
                       <span className="font-semibold">{stall.price}</span>
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export default function FoodFinder() {
           {/* Empty State */}
           {!loading && filteredStalls.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-slate-600">No food stalls found matching your search.</p>
+              <p className="text-muted-foreground">No food stalls found matching your search.</p>
             </div>
           )}
         </div>

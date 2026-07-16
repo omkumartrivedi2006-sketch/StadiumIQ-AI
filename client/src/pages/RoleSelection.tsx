@@ -48,13 +48,13 @@ export default function RoleSelection() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
 
       <div className="flex-1 flex flex-col items-center justify-center pt-24 pb-12 px-4">
         <div className="max-w-4xl w-full text-center mb-10">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">Select Your Role</h1>
-          <p className="text-slate-600 text-lg">
+          <h1 className="text-4xl font-bold text-foreground mb-3">Select Your Role</h1>
+          <p className="text-muted-foreground text-lg">
             Choose how you would like to experience StadiumIQ AI today.
           </p>
         </div>
@@ -69,12 +69,12 @@ export default function RoleSelection() {
                 className={`cursor-pointer transition-all duration-200 border-2 hover:-translate-y-1 hover:shadow-md ${role.color}`}
               >
                 <CardHeader className="flex flex-row items-center gap-4">
-                  <div className="p-3 rounded-lg bg-white shadow-sm flex-shrink-0">
+                  <div className="p-3 rounded-lg bg-card/70 shadow-sm flex-shrink-0">
                     <Icon size={28} />
                   </div>
                   <div>
-                    <CardTitle className="text-xl font-bold text-slate-900">{role.title}</CardTitle>
-                    <CardDescription className="text-slate-600 mt-1">{role.description}</CardDescription>
+                    <CardTitle className="text-xl font-bold text-foreground">{role.title}</CardTitle>
+                    <CardDescription className="text-muted-foreground mt-1">{role.description}</CardDescription>
                   </div>
                 </CardHeader>
               </Card>

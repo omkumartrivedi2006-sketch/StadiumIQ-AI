@@ -25,7 +25,7 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-slate-50 to-slate-100">
-          <div className="w-full max-w-lg p-8 bg-white border border-slate-200 shadow-xl rounded-2xl text-center">
+          <div className="w-full max-w-lg p-8 bg-card border border-border shadow-xl rounded-2xl text-center">
             <div className="flex justify-center mb-6">
               <div className="relative">
                 <div className="absolute inset-0 bg-red-100 rounded-full animate-pulse" />
@@ -33,11 +33,11 @@ class ErrorBoundary extends Component<Props, State> {
               </div>
             </div>
 
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">500</h1>
-            <h2 className="text-xl font-semibold text-slate-700 mb-4">
+            <h1 className="text-4xl font-bold text-foreground mb-2">500</h1>
+            <h2 className="text-xl font-semibold text-foreground mb-4">
               Unexpected Application Error
             </h2>
-            <p className="text-slate-600 mb-6 leading-relaxed">
+            <p className="text-muted-foreground mb-6 leading-relaxed">
               We encountered a temporary technical glitch. Please try reloading the page.
             </p>
 
@@ -50,12 +50,12 @@ class ErrorBoundary extends Component<Props, State> {
             </button>
 
             {this.state.error && (
-              <details className="mt-6 text-left w-full border border-slate-200 rounded-lg bg-slate-50 overflow-hidden">
-                <summary className="text-[11px] font-bold text-slate-500 hover:text-slate-700 cursor-pointer p-2.5 bg-slate-100 select-none">
+              <details className="mt-6 text-left w-full border border-border rounded-lg bg-slate-50 overflow-hidden">
+                <summary className="text-[11px] font-bold text-muted-foreground hover:text-foreground cursor-pointer p-2.5 bg-slate-100 select-none">
                   Show Technical Stacktrace
                 </summary>
-                <div className="p-3 max-h-40 overflow-y-auto border-t border-slate-200">
-                  <pre className="text-[10px] font-mono text-slate-600 whitespace-pre-wrap leading-normal">
+                <div className="p-3 max-h-40 overflow-y-auto border-t border-border">
+                  <pre className="text-[10px] font-mono text-muted-foreground whitespace-pre-wrap leading-normal">
                     {this.state.error.stack || this.state.error.message}
                   </pre>
                 </div>

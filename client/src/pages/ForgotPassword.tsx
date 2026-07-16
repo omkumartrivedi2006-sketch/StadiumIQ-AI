@@ -41,11 +41,11 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
 
       <div className="flex-1 flex items-center justify-center pt-24 pb-12 px-4">
-        <Card className="w-full max-w-md shadow-lg border border-slate-200 bg-white">
+        <Card className="w-full max-w-md shadow-lg border border-border bg-card">
           <CardHeader className="text-center space-y-2">
             <div className="flex justify-center mb-2">
               <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
@@ -53,7 +53,7 @@ export default function ForgotPassword() {
               </div>
             </div>
             <CardTitle className="text-3xl font-bold text-slate-900">Forgot Password</CardTitle>
-            <CardDescription className="text-slate-600">
+            <CardDescription className="text-muted-foreground">
               Recover your StadiumIQ AI account password
             </CardDescription>
           </CardHeader>

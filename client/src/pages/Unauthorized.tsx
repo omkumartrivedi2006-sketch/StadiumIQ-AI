@@ -11,8 +11,8 @@ export default function Unauthorized() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-      <Card className="w-full max-w-lg mx-4 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+    <div className="min-h-screen w-full flex items-center justify-center bg-background">
+      <Card className="w-full max-w-lg mx-4 shadow-lg border border-border bg-card/80 backdrop-blur-sm">
         <CardContent className="pt-8 pb-8 text-center">
           <div className="flex justify-center mb-6">
             <div className="relative">
@@ -21,13 +21,13 @@ export default function Unauthorized() {
             </div>
           </div>
 
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">403</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-2">403</h1>
 
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">
+          <h2 className="text-xl font-semibold text-foreground/80 mb-4">
             Access Forbidden
           </h2>
 
-          <p className="text-slate-600 mb-8 leading-relaxed">
+          <p className="text-muted-foreground mb-8 leading-relaxed">
             Sorry, you do not have permission to view this page.
             <br />
             Please make sure you are signed in with the correct role account.

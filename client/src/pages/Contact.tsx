@@ -46,7 +46,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       <Navigation />
 
       <div className="flex-1 pt-24 pb-12">
@@ -54,7 +54,7 @@ export default function Contact() {
           {/* Header */}
           <div className="mb-10 text-center animate-slide-in-down">
             <h1 className="text-4xl font-bold text-slate-900 mb-2">Contact Us</h1>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               Have questions or need assistance? Get in touch with the StadiumIQ team
             </p>
           </div>
@@ -62,7 +62,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-3 gap-6 items-start animate-slide-in-up">
             {/* Contact Details Info */}
             <div className="space-y-4">
-              <Card className="shadow border border-slate-200 bg-white p-6">
+              <Card className="shadow border border-border bg-card p-6">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 flex-shrink-0">
                     <Mail size={20} />
@@ -75,7 +75,7 @@ export default function Contact() {
                 </div>
               </Card>
 
-              <Card className="shadow border border-slate-200 bg-white p-6">
+              <Card className="shadow border border-border bg-card p-6">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 flex-shrink-0">
                     <Phone size={20} />
@@ -88,7 +88,7 @@ export default function Contact() {
                 </div>
               </Card>
 
-              <Card className="shadow border border-slate-200 bg-white p-6">
+              <Card className="shadow border border-border bg-card p-6">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 flex-shrink-0">
                     <MapPin size={20} />
@@ -104,7 +104,7 @@ export default function Contact() {
 
             {/* Contact Form */}
             <div className="md:col-span-2">
-              <Card className="shadow border border-slate-200 bg-white">
+              <Card className="shadow border border-border bg-card">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">Send Message</CardTitle>
                   <CardDescription>Fill out the form below and we will get back to you shortly.</CardDescription>

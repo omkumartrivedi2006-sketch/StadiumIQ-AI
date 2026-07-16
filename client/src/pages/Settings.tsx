@@ -184,7 +184,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -195,7 +195,7 @@ export default function Settings() {
               <SettingsIcon className="text-indigo-600 animate-spin-slow" />
               Settings
             </h1>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               Manage your profile preferences, UI theme, language, and notifications
             </p>
           </div>
@@ -216,7 +216,7 @@ export default function Settings() {
 
             <form onSubmit={handleSave} className="space-y-6">
               {/* Profile Details */}
-              <Card className="shadow border border-slate-200 bg-white">
+              <Card className="shadow border border-border bg-card">
                 <CardHeader className="flex flex-row items-center gap-3">
                   <User className="text-indigo-600" size={22} />
                   <div>
@@ -241,7 +241,7 @@ export default function Settings() {
               </Card>
 
               {/* Avatar Settings */}
-              <Card className="shadow border border-slate-200 bg-white">
+              <Card className="shadow border border-border bg-card">
                 <CardHeader className="flex flex-row items-center gap-3">
                   <Image className="text-indigo-600" size={22} />
                   <div>
@@ -254,7 +254,7 @@ export default function Settings() {
                     <img
                       src={profileImage || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop"}
                       alt="Profile Avatar"
-                      className="w-16 h-16 rounded-full object-cover border border-slate-200 flex-shrink-0"
+                      className="w-16 h-16 rounded-full object-cover border border-border flex-shrink-0"
                     />
                     <div className="flex-grow space-y-1">
                       <label className="text-sm font-medium text-slate-700">Avatar URL</label>
@@ -273,7 +273,7 @@ export default function Settings() {
               {/* Language & Theme Settings */}
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Language Preferences */}
-                <Card className="shadow border border-slate-200 bg-white">
+                <Card className="shadow border border-border bg-card">
                   <CardHeader className="flex flex-row items-center gap-3">
                     <Globe className="text-indigo-600" size={22} />
                     <div>
@@ -286,7 +286,7 @@ export default function Settings() {
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
                       disabled={saving}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                      className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                     >
                       {SUPPORTED_LANGUAGES.map((lang) => (
                         <option key={lang.code} value={lang.code}>
@@ -298,7 +298,7 @@ export default function Settings() {
                 </Card>
 
                 {/* Theme Settings */}
-                <Card className="shadow border border-slate-200 bg-white">
+                <Card className="shadow border border-border bg-card">
                   <CardHeader className="flex flex-row items-center gap-3">
                     {theme === "dark" ? <Moon className="text-indigo-600" size={22} /> : <Sun className="text-indigo-600" size={22} />}
                     <div>
@@ -329,7 +329,7 @@ export default function Settings() {
               </div>
 
               {/* Privacy Settings */}
-              <Card className="shadow border border-slate-200 bg-white">
+              <Card className="shadow border border-border bg-card">
                 <CardHeader className="flex flex-row items-center gap-3">
                   <Globe className="text-indigo-600" size={22} />
                   <div>
@@ -364,7 +364,7 @@ export default function Settings() {
               </Card>
 
               {/* Notification settings */}
-              <Card className="shadow border border-slate-200 bg-white">
+              <Card className="shadow border border-border bg-card">
                 <CardHeader className="flex flex-row items-center gap-3">
                   <Bell className="text-indigo-600" size={22} />
                   <div>
@@ -400,7 +400,7 @@ export default function Settings() {
 
             {/* Password Change Form */}
             <form onSubmit={handleChangePassword} className="space-y-6">
-              <Card className="shadow border border-slate-200 bg-white">
+              <Card className="shadow border border-border bg-card">
                 <CardHeader className="flex flex-row items-center gap-3">
                   <KeyRound className="text-indigo-600" size={22} />
                   <div>

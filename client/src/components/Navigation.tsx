@@ -56,7 +56,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
@@ -72,7 +72,7 @@ export function Navigation() {
         <div className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
             <Link key={item.href} href={getHref(item.href)}>
-              <a className="text-sm font-medium text-slate-700 hover:text-indigo-600 transition-colors">
+              <a className="text-sm font-medium text-foreground/80 hover:text-indigo-600 transition-colors">
                 {item.label}
               </a>
             </Link>
@@ -85,14 +85,16 @@ export function Navigation() {
             variant="ghost"
             size="sm"
             onClick={toggleTheme}
-            className="btn-press"
+            className="btn-press relative overflow-hidden"
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
             title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
-            {theme === 'light' ? (
-              <Moon size={18} className="text-slate-700" />
-            ) : (
-              <Sun size={18} className="text-slate-300" />
-            )}
+            <span className={`transition-all duration-300 ${theme === 'dark' ? 'opacity-0 scale-50 absolute' : 'opacity-100 scale-100'}`}>
+              <Moon size={18} className="text-foreground/70" />
+            </span>
+            <span className={`transition-all duration-300 ${theme === 'light' ? 'opacity-0 scale-50 absolute' : 'opacity-100 scale-100'}`}>
+              <Sun size={18} className="text-amber-400" />
+            </span>
           </Button>
 
           {isAuthenticated ? (
@@ -101,7 +103,7 @@ export function Navigation() {
               {user?.profileImage ? (
                 <button
                   onClick={() => setLocation("/profile")}
-                  className="w-8 h-8 rounded-full border border-indigo-200 overflow-hidden btn-press cursor-pointer flex-shrink-0"
+                  className="w-8 h-8 rounded-full border border-indigo-200 dark:border-indigo-700 overflow-hidden btn-press cursor-pointer flex-shrink-0"
                   title="My Profile"
                 >
                   <img src={user.profileImage} alt="User Avatar" className="w-full h-full object-cover" />
@@ -114,7 +116,7 @@ export function Navigation() {
                   className="btn-press"
                   title="My Profile"
                 >
-                  <User size={18} className="text-slate-700" />
+                  <User size={18} className="text-foreground/70" />
                 </Button>
               )}
               <Button
@@ -124,9 +126,9 @@ export function Navigation() {
                 className="btn-press"
                 title="Settings"
               >
-                <Settings size={18} className="text-slate-700" />
+                <Settings size={18} className="text-foreground/70" />
               </Button>
-              <Button onClick={handleSignOut} variant="outline" size="sm" className="btn-press border-red-200 text-red-600 hover:bg-red-50">
+              <Button onClick={handleSignOut} variant="outline" size="sm" className="btn-press border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950">
                 Sign Out
               </Button>
             </>
@@ -144,8 +146,9 @@ export function Navigation() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden btn-press"
+          className="md:hidden btn-press text-foreground"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -153,12 +156,12 @@ export function Navigation() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white animate-slide-in-down">
+        <div className="md:hidden border-t border-border bg-background animate-slide-in-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {navItems.map((item) => (
               <Link key={item.href} href={getHref(item.href)}>
                 <a
-                  className="text-sm font-medium text-slate-700 hover:text-indigo-600 transition-colors py-2 border-b border-slate-100"
+                  className="text-sm font-medium text-foreground/80 hover:text-indigo-600 transition-colors py-2 border-b border-border"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
@@ -179,15 +182,15 @@ export function Navigation() {
                   </>
                 ) : (
                   <>
-                    <Sun size={16} />
+                    <Sun size={16} className="text-amber-400" />
                     Light Mode
                   </>
                 )}
               </Button>
               {isAuthenticated ? (
                 <>
-                  <div className="flex justify-between items-center px-4 py-2 border-y border-slate-100">
-                    <span className="text-xs text-slate-500 font-medium">Alerts</span>
+                  <div className="flex justify-between items-center px-4 py-2 border-y border-border">
+                    <span className="text-xs text-muted-foreground font-medium">Alerts</span>
                     <NotificationCenter />
                   </div>
                   <Button
@@ -212,7 +215,7 @@ export function Navigation() {
                   >
                     <Settings size={16} /> Settings
                   </Button>
-                  <Button onClick={handleSignOut} variant="outline" size="sm" className="w-full btn-press border-red-200 text-red-600 hover:bg-red-50">
+                  <Button onClick={handleSignOut} variant="outline" size="sm" className="w-full btn-press border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950">
                     Sign Out
                   </Button>
                 </>

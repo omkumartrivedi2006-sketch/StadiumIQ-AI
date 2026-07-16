@@ -139,7 +139,7 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -150,7 +150,7 @@ export default function AdminDashboard() {
               <h1 className="text-4xl font-bold text-slate-900 mb-2">
                 Admin Dashboard
               </h1>
-              <p className="text-slate-600">
+              <p className="text-muted-foreground">
                 Real-time stadium operations and analytics
               </p>
             </div>
@@ -182,7 +182,7 @@ export default function AdminDashboard() {
 
             {/* Search Results Display */}
             {searchResults && searchQuery.trim() && (
-              <div className="mt-2 p-6 bg-white rounded-lg border border-slate-200 shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
+              <div className="mt-2 p-6 bg-card rounded-lg border border-border shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
                 <h3 className="font-semibold text-slate-800 text-sm mb-4 border-b pb-2">Search Results</h3>
                 
                 {/* Matches */}
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Matches</h4>
                     <div className="space-y-1.5">
                       {searchResults.matches.map((m) => (
-                        <div key={m._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={m._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {m.homeTeam} vs {m.awayTeam} ({m.status}) - {new Date(m.date).toLocaleDateString()}
                         </div>
                       ))}
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Stadiums</h4>
                     <div className="space-y-1.5">
                       {searchResults.stadiums.map((s) => (
-                        <div key={s._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={s._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {s.name} in {s.city} (Capacity: {s.capacity})
                         </div>
                       ))}
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Food Stalls</h4>
                     <div className="space-y-1.5">
                       {searchResults.foodVendors.map((f) => (
-                        <div key={f._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={f._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {f.name} ({f.category}) at {f.location} - {f.rating}★
                         </div>
                       ))}
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Transportation</h4>
                     <div className="space-y-1.5">
                       {searchResults.transport.map((t) => (
-                        <div key={t._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
+                        <div key={t._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
                           {t.type} ({t.routeName}) to {t.destination} - Status: {t.status}
                         </div>
                       ))}
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Users</h4>
                     <div className="space-y-1.5">
                       {searchResults.users.map((u) => (
-                        <div key={u._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded flex justify-between">
+                        <div key={u._id} className="text-sm text-slate-700 bg-muted p-2 rounded flex justify-between">
                           <span>{u.fullName} ({u.email})</span>
                           <span className="text-xs bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-semibold uppercase">{u.role}</span>
                         </div>
@@ -272,7 +272,7 @@ export default function AdminDashboard() {
                 style={{
                   animation: `slide-in-up 0.5s ease-out ${idx * 0.1}s both`,
                 }}
-                className="card-hover p-6 bg-white rounded-lg border border-slate-200"
+                className="card-hover p-6 bg-card rounded-lg border border-border"
               >
                 <p className="text-sm text-slate-600 mb-2">{item.label}</p>
                 <div className="flex items-end justify-between">
@@ -291,7 +291,7 @@ export default function AdminDashboard() {
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Left: Gate Analytics */}
             <div className="lg:col-span-2">
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200 animate-slide-in-up">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border animate-slide-in-up">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                   <BarChart3 size={24} className="text-indigo-600" />
                   Gate Analytics
@@ -301,7 +301,7 @@ export default function AdminDashboard() {
                   {gateData.map((gate, idx) => (
                     <div
                       key={idx}
-                      className="p-4 bg-slate-50 rounded-lg border border-slate-200 hover:border-indigo-300 transition-colors"
+                      className="p-4 bg-muted rounded-lg border border-border hover:border-indigo-300 transition-colors"
                     >
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-3">
@@ -347,7 +347,7 @@ export default function AdminDashboard() {
 
             {/* Right: Incidents & Alerts */}
             <div className="animate-slide-in-up">
-              <div className="card-hover p-6 bg-white rounded-lg border border-slate-200 mb-6">
+              <div className="card-hover p-6 bg-card rounded-lg border border-border mb-6">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                   <AlertTriangle size={24} className="text-red-600" />
                   Incidents
@@ -360,7 +360,7 @@ export default function AdminDashboard() {
                     incidents.map((incident) => (
                       <div
                         key={incident.id}
-                        className="p-4 bg-slate-50 rounded-lg border border-slate-200"
+                        className="p-4 bg-muted rounded-lg border border-border"
                       >
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold text-slate-900">
@@ -419,7 +419,7 @@ export default function AdminDashboard() {
 
           {/* Bottom: Announcements */}
           <div className="mt-12 animate-slide-in-up">
-            <div className="card-hover p-6 bg-white rounded-lg border border-slate-200">
+            <div className="card-hover p-6 bg-card rounded-lg border border-border">
               <h2 className="text-2xl font-bold text-slate-900 mb-6">
                 Live Announcements
               </h2>
@@ -427,10 +427,10 @@ export default function AdminDashboard() {
                 {announcements.map((announcement, idx) => (
                   <div
                     key={idx}
-                    className="p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-start gap-3"
+                    className="p-4 bg-muted rounded-lg border border-border flex items-start gap-3"
                   >
                     <div className="w-2 h-2 rounded-full bg-cyan-500 mt-2 " />
-                    <p className="text-slate-700">{announcement}</p>
+                    <p className="text-foreground">{announcement}</p>
                   </div>
                 ))}
               </div>

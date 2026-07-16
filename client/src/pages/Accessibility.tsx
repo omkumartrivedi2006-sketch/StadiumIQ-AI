@@ -111,7 +111,7 @@ export default function Accessibility() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="pt-24 pb-12">
@@ -121,7 +121,7 @@ export default function Accessibility() {
             <h1 className="text-4xl font-bold text-slate-900 mb-2">
               Accessibility Services
             </h1>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               We're committed to making StadiumIQ accessible to everyone
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function Accessibility() {
                   if (e.key === "Enter" && !aiLoading) handleQueryAI();
                 }}
                 disabled={aiLoading}
-                className="bg-white"
+                className="bg-card"
               />
               <Button
                 onClick={handleQueryAI}
@@ -152,7 +152,7 @@ export default function Accessibility() {
               </Button>
             </div>
             {aiReply && (
-              <div className="mt-4 p-4 bg-white rounded-lg border border-slate-200 text-sm text-slate-700 leading-relaxed shadow-sm">
+              <div className="mt-4 p-4 bg-card rounded-lg border border-border text-sm text-slate-700 leading-relaxed shadow-sm">
                 <span className="font-semibold text-indigo-600 block mb-1">AI Recommendation:</span>
                 {aiReply}
               </div>
@@ -167,7 +167,7 @@ export default function Accessibility() {
                 style={{
                   animation: `slide-in-up 0.5s ease-out ${idx * 0.1}s both`,
                 }}
-                className="card-hover p-6 bg-white rounded-lg border border-slate-200"
+                className="card-hover p-6 bg-card rounded-lg border border-border"
               >
                 <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mb-4">
                   {feature.icon}
@@ -189,7 +189,7 @@ export default function Accessibility() {
           </div>
 
           {/* Request Assistance */}
-          <div className="animate-slide-in-up p-8 bg-white rounded-lg border border-slate-200 mb-12">
+          <div className="animate-slide-in-up p-8 bg-card rounded-lg border border-border mb-12">
             <h2 className="text-2xl font-bold text-slate-900 mb-6">
               Request Assistance
             </h2>

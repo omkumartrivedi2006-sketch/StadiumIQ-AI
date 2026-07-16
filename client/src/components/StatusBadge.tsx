@@ -16,7 +16,7 @@ export function StatusBadge({ status, label, className }: StatusBadgeProps) {
   return (
     <div className={cn("status-live", className)}>
       <div className={cn("status-dot pulse", statusColors[status])} />
-      <span className="text-sm font-medium text-slate-700">{label}</span>
+      <span className="text-sm font-medium text-foreground">{label}</span>
     </div>
   );
 }

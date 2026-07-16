@@ -98,23 +98,23 @@ export function InactivityHandler() {
 
   return (
     <Dialog open={showWarning} onOpenChange={(open) => { if (!open) handleKeepSession(); }}>
-      <DialogContent className="max-w-md w-full bg-white border border-slate-200 shadow-2xl rounded-xl">
+      <DialogContent className="max-w-md w-full bg-card border border-border shadow-2xl rounded-xl">
         <DialogHeader className="flex flex-row items-center gap-3">
           <div className="p-2 bg-amber-50 rounded-lg text-amber-500">
             <AlertTriangle size={24} />
           </div>
           <div>
-            <DialogTitle className="text-lg font-bold text-slate-900">Inactivity Warning</DialogTitle>
-            <DialogDescription className="text-xs text-slate-500">Are you still there?</DialogDescription>
+            <DialogTitle className="text-lg font-bold text-foreground">Inactivity Warning</DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground">Are you still there?</DialogDescription>
           </div>
         </DialogHeader>
         <div className="py-4 space-y-3">
-          <p className="text-sm text-slate-600 leading-normal">
+          <p className="text-sm text-muted-foreground leading-normal">
             Your StadiumIQ session has been inactive. For your security, you will be automatically signed out in:
           </p>
           <div className="flex items-center gap-2 justify-center py-3 bg-slate-50 border border-slate-100 rounded-lg">
             <Clock size={20} className="text-indigo-600 animate-pulse" />
-            <span className="text-2xl font-mono font-bold text-slate-800">
+            <span className="text-2xl font-mono font-bold text-foreground">
               00:{countdown < 10 ? `0${countdown}` : countdown}
             </span>
           </div>
@@ -124,7 +124,7 @@ export function InactivityHandler() {
             type="button"
             variant="outline"
             onClick={logoutUser}
-            className="btn-press border-slate-200 text-slate-600 hover:bg-slate-50"
+            className="btn-press border-border text-muted-foreground hover:bg-slate-50"
           >
             Sign Out
           </Button>
