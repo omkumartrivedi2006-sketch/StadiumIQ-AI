@@ -5,7 +5,6 @@ import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ManusDialog } from "@/components/ManusDialog";
 import { Shield, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -15,7 +14,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isManusOpen, setIsManusOpen] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,11 +37,7 @@ export default function Login() {
     }
   };
 
-  const handleManusLogin = () => {
-    localStorage.setItem("access_token", "mock-manus-session");
-    setIsManusOpen(false);
-    setLocation("/role-selection");
-  };
+
 
   const handleDemoLogin = async (role: "fan" | "volunteer" | "organizer" | "admin") => {
     setError("");
@@ -129,20 +123,7 @@ export default function Login() {
               </Button>
             </form>
 
-            <div className="relative flex py-2 items-center">
-              <div className="flex-grow border-t border-border"></div>
-              <span className="flex-shrink mx-4 text-muted-foreground text-xs uppercase tracking-wider">Or continue with</span>
-              <div className="flex-grow border-t border-border"></div>
-            </div>
 
-            <Button
-              variant="outline"
-              onClick={() => setIsManusOpen(true)}
-              disabled={loading}
-              className="w-full btn-press border-border text-foreground font-medium hover:bg-muted mb-2"
-            >
-              Sign In with Manus
-            </Button>
 
             <div className="relative flex py-2 items-center">
               <div className="flex-grow border-t border-border"></div>
@@ -198,13 +179,6 @@ export default function Login() {
           </CardContent>
         </Card>
       </div>
-
-      <ManusDialog
-        open={isManusOpen}
-        onOpenChange={setIsManusOpen}
-        onLogin={handleManusLogin}
-        title="StadiumIQ authentication"
-      />
     </div>
   );
 }

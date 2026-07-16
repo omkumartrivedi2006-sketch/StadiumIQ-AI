@@ -80,6 +80,10 @@ function Router() {
         <Route path={"/forgot-password"} component={ForgotPassword} />
         <Route path={"/reset-password"} component={ResetPassword} />
         <Route path={"/contact"} component={Contact} />
+        <Route path={"/support"} component={Contact} />
+        <Route path={"/faq"} component={Contact} />
+        <Route path={"/docs"} component={Features} />
+        <Route path={"/documentation"} component={Features} />
         <Route path={"/feedback"} component={Feedback} />
         <Route path={"/unauthorized"} component={Unauthorized} />
         <Route path={"/offline"} component={Offline} />

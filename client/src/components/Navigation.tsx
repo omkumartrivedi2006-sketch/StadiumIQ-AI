@@ -20,18 +20,65 @@ export function Navigation() {
     return "/dashboard";
   };
 
-  const navItems = [
-    { label: "Home", href: "/" },
-    { label: "Features", href: "/features" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "About", href: "/about" },
-    { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "/contact" },
-  ];
+  const getNavItemsByRole = (role: string) => {
+    switch (role) {
+      case "fan":
+        return [
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "AI Assistant", href: "/chat" },
+          { label: "Stadium Navigation", href: "/accessibility" },
+          { label: "Tickets", href: "/dashboard#tickets" },
+          { label: "Food Finder", href: "/food" },
+          { label: "Transport", href: "/transport" },
+        ];
+      case "volunteer":
+        return [
+          { label: "Dashboard", href: "/volunteer" },
+          { label: "Assigned Tasks", href: "/volunteer#tasks" },
+          { label: "Crowd Reports", href: "/volunteer#reports" },
+          { label: "Navigation", href: "/accessibility" },
+        ];
+      case "organizer":
+        return [
+          { label: "Dashboard", href: "/organizer" },
+          { label: "Match Operations", href: "/organizer#matches" },
+          { label: "Crowd Analytics", href: "/organizer#analytics" },
+          { label: "Volunteer Management", href: "/organizer#volunteers" },
+          { label: "Reports", href: "/organizer#reports" },
+        ];
+      case "admin":
+        return [
+          { label: "Dashboard", href: "/admin" },
+          { label: "User Management", href: "/admin#users" },
+          { label: "Stadium Management", href: "/admin#stadiums" },
+          { label: "Match Management", href: "/admin#matches" },
+          { label: "AI Logs", href: "/admin#ai-logs" },
+          { label: "Analytics", href: "/admin#analytics" },
+        ];
+      default:
+        return [{ label: "Dashboard", href: "/dashboard" }];
+    }
+  };
 
-  const displayItems = isAuthenticated
-    ? [{ label: "Dashboard", href: getDashboardHref() }, ...navItems]
-    : navItems;
+  const displayItems = isAuthenticated && user
+    ? getNavItemsByRole(user.role)
+    : [
+        { label: "Home", href: "/" },
+        { label: "Features", href: "/features" },
+        { label: "Pricing", href: "/pricing" },
+        { label: "About", href: "/about" },
+        { label: "Blog", href: "/blog" },
+        { label: "Contact", href: "/contact" },
+      ];
+
+  const checkActive = (href: string) => {
+    const [path, hash] = href.split("#");
+    const isPathActive = location === path;
+    if (hash) {
+      return isPathActive && window.location.hash === `#${hash}`;
+    }
+    return isPathActive;
+  };
 
   const getHref = (href: string) => {
     return href;
@@ -67,7 +114,7 @@ export function Navigation() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
           {displayItems.map((item) => {
-            const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+            const isActive = checkActive(item.href);
             return (
               <Link key={item.href} href={getHref(item.href)}>
                 <a className={`text-sm font-medium transition-colors ${
@@ -162,7 +209,7 @@ export function Navigation() {
         <div className="md:hidden border-t border-border bg-background animate-slide-in-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {displayItems.map((item) => {
-              const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+              const isActive = checkActive(item.href);
               return (
                 <Link key={item.href} href={getHref(item.href)}>
                   <a

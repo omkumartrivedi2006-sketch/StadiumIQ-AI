@@ -79,59 +79,56 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
-
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 md:px-0">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left: Text Content */}
-            <div className="animate-slide-in-up">
-              <div className="mb-6">
-                <StatusBadge
-                  status="live"
-                  label="Live at FIFA World Cup 2026"
-                  className="inline-block"
-                />
-              </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-                Navigate Smarter.{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-400">
-                  Experience Better.
-                </span>
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                StadiumIQ AI is your intelligent stadium assistant. Ask questions, navigate
-                crowds, find food, and get help—all through one powerful AI-powered platform.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  size="lg"
-                  onClick={() => setLocation("/chat")}
-                  className="btn-press bg-indigo-600 hover:bg-indigo-700 text-white"
-                >
-                  Ask AI Now
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setLocation("/dashboard")}
-                  className="btn-press border-border"
-                >
-                  View Live Map
-                </Button>
-              </div>
-            </div>
+      <section className="pt-32 pb-20 px-4 md:px-0 relative overflow-hidden min-h-[550px] flex items-center">
+        {/* Background Image with Blended Overlays */}
+        <div className="absolute inset-0 z-0 select-none pointer-events-none">
+          <img
+            src="/hero-stadium.jpg"
+            alt="Stadium Background"
+            className="w-full h-full object-cover"
+          />
+          {/* Subtle multi-layer overlays for theme blending and high readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-background/10 dark:bg-background/30" />
+        </div>
 
-            {/* Right: Hero Image */}
-            <div className="animate-slide-in-down hidden md:block">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-cyan-500/20 rounded-2xl blur-3xl" />
-                <img
-                  src="/hero-stadium.jpg"
-                  alt="Stadium AI Assistant"
-                  className="relative rounded-2xl shadow-2xl w-full h-[400px] object-cover border border-border/50"
-                />
-              </div>
+        <div className="container mx-auto relative z-10">
+          <div className="max-w-2xl animate-slide-in-up">
+            <div className="mb-6">
+              <StatusBadge
+                status="live"
+                label="Live at FIFA World Cup 2026"
+                className="inline-block"
+              />
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+              Navigate Smarter.{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-400">
+                Experience Better.
+              </span>
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8 leading-relaxed max-w-xl">
+              StadiumIQ AI is your intelligent stadium assistant. Ask questions, navigate
+              crowds, find food, and get help—all through one powerful AI-powered platform.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button
+                size="lg"
+                onClick={() => setLocation("/chat")}
+                className="btn-press bg-indigo-600 hover:bg-indigo-700 text-white"
+              >
+                Ask AI Now
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => setLocation("/dashboard")}
+                className="btn-press border-border bg-background/60 backdrop-blur-sm"
+              >
+                View Live Map
+              </Button>
             </div>
           </div>
         </div>
