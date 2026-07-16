@@ -256,7 +256,7 @@ export function MapView({
   return (
     <div className="flex flex-col md:flex-row gap-6 w-full min-h-[500px]">
       {/* Sidebar Controls */}
-      <div className="flex flex-col gap-2 w-full md:w-64 bg-slate-50 p-4 rounded-lg border border-border">
+      <div className="flex flex-col gap-2 w-full md:w-64 bg-muted p-4 rounded-lg border border-border">
         <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider mb-3">Map Controls</h3>
         
         <Button 
@@ -327,7 +327,7 @@ export function MapView({
           <AccessibilityIcon size={16} /> Accessible Routes
         </Button>
 
-        <div className="h-px bg-slate-200 my-2" />
+        <div className="h-px bg-muted my-2" />
         <h4 className="font-semibold text-foreground text-xs uppercase tracking-wider mb-1">Route Wayfinding</h4>
 
         <Button 
@@ -364,7 +364,7 @@ export function MapView({
       </div>
 
       {/* Map Area */}
-      <div className="flex-1 flex flex-col relative bg-slate-100 rounded-lg overflow-hidden border border-border">
+      <div className="flex-1 flex flex-col relative bg-muted rounded-lg overflow-hidden border border-border">
         <div ref={mapContainer} className={cn("w-full h-[500px]", className)} />
         
         {routeInfo && (

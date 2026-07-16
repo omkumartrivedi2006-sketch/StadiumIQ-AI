@@ -98,7 +98,7 @@ export default function ResetPassword() {
                 <KeyRound size={24} />
               </div>
             </div>
-            <CardTitle className="text-3xl font-bold text-slate-900">Reset Password</CardTitle>
+            <CardTitle className="text-3xl font-bold text-foreground">Reset Password</CardTitle>
             <CardDescription className="text-muted-foreground">
               Enter your new secure password
             </CardDescription>
@@ -115,12 +115,12 @@ export default function ResetPassword() {
               <div className="p-3 bg-green-50 text-green-700 text-sm rounded-lg border border-green-200 flex items-center gap-2 flex-col text-center">
                 <CheckCircle2 size={32} className="text-green-600 mb-2" />
                 <span className="font-semibold">Password Reset Successfully!</span>
-                <span className="text-xs text-slate-600 mt-1">Redirecting you to sign in page...</span>
+                <span className="text-xs text-muted-foreground mt-1">Redirecting you to sign in page...</span>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">New Password</label>
+                  <label className="text-sm font-medium text-foreground/90">New Password</label>
                   <Input
                     type="password"
                     placeholder="Min 8 characters, mixed"
@@ -133,7 +133,7 @@ export default function ResetPassword() {
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Confirm New Password</label>
+                  <label className="text-sm font-medium text-foreground/90">Confirm New Password</label>
                   <Input
                     type="password"
                     placeholder="Repeat new password"

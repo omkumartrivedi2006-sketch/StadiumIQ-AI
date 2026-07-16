@@ -50,8 +50,8 @@ class ErrorBoundary extends Component<Props, State> {
             </button>
 
             {this.state.error && (
-              <details className="mt-6 text-left w-full border border-border rounded-lg bg-slate-50 overflow-hidden">
-                <summary className="text-[11px] font-bold text-muted-foreground hover:text-foreground cursor-pointer p-2.5 bg-slate-100 select-none">
+              <details className="mt-6 text-left w-full border border-border rounded-lg bg-muted overflow-hidden">
+                <summary className="text-[11px] font-bold text-muted-foreground hover:text-foreground cursor-pointer p-2.5 bg-muted select-none">
                   Show Technical Stacktrace
                 </summary>
                 <div className="p-3 max-h-40 overflow-y-auto border-t border-border">

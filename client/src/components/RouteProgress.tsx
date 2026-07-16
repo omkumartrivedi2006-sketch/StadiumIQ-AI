@@ -38,7 +38,7 @@ export function RouteProgress() {
       aria-valuenow={progress}
       aria-valuemin={0}
       aria-valuemax={100}
-      className="fixed top-0 left-0 right-0 h-1 z-[9999] bg-slate-100 overflow-hidden"
+      className="fixed top-0 left-0 right-0 h-1 z-[9999] bg-muted overflow-hidden"
     >
       <div
         className="h-full bg-gradient-to-r from-indigo-600 to-cyan-500 transition-all duration-300 ease-out shadow-[0_0_10px_rgba(6,182,212,0.5)]"

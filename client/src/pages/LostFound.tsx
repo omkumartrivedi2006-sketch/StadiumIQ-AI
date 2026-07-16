@@ -65,7 +65,7 @@ export default function LostFound() {
       case "claimed":
         return "bg-blue-100 text-blue-700";
       default:
-        return "bg-slate-100 text-slate-700";
+        return "bg-muted text-foreground/90";
     }
   };
 
@@ -175,7 +175,7 @@ export default function LostFound() {
           {/* Search Bar */}
           <div className="mb-8 animate-slide-in-up">
             <div className="relative">
-              <Search className="absolute left-3 top-3 text-slate-400" size={20} />
+              <Search className="absolute left-3 top-3 text-muted-foreground" size={20} />
               <Input
                 placeholder="Search lost items by description or location..."
                 value={searchTerm}

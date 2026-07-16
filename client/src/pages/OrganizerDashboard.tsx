@@ -118,7 +118,7 @@ export default function OrganizerDashboard() {
           {/* Header */}
           <div className="flex items-center justify-between mb-12 animate-slide-in-down">
             <div>
-              <h1 className="text-4xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+              <h1 className="text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
                 <Calendar className="text-indigo-600" />
                 Organizer Dashboard
               </h1>
@@ -135,22 +135,22 @@ export default function OrganizerDashboard() {
           {/* Global Search Bar */}
           <div className="mb-8 relative">
             <div className="relative">
-              <Search className="absolute left-3 top-3.5 text-slate-400" size={20} />
+              <Search className="absolute left-3 top-3.5 text-muted-foreground" size={20} />
               <Input
                 placeholder="Global search matches, stadiums, tickets, food stalls, transportation..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 py-6 text-base shadow-sm bg-white"
+                className="pl-10 py-6 text-base shadow-sm bg-card"
               />
               {searchLoading && (
-                <Loader2 className="absolute right-3 top-4 animate-spin text-slate-400" size={18} />
+                <Loader2 className="absolute right-3 top-4 animate-spin text-muted-foreground" size={18} />
               )}
             </div>
 
             {/* Search Results Display */}
             {searchResults && searchQuery.trim() && (
               <div className="mt-2 p-6 bg-card rounded-lg border border-border shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
-                <h3 className="font-semibold text-slate-800 text-sm mb-4 border-b pb-2">Search Results</h3>
+                <h3 className="font-semibold text-foreground text-sm mb-4 border-b pb-2">Search Results</h3>
                 
                 {/* Matches */}
                 {searchResults.matches.length > 0 && (
@@ -158,7 +158,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Matches</h4>
                     <div className="space-y-1.5">
                       {searchResults.matches.map((m) => (
-                        <div key={m._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={m._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {m.homeTeam} vs {m.awayTeam} ({m.status}) - {new Date(m.date).toLocaleDateString()}
                         </div>
                       ))}
@@ -172,7 +172,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Stadiums</h4>
                     <div className="space-y-1.5">
                       {searchResults.stadiums.map((s) => (
-                        <div key={s._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={s._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {s.name} in {s.city} (Capacity: {s.capacity})
                         </div>
                       ))}
@@ -186,7 +186,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Food Stalls</h4>
                     <div className="space-y-1.5">
                       {searchResults.foodVendors.map((f) => (
-                        <div key={f._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={f._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {f.name} ({f.category}) at {f.location} - {f.rating}★
                         </div>
                       ))}
@@ -200,7 +200,7 @@ export default function OrganizerDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Transportation</h4>
                     <div className="space-y-1.5">
                       {searchResults.transport.map((t) => (
-                        <div key={t._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={t._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {t.type} ({t.routeName}) to {t.destination} - Status: {t.status}
                         </div>
                       ))}
@@ -210,7 +210,7 @@ export default function OrganizerDashboard() {
 
                 {/* Empty State */}
                 {Object.values(searchResults).every(arr => arr.length === 0) && (
-                  <div className="text-slate-500 text-sm py-4 text-center">No results found matching your search.</div>
+                  <div className="text-muted-foreground text-sm py-4 text-center">No results found matching your search.</div>
                 )}
               </div>
             )}
@@ -220,7 +220,7 @@ export default function OrganizerDashboard() {
             {/* Live Announcements Panel */}
             <div className="lg:col-span-2 space-y-6">
               <div className="card-hover p-6 bg-card rounded-lg border border-border">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
                   <Send size={22} className="text-indigo-600" />
                   Broadcast Live Announcement
                 </h2>
@@ -240,16 +240,16 @@ export default function OrganizerDashboard() {
               </div>
 
               <div className="card-hover p-6 bg-card rounded-lg border border-border">
-                <h3 className="text-xl font-bold text-slate-900 mb-4">Current Active Broadcasts</h3>
+                <h3 className="text-xl font-bold text-foreground mb-4">Current Active Broadcasts</h3>
                 <div className="space-y-3">
                   {announcementsList.map((ann, idx) => (
                     <div key={idx} className="p-4 bg-indigo-50/50 rounded-lg border border-indigo-100 flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-indigo-600 mt-2 flex-shrink-0 animate-pulse-soft" />
-                      <p className="text-slate-800 text-sm">{ann}</p>
+                      <p className="text-foreground text-sm">{ann}</p>
                     </div>
                   ))}
                   {announcementsList.length === 0 && (
-                    <p className="text-sm text-slate-500">No active announcements currently broadcasted.</p>
+                    <p className="text-sm text-muted-foreground">No active announcements currently broadcasted.</p>
                   )}
                 </div>
               </div>
@@ -258,24 +258,24 @@ export default function OrganizerDashboard() {
             {/* Live Stats & Incidents */}
             <div className="space-y-6">
               <div className="card-hover p-6 bg-card rounded-lg border border-border">
-                <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
                   <BarChart3 size={18} className="text-indigo-600" />
                   Live Operational Overview
                 </h3>
                 <div className="space-y-4 text-sm">
-                  <div className="flex justify-between border-b border-slate-100 pb-2">
+                  <div className="flex justify-between border-b border-border pb-2">
                     <span className="text-muted-foreground">Total Volunteers Active</span>
-                    <span className="font-bold text-slate-900">{stats.volunteers}</span>
+                    <span className="font-bold text-foreground">{stats.volunteers}</span>
                   </div>
-                  <div className="flex justify-between border-b border-slate-100 pb-2">
+                  <div className="flex justify-between border-b border-border pb-2">
                     <span className="text-muted-foreground">Active SOS Distress Alerts</span>
                     <span className={`font-bold ${stats.activeSOS > 0 ? "text-red-600" : "text-green-600"}`}>
                       {stats.activeSOS}
                     </span>
                   </div>
-                  <div className="flex justify-between border-b border-slate-100 pb-2">
+                  <div className="flex justify-between border-b border-border pb-2">
                     <span className="text-muted-foreground">Avg. Medical Response Time</span>
-                    <span className="font-bold text-slate-900">{stats.medicalResponse}</span>
+                    <span className="font-bold text-foreground">{stats.medicalResponse}</span>
                   </div>
                 </div>
               </div>

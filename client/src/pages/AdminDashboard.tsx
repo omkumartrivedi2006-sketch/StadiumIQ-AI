@@ -147,7 +147,7 @@ export default function AdminDashboard() {
           {/* Header */}
           <div className="flex items-center justify-between mb-12 animate-slide-in-down">
             <div>
-              <h1 className="text-4xl font-bold text-slate-900 mb-2">
+              <h1 className="text-4xl font-bold text-foreground mb-2">
                 Admin Dashboard
               </h1>
               <p className="text-muted-foreground">
@@ -168,22 +168,22 @@ export default function AdminDashboard() {
           {/* Global Search Bar */}
           <div className="mb-8 relative">
             <div className="relative">
-              <Search className="absolute left-3 top-3.5 text-slate-400" size={20} />
+              <Search className="absolute left-3 top-3.5 text-muted-foreground" size={20} />
               <Input
                 placeholder="Global search matches, stadiums, tickets, food stalls, transportation, users..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 py-6 text-base shadow-sm bg-white"
+                className="pl-10 py-6 text-base shadow-sm bg-card"
               />
               {searchLoading && (
-                <Loader2 className="absolute right-3 top-4 animate-spin text-slate-400" size={18} />
+                <Loader2 className="absolute right-3 top-4 animate-spin text-muted-foreground" size={18} />
               )}
             </div>
 
             {/* Search Results Display */}
             {searchResults && searchQuery.trim() && (
               <div className="mt-2 p-6 bg-card rounded-lg border border-border shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
-                <h3 className="font-semibold text-slate-800 text-sm mb-4 border-b pb-2">Search Results</h3>
+                <h3 className="font-semibold text-foreground text-sm mb-4 border-b pb-2">Search Results</h3>
                 
                 {/* Matches */}
                 {searchResults.matches.length > 0 && (
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Matches</h4>
                     <div className="space-y-1.5">
                       {searchResults.matches.map((m) => (
-                        <div key={m._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={m._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {m.homeTeam} vs {m.awayTeam} ({m.status}) - {new Date(m.date).toLocaleDateString()}
                         </div>
                       ))}
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Stadiums</h4>
                     <div className="space-y-1.5">
                       {searchResults.stadiums.map((s) => (
-                        <div key={s._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={s._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {s.name} in {s.city} (Capacity: {s.capacity})
                         </div>
                       ))}
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Food Stalls</h4>
                     <div className="space-y-1.5">
                       {searchResults.foodVendors.map((f) => (
-                        <div key={f._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={f._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {f.name} ({f.category}) at {f.location} - {f.rating}★
                         </div>
                       ))}
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Transportation</h4>
                     <div className="space-y-1.5">
                       {searchResults.transport.map((t) => (
-                        <div key={t._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                        <div key={t._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                           {t.type} ({t.routeName}) to {t.destination} - Status: {t.status}
                         </div>
                       ))}
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
                     <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Users</h4>
                     <div className="space-y-1.5">
                       {searchResults.users.map((u) => (
-                        <div key={u._id} className="text-sm text-slate-700 bg-muted p-2 rounded flex justify-between">
+                        <div key={u._id} className="text-sm text-foreground/90 bg-muted p-2 rounded flex justify-between">
                           <span>{u.fullName} ({u.email})</span>
                           <span className="text-xs bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-semibold uppercase">{u.role}</span>
                         </div>
@@ -258,7 +258,7 @@ export default function AdminDashboard() {
 
                 {/* Empty State */}
                 {Object.values(searchResults).every(arr => arr.length === 0) && (
-                  <div className="text-slate-500 text-sm py-4 text-center">No results found matching your search.</div>
+                  <div className="text-muted-foreground text-sm py-4 text-center">No results found matching your search.</div>
                 )}
               </div>
             )}
@@ -274,9 +274,9 @@ export default function AdminDashboard() {
                 }}
                 className="card-hover p-6 bg-card rounded-lg border border-border"
               >
-                <p className="text-sm text-slate-600 mb-2">{item.label}</p>
+                <p className="text-sm text-muted-foreground mb-2">{item.label}</p>
                 <div className="flex items-end justify-between">
-                  <h3 className="text-3xl font-bold text-slate-900">
+                  <h3 className="text-3xl font-bold text-foreground">
                     {item.value}
                   </h3>
                   <span className="text-sm text-green-600 font-medium">
@@ -292,7 +292,7 @@ export default function AdminDashboard() {
             {/* Left: Gate Analytics */}
             <div className="lg:col-span-2">
               <div className="card-hover p-6 bg-card rounded-lg border border-border animate-slide-in-up">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
                   <BarChart3 size={24} className="text-indigo-600" />
                   Gate Analytics
                 </h2>
@@ -305,7 +305,7 @@ export default function AdminDashboard() {
                     >
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-3">
-                          <h3 className="font-semibold text-slate-900">
+                          <h3 className="font-semibold text-foreground">
                             {gate.gate}
                           </h3>
                           <StatusBadge
@@ -319,13 +319,13 @@ export default function AdminDashboard() {
                             label={gate.crowd}
                           />
                         </div>
-                        <span className="text-sm font-semibold text-slate-900">
+                        <span className="text-sm font-semibold text-foreground">
                           {gate.visitors.toLocaleString()} visitors
                         </span>
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="w-full bg-slate-200 rounded-full h-2">
+                      <div className="w-full bg-muted rounded-full h-2">
                         <div
                           className={`h-2 rounded-full transition-all ${
                             gate.crowd === "High"
@@ -348,14 +348,14 @@ export default function AdminDashboard() {
             {/* Right: Incidents & Alerts */}
             <div className="animate-slide-in-up">
               <div className="card-hover p-6 bg-card rounded-lg border border-border mb-6">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
                   <AlertTriangle size={24} className="text-red-600" />
                   Incidents
                 </h2>
 
                 <div className="space-y-4">
                   {incidents.length === 0 ? (
-                    <p className="text-sm text-slate-500">No active incidents reported.</p>
+                    <p className="text-sm text-muted-foreground">No active incidents reported.</p>
                   ) : (
                     incidents.map((incident) => (
                       <div
@@ -363,7 +363,7 @@ export default function AdminDashboard() {
                         className="p-4 bg-muted rounded-lg border border-border"
                       >
                         <div className="flex items-start justify-between mb-2">
-                          <h3 className="font-semibold text-slate-900">
+                          <h3 className="font-semibold text-foreground">
                             {incident.type}
                           </h3>
                           <span
@@ -378,10 +378,10 @@ export default function AdminDashboard() {
                             {incident.status}
                           </span>
                         </div>
-                        <p className="text-sm text-slate-600 mb-2">
+                        <p className="text-sm text-muted-foreground mb-2">
                           {incident.location}
                         </p>
-                        <p className="text-xs text-slate-500">{incident.time}</p>
+                        <p className="text-xs text-muted-foreground">{incident.time}</p>
                       </div>
                     ))
                   )}
@@ -389,25 +389,25 @@ export default function AdminDashboard() {
               </div>
 
               <div className="card-hover p-6 bg-gradient-to-br from-indigo-50 to-cyan-50 rounded-lg border border-indigo-200">
-                <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                   <TrendingUp size={20} className="text-indigo-600" />
                   System Status
                 </h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-700">API Health</span>
+                    <span className="text-sm text-foreground/90">API Health</span>
                     <span className="text-sm font-semibold text-green-600">
                       ✓ Healthy
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-700">Database</span>
+                    <span className="text-sm text-foreground/90">Database</span>
                     <span className="text-sm font-semibold text-green-600">
                       ✓ Connected
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-700">AI Service</span>
+                    <span className="text-sm text-foreground/90">AI Service</span>
                     <span className="text-sm font-semibold text-green-600">
                       ✓ Active
                     </span>
@@ -420,7 +420,7 @@ export default function AdminDashboard() {
           {/* Bottom: Announcements */}
           <div className="mt-12 animate-slide-in-up">
             <div className="card-hover p-6 bg-card rounded-lg border border-border">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-6">
                 Live Announcements
               </h2>
               <div className="space-y-4">

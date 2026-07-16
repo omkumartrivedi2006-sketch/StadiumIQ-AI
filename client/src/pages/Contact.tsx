@@ -53,7 +53,7 @@ export default function Contact() {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Header */}
           <div className="mb-10 text-center animate-slide-in-down">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">Contact Us</h1>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Contact Us</h1>
             <p className="text-muted-foreground">
               Have questions or need assistance? Get in touch with the StadiumIQ team
             </p>
@@ -68,9 +68,9 @@ export default function Contact() {
                     <Mail size={20} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">Email</h3>
-                    <p className="text-sm text-slate-600 mt-1">support@stadiumiq.com</p>
-                    <p className="text-sm text-slate-600">info@stadiumiq.com</p>
+                    <h3 className="font-semibold text-foreground">Email</h3>
+                    <p className="text-sm text-muted-foreground mt-1">support@stadiumiq.com</p>
+                    <p className="text-sm text-muted-foreground">info@stadiumiq.com</p>
                   </div>
                 </div>
               </Card>
@@ -81,9 +81,9 @@ export default function Contact() {
                     <Phone size={20} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">Phone</h3>
-                    <p className="text-sm text-slate-600 mt-1">+1 (555) 0100</p>
-                    <p className="text-sm text-slate-600">Available during events</p>
+                    <h3 className="font-semibold text-foreground">Phone</h3>
+                    <p className="text-sm text-muted-foreground mt-1">+1 (555) 0100</p>
+                    <p className="text-sm text-muted-foreground">Available during events</p>
                   </div>
                 </div>
               </Card>
@@ -94,9 +94,9 @@ export default function Contact() {
                     <MapPin size={20} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900">Location</h3>
-                    <p className="text-sm text-slate-600 mt-1">MetLife Stadium</p>
-                    <p className="text-sm text-slate-600">East Rutherford, NJ, USA</p>
+                    <h3 className="font-semibold text-foreground">Location</h3>
+                    <p className="text-sm text-muted-foreground mt-1">MetLife Stadium</p>
+                    <p className="text-sm text-muted-foreground">East Rutherford, NJ, USA</p>
                   </div>
                 </div>
               </Card>
@@ -115,8 +115,8 @@ export default function Contact() {
                       <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto">
                         <CheckCircle2 size={24} />
                       </div>
-                      <h3 className="text-lg font-bold text-slate-900">Inquiry Received!</h3>
-                      <p className="text-sm text-slate-600">
+                      <h3 className="text-lg font-bold text-foreground">Inquiry Received!</h3>
+                      <p className="text-sm text-muted-foreground">
                         Thank you for reaching out. We have logged your request and our support staff will assist you shortly.
                       </p>
                       <Button onClick={() => setSuccess(false)} variant="outline" className="btn-press">
@@ -133,7 +133,7 @@ export default function Contact() {
                       )}
                       <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <label className="text-sm font-medium text-slate-700">Full Name</label>
+                          <label className="text-sm font-medium text-foreground/90">Full Name</label>
                           <Input
                             placeholder="John Doe"
                             value={name}
@@ -144,7 +144,7 @@ export default function Contact() {
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-sm font-medium text-slate-700">Email Address</label>
+                          <label className="text-sm font-medium text-foreground/90">Email Address</label>
                           <Input
                             type="email"
                             placeholder="john@example.com"
@@ -158,7 +158,7 @@ export default function Contact() {
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-sm font-medium text-slate-700">Subject</label>
+                        <label className="text-sm font-medium text-foreground/90">Subject</label>
                         <Input
                           placeholder="How can we help you?"
                           value={subject}
@@ -170,7 +170,7 @@ export default function Contact() {
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-sm font-medium text-slate-700">Message</label>
+                        <label className="text-sm font-medium text-foreground/90">Message</label>
                         <Textarea
                           placeholder="Describe your inquiry in detail..."
                           value={message}

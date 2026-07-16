@@ -155,7 +155,7 @@ export default function VolunteerDashboard() {
           {/* Header */}
           <div className="flex items-center justify-between mb-12 animate-slide-in-down">
             <div>
-              <h1 className="text-4xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+              <h1 className="text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
                 <Heart className="text-indigo-600 animate-pulse-soft" />
                 Volunteer Hub
               </h1>
@@ -173,19 +173,19 @@ export default function VolunteerDashboard() {
             {/* Active Assignments */}
             <div className="md:col-span-2 space-y-6">
               <div className="card-hover p-6 bg-card rounded-lg border border-border">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
                   <AlertCircle size={22} className="text-indigo-600" />
                   Your Assignments
                 </h2>
                 {loading ? (
-                  <p className="text-sm text-slate-500">Loading assignments...</p>
+                  <p className="text-sm text-muted-foreground">Loading assignments...</p>
                 ) : (
                   <div className="space-y-4">
                     {tasks.map((task) => (
                       <div key={task.id} className="p-4 bg-muted rounded-lg border border-border flex items-center justify-between gap-4">
                         <div>
-                          <h3 className="font-semibold text-slate-900 mb-1">{task.title}</h3>
-                          <p className="text-xs text-slate-600">{task.location} • {task.time}</p>
+                          <h3 className="font-semibold text-foreground mb-1">{task.title}</h3>
+                          <p className="text-xs text-muted-foreground">{task.location} • {task.time}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <StatusBadge
@@ -206,7 +206,7 @@ export default function VolunteerDashboard() {
                       </div>
                     ))}
                     {tasks.length === 0 && (
-                      <p className="text-sm text-slate-600">No active assignments at this time.</p>
+                      <p className="text-sm text-muted-foreground">No active assignments at this time.</p>
                     )}
                   </div>
                 )}
@@ -217,19 +217,19 @@ export default function VolunteerDashboard() {
             <div className="space-y-6">
               {/* Crowd Reporting Card */}
               <div className="card-hover p-6 bg-card rounded-lg border border-border">
-                <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
                   <Users size={18} className="text-indigo-600" />
                   Report Crowd Density
                 </h3>
                 <form onSubmit={handleCrowdReport} className="space-y-3">
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-700">Select Stadium</label>
+                    <label className="text-xs font-semibold text-foreground/90">Select Stadium</label>
                     <select
                       value={selectedStadium}
                       onChange={(e) => setSelectedStadium(e.target.value)}
                       required
                       disabled={reporting}
-                      className="w-full px-2 py-1.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
+                      className="w-full px-2 py-1.5 bg-card border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
                     >
                       {stadiums.map((s) => (
                         <option key={s._id} value={s._id}>
@@ -239,13 +239,13 @@ export default function VolunteerDashboard() {
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-700">Select Gate</label>
+                    <label className="text-xs font-semibold text-foreground/90">Select Gate</label>
                     <select
                       value={selectedGate}
                       onChange={(e) => setSelectedGate(e.target.value)}
                       required
                       disabled={reporting}
-                      className="w-full px-2 py-1.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
+                      className="w-full px-2 py-1.5 bg-card border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
                     >
                       <option value="">-- Choose Gate --</option>
                       <option value="Gate 1">Gate 1</option>
@@ -255,13 +255,13 @@ export default function VolunteerDashboard() {
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-700">Crowd Level</label>
+                    <label className="text-xs font-semibold text-foreground/90">Crowd Level</label>
                     <select
                       value={crowdLevel}
                       onChange={(e) => setCrowdLevel(e.target.value)}
                       required
                       disabled={reporting}
-                      className="w-full px-2 py-1.5 bg-white border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
+                      className="w-full px-2 py-1.5 bg-card border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-indigo-600 btn-press"
                     >
                       <option value="Low">Low</option>
                       <option value="Medium">Medium</option>
@@ -269,7 +269,7 @@ export default function VolunteerDashboard() {
                     </select>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-700">Estimated Visitors</label>
+                    <label className="text-xs font-semibold text-foreground/90">Estimated Visitors</label>
                     <Input
                       type="number"
                       min={0}
@@ -288,11 +288,11 @@ export default function VolunteerDashboard() {
               </div>
 
               <div className="card-hover p-6 bg-card rounded-lg border border-border">
-                <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="font-bold text-foreground mb-4 flex items-center gap-2">
                   <Languages size={18} className="text-indigo-600" />
                   Translation Assistant
                 </h3>
-                <p className="text-sm text-slate-600 mb-4">
+                <p className="text-sm text-muted-foreground mb-4">
                   Quickly translate terms or questions for international fans.
                 </p>
                 <Button onClick={() => setLocation("/chat")} className="w-full btn-press bg-indigo-600 hover:bg-indigo-700 text-white">
@@ -301,11 +301,11 @@ export default function VolunteerDashboard() {
               </div>
 
               <div className="card-hover p-6 bg-gradient-to-br from-indigo-50 to-cyan-50 rounded-lg border border-indigo-200">
-                <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                   <MessageSquare size={18} className="text-indigo-600" />
                   Help Channels
                 </h3>
-                <p className="text-sm text-slate-700 mb-4">
+                <p className="text-sm text-foreground/90 mb-4">
                   Connect directly with security, medical, or administrative staff.
                 </p>
                 <Button onClick={() => setLocation("/emergency")} variant="outline" className="w-full btn-press">

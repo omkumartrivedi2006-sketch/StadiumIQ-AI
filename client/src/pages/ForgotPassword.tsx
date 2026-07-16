@@ -52,7 +52,7 @@ export default function ForgotPassword() {
                 <KeyRound size={24} />
               </div>
             </div>
-            <CardTitle className="text-3xl font-bold text-slate-900">Forgot Password</CardTitle>
+            <CardTitle className="text-3xl font-bold text-foreground">Forgot Password</CardTitle>
             <CardDescription className="text-muted-foreground">
               Recover your StadiumIQ AI account password
             </CardDescription>
@@ -82,7 +82,7 @@ export default function ForgotPassword() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Email Address</label>
+                  <label className="text-sm font-medium text-foreground/90">Email Address</label>
                   <Input
                     type="email"
                     placeholder="name@example.com"

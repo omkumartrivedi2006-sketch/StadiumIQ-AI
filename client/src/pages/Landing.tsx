@@ -76,7 +76,7 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-background text-foreground">
       <Navigation />
 
       {/* Hero Section */}
@@ -92,13 +92,13 @@ export default function Landing() {
                   className="inline-block"
                 />
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+              <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
                 Navigate Smarter.{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 dark:from-indigo-400 dark:to-cyan-400">
                   Experience Better.
                 </span>
               </h1>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 StadiumIQ AI is your intelligent stadium assistant. Ask questions, navigate
                 crowds, find food, and get help—all through one powerful AI-powered platform.
               </p>
@@ -114,7 +114,7 @@ export default function Landing() {
                   size="lg"
                   variant="outline"
                   onClick={() => setLocation("/dashboard")}
-                  className="btn-press border-slate-300"
+                  className="btn-press border-border"
                 >
                   View Live Map
                 </Button>
@@ -128,7 +128,7 @@ export default function Landing() {
                 <img
                   src="/hero-stadium.jpg"
                   alt="Stadium AI Assistant"
-                  className="relative rounded-2xl shadow-2xl w-full h-[400px] object-cover border border-slate-100/50"
+                  className="relative rounded-2xl shadow-2xl w-full h-[400px] object-cover border border-border/50"
                 />
               </div>
             </div>
@@ -137,13 +137,13 @@ export default function Landing() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 md:px-0 bg-white">
+      <section id="features" className="py-20 px-4 md:px-0 bg-muted/30 border-y border-border">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-4xl font-bold text-foreground mb-4">
               Powerful Features for Everyone
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               From fans to staff, organizers to volunteers—StadiumIQ AI has tools for
               everyone at the stadium.
             </p>
@@ -169,9 +169,9 @@ export default function Landing() {
       </section>
 
       {/* User Roles Section */}
-      <section className="py-20 px-4 md:px-0 bg-gradient-to-r from-indigo-50 to-cyan-50">
+      <section className="py-20 px-4 md:px-0 bg-gradient-to-r from-indigo-50/50 to-cyan-50/50 dark:from-indigo-950/20 dark:to-cyan-950/20">
         <div className="container mx-auto">
-          <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
+          <h2 className="text-4xl font-bold text-foreground mb-12 text-center">
             Built for Everyone
           </h2>
 
@@ -225,7 +225,7 @@ export default function Landing() {
                   {group.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2" />
-                      <span className="text-sm text-slate-700">{feature}</span>
+                      <span className="text-sm text-foreground">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -236,12 +236,12 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 md:px-0 bg-white">
+      <section className="py-20 px-4 md:px-0 bg-background">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6">
+          <h2 className="text-4xl font-bold text-foreground mb-6">
             Ready to Transform Your Stadium Experience?
           </h2>
-          <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Join the future of stadium management. Experience AI-powered navigation, real-time
             insights, and seamless communication for everyone.
           </p>
@@ -257,7 +257,7 @@ export default function Landing() {
               size="lg"
               variant="outline"
               onClick={() => setLocation("/login")}
-              className="btn-press border-slate-300"
+              className="btn-press border-border"
             >
               Schedule Demo
             </Button>
@@ -270,68 +270,68 @@ export default function Landing() {
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h4 className="font-bold text-slate-900 mb-4">StadiumIQ AI</h4>
-              <p className="text-sm text-slate-600">
+              <h4 className="font-bold text-foreground mb-4">StadiumIQ AI</h4>
+              <p className="text-sm text-muted-foreground">
                 Intelligent stadium assistance for FIFA World Cup 2026.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">Product</h4>
-              <ul className="space-y-2 text-sm text-slate-600">
+              <h4 className="font-semibold text-foreground mb-4">Product</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="#features" className="hover:text-indigo-600">
+                  <a href="#features" className="hover:text-primary transition-colors">
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-indigo-600">
+                  <a href="#" className="hover:text-primary transition-colors">
                     Pricing
                   </a>
                 </li>
                 <li>
-                  <a href="/dashboard" className="hover:text-indigo-600">
+                  <a href="/dashboard" className="hover:text-primary transition-colors">
                     Dashboard
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-slate-600">
+              <h4 className="font-semibold text-foreground mb-4">Company</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="#" className="hover:text-indigo-600">
+                  <a href="#" className="hover:text-primary transition-colors">
                     About
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-indigo-600">
+                  <a href="#" className="hover:text-primary transition-colors">
                     Blog
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-indigo-600">
+                  <a href="#" className="hover:text-primary transition-colors">
                     Contact
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm text-slate-600">
+              <h4 className="font-semibold text-foreground mb-4">Legal</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <a href="#" className="hover:text-indigo-600">
+                  <a href="#" className="hover:text-primary transition-colors">
                     Privacy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-indigo-600">
+                  <a href="#" className="hover:text-primary transition-colors">
                     Terms
                   </a>
                 </li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-border pt-8 text-center text-sm text-slate-600">
+          <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
             <p>&copy; 2026 StadiumIQ AI. All rights reserved.</p>
           </div>
         </div>

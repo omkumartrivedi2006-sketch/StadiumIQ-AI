@@ -140,7 +140,7 @@ export function NotificationCenter() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="relative p-2 rounded-full hover:bg-slate-100 transition-colors btn-press focus:outline-none">
+        <button className="relative p-2 rounded-full hover:bg-muted transition-colors btn-press focus:outline-none">
           <Bell size={20} className="text-foreground" />
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white rounded-full text-[9px] font-bold flex items-center justify-center animate-pulse-soft">
@@ -150,7 +150,7 @@ export function NotificationCenter() {
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0 bg-card border border-border shadow-xl rounded-lg z-50">
-        <div className="p-3 border-b border-slate-100 flex items-center justify-between">
+        <div className="p-3 border-b border-border flex items-center justify-between">
           <span className="font-bold text-sm text-foreground">Notifications</span>
           {unreadCount > 0 && (
             <button
@@ -166,7 +166,7 @@ export function NotificationCenter() {
         <div className="max-h-64 overflow-y-auto divide-y divide-slate-100">
           {notifications.length === 0 ? (
             <div className="p-6">
-              <Empty className="p-4 md:p-6 bg-muted/50 border border-slate-100 rounded-lg">
+              <Empty className="p-4 md:p-6 bg-muted/50 border border-border rounded-lg">
                 <EmptyHeader>
                   <EmptyMedia className="bg-indigo-50 text-indigo-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">
                     <Bell size={14} />
@@ -182,11 +182,11 @@ export function NotificationCenter() {
             notifications.map((notif) => (
               <div
                 key={notif._id}
-                className={`p-3 transition-colors flex gap-3 items-start hover:bg-slate-50 ${
+                className={`p-3 transition-colors flex gap-3 items-start hover:bg-muted ${
                   !notif.readStatus ? "bg-indigo-50/20" : ""
                 }`}
               >
-                <div className="p-1.5 rounded-lg bg-slate-100 mt-0.5 flex-shrink-0">
+                <div className="p-1.5 rounded-lg bg-muted mt-0.5 flex-shrink-0">
                   {getIcon(notif.type)}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -196,7 +196,7 @@ export function NotificationCenter() {
                     }`}>
                       {notif.title}
                     </span>
-                    <span className="text-[10px] text-slate-400 whitespace-nowrap">
+                    <span className="text-[10px] text-muted-foreground whitespace-nowrap">
                       {formatTime(notif.createdAt)}
                     </span>
                   </div>

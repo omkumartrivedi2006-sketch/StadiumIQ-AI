@@ -159,7 +159,7 @@ export default function Register() {
                 <Users size={24} />
               </div>
             </div>
-            <CardTitle className="text-3xl font-bold text-slate-900">Get Started</CardTitle>
+            <CardTitle className="text-3xl font-bold text-foreground">Get Started</CardTitle>
             <CardDescription className="text-muted-foreground">
               Create an account for StadiumIQ AI
             </CardDescription>
@@ -174,7 +174,7 @@ export default function Register() {
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-slate-700">Full Name</label>
+                  <label className="text-sm font-medium text-foreground/90">Full Name</label>
                   <Input
                     type="text"
                     placeholder="John Doe"
@@ -188,7 +188,7 @@ export default function Register() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-slate-700">Email Address</label>
+                  <label className="text-sm font-medium text-foreground/90">Email Address</label>
                   <Input
                     type="email"
                     placeholder="name@example.com"
@@ -205,7 +205,7 @@ export default function Register() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-slate-700">Mobile Phone</label>
+                  <label className="text-sm font-medium text-foreground/90">Mobile Phone</label>
                   <Input
                     type="tel"
                     placeholder="+1555123456"
@@ -218,7 +218,7 @@ export default function Register() {
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-slate-700">Country</label>
+                  <label className="text-sm font-medium text-foreground/90">Country</label>
                   <Input
                     type="text"
                     placeholder="United States"
@@ -233,12 +233,12 @@ export default function Register() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium text-slate-700">Role Profile</label>
+                <label className="text-sm font-medium text-foreground/90">Role Profile</label>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   disabled={loading}
-                  className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                  className="w-full px-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                 >
                   <option value="fan">Fan</option>
                   <option value="volunteer">Volunteer</option>
@@ -249,7 +249,7 @@ export default function Register() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-slate-700">Password</label>
+                  <label className="text-sm font-medium text-foreground/90">Password</label>
                   <Input
                     type="password"
                     placeholder="Min 8 chars, mixed"
@@ -263,12 +263,12 @@ export default function Register() {
                   {passwordStrength.label && (
                     <div className="space-y-1.5 mt-1.5">
                       <div className="flex justify-between items-center text-[10px] font-bold">
-                        <span className="text-slate-500 uppercase">Strength:</span>
+                        <span className="text-muted-foreground uppercase">Strength:</span>
                         <span className={passwordStrength.score >= 5 ? "text-green-600" : passwordStrength.score >= 3 ? "text-amber-500" : "text-red-500"}>
                           {passwordStrength.label}
                         </span>
                       </div>
-                      <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
                         <div
                           className={`h-full ${passwordStrength.color} transition-all duration-300`}
                           style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
@@ -276,10 +276,10 @@ export default function Register() {
                       </div>
                     </div>
                   )}
-                  {passwordError && <p className="text-[10px] text-slate-500 mt-1 leading-normal">{passwordError}</p>}
+                  {passwordError && <p className="text-[10px] text-muted-foreground mt-1 leading-normal">{passwordError}</p>}
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-slate-700">Confirm Password</label>
+                  <label className="text-sm font-medium text-foreground/90">Confirm Password</label>
                   <Input
                     type="password"
                     placeholder="Repeat password"
@@ -301,9 +301,9 @@ export default function Register() {
                   checked={acceptTerms}
                   onChange={(e) => setAcceptTerms(e.target.checked)}
                   disabled={loading}
-                  className="w-4 h-4 mt-0.5 text-indigo-600 border-slate-300 rounded btn-press"
+                  className="w-4 h-4 mt-0.5 text-indigo-600 border-border rounded btn-press"
                 />
-                <label htmlFor="acceptTerms" className="text-xs text-slate-600 leading-tight">
+                <label htmlFor="acceptTerms" className="text-xs text-muted-foreground leading-tight">
                   I accept the Terms of Service and Privacy Policy for FIFA World Cup 2026.
                 </label>
               </div>
@@ -313,7 +313,7 @@ export default function Register() {
                 {loading ? "Creating Account..." : "Create Account"}
               </Button>
 
-              <div className="text-center text-sm text-slate-600 mt-4">
+              <div className="text-center text-sm text-muted-foreground mt-4">
                 Already have an account?{" "}
                 <Link href="/login">
                   <a className="text-indigo-600 font-semibold hover:underline">Sign In</a>

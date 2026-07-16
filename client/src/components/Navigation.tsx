@@ -70,13 +70,20 @@ export function Navigation() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
-            <Link key={item.href} href={getHref(item.href)}>
-              <a className="text-sm font-medium text-foreground/80 hover:text-indigo-600 transition-colors">
-                {item.label}
-              </a>
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+            return (
+              <Link key={item.href} href={getHref(item.href)}>
+                <a className={`text-sm font-medium transition-colors ${
+                  isActive
+                    ? "text-indigo-600 dark:text-indigo-400 font-semibold"
+                    : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
+                }`}>
+                  {item.label}
+                </a>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Desktop CTA */}
@@ -158,16 +165,23 @@ export function Navigation() {
       {isOpen && (
         <div className="md:hidden border-t border-border bg-background animate-slide-in-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
-            {navItems.map((item) => (
-              <Link key={item.href} href={getHref(item.href)}>
-                <a
-                  className="text-sm font-medium text-foreground/80 hover:text-indigo-600 transition-colors py-2 border-b border-border"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.label}
-                </a>
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+              return (
+                <Link key={item.href} href={getHref(item.href)}>
+                  <a
+                    className={`text-sm font-medium transition-colors py-2 border-b border-border ${
+                      isActive
+                        ? "text-indigo-600 dark:text-indigo-400 font-semibold"
+                        : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                </Link>
+              );
+            })}
             <div className="flex flex-col gap-2 pt-2">
               <Button
                 variant="outline"

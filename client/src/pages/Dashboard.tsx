@@ -322,7 +322,7 @@ export default function Dashboard() {
           <div className="mb-12 animate-slide-in-down">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-4xl font-bold text-slate-900 mb-2">
+                <h1 className="text-4xl font-bold text-foreground mb-2">
                   Welcome, {user?.fullName || "Fan"}
                 </h1>
                 <p className="text-muted-foreground">
@@ -343,25 +343,25 @@ export default function Dashboard() {
             {/* Global Search Bar */}
             <div className="mb-8 relative" onMouseLeave={() => setShowSuggestions(false)}>
               <div className="relative">
-                <Search className="absolute left-3 top-3.5 text-slate-400" size={20} />
+                <Search className="absolute left-3 top-3.5 text-muted-foreground" size={20} />
                 <Input
                   placeholder="Global search matches, stadiums, tickets, food stalls, transportation..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSuggestions(true)}
-                  className="pl-10 pr-10 py-6 text-base shadow-sm bg-white"
+                  className="pl-10 pr-10 py-6 text-base shadow-sm bg-card"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-10 top-4 text-slate-400 hover:text-slate-600 btn-press"
+                    className="absolute right-10 top-4 text-muted-foreground hover:text-foreground btn-press"
                     title="Clear search"
                   >
                     <X size={18} />
                   </button>
                 )}
                 {searchLoading && (
-                  <Loader2 className="absolute right-3 top-4 animate-spin text-slate-400" size={18} />
+                  <Loader2 className="absolute right-3 top-4 animate-spin text-muted-foreground" size={18} />
                 )}
               </div>
 
@@ -369,11 +369,11 @@ export default function Dashboard() {
               {showSuggestions && (
                 <div className="absolute left-0 right-0 z-20 mt-1 bg-card rounded-lg border border-border shadow-lg p-4 animate-scale-in">
                   <div className="flex items-center justify-between border-b pb-2 mb-3">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Search Assistant</span>
+                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Search Assistant</span>
                     <button
                       type="button"
                       onClick={() => setShowSuggestions(false)}
-                      className="text-xs text-slate-500 hover:text-slate-700 font-semibold"
+                      className="text-xs text-muted-foreground hover:text-foreground/90 font-semibold"
                     >
                       Close
                     </button>
@@ -382,7 +382,7 @@ export default function Dashboard() {
                     {/* Recent Searches */}
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <h4 className="text-xs font-bold text-slate-700">Recent Searches</h4>
+                        <h4 className="text-xs font-bold text-foreground/90">Recent Searches</h4>
                         {recentSearches.length > 0 && (
                           <button
                             type="button"
@@ -394,7 +394,7 @@ export default function Dashboard() {
                         )}
                       </div>
                       {recentSearches.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic">No recent searches</p>
+                        <p className="text-xs text-muted-foreground italic">No recent searches</p>
                       ) : (
                         <div className="flex flex-wrap gap-1.5">
                           {recentSearches.map((s, idx) => (
@@ -405,7 +405,7 @@ export default function Dashboard() {
                                 setSearchQuery(s);
                                 setShowSuggestions(false);
                               }}
-                              className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded btn-press"
+                              className="text-xs bg-muted hover:bg-muted text-foreground/90 px-2 py-1 rounded btn-press"
                             >
                               {s}
                             </button>
@@ -416,7 +416,7 @@ export default function Dashboard() {
 
                     {/* Suggestions */}
                     <div>
-                      <h4 className="text-xs font-bold text-slate-700 mb-2">Suggested Stadium Queries</h4>
+                      <h4 className="text-xs font-bold text-foreground/90 mb-2">Suggested Stadium Queries</h4>
                       <div className="flex flex-wrap gap-1.5">
                         {["Gate 1", "Matches", "Food queue times", "Transport route", "SOS"].map((s, idx) => (
                           <button
@@ -440,7 +440,7 @@ export default function Dashboard() {
               {/* Search Results Display */}
               {searchResults && searchQuery.trim() && (
                 <div className="mt-2 p-6 bg-card rounded-lg border border-border shadow-lg absolute left-0 right-0 z-10 max-h-[400px] overflow-y-auto">
-                  <h3 className="font-semibold text-slate-800 text-sm mb-4 border-b pb-2">Search Results</h3>
+                  <h3 className="font-semibold text-foreground text-sm mb-4 border-b pb-2">Search Results</h3>
                   
                   {/* Matches */}
                   {searchResults.matches.length > 0 && (
@@ -448,7 +448,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Matches</h4>
                       <div className="space-y-1.5">
                         {searchResults.matches.map((m) => (
-                          <div key={m._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                          <div key={m._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                             {highlightText(`${m.homeTeam} vs ${m.awayTeam}`, searchQuery)} ({m.status}) - {new Date(m.date).toLocaleDateString()}
                           </div>
                         ))}
@@ -462,7 +462,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Stadiums</h4>
                       <div className="space-y-1.5">
                         {searchResults.stadiums.map((s) => (
-                          <div key={s._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                          <div key={s._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                             {highlightText(s.name, searchQuery)} in {highlightText(s.city, searchQuery)} (Capacity: {s.capacity})
                           </div>
                         ))}
@@ -476,7 +476,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Food Stalls</h4>
                       <div className="space-y-1.5">
                         {searchResults.foodVendors.map((f) => (
-                          <div key={f._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                          <div key={f._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                             {highlightText(f.name, searchQuery)} ({highlightText(f.category, searchQuery)}) at {f.location} - {f.rating}★
                           </div>
                         ))}
@@ -490,7 +490,7 @@ export default function Dashboard() {
                       <h4 className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Transportation</h4>
                       <div className="space-y-1.5">
                         {searchResults.transport.map((t) => (
-                          <div key={t._id} className="text-sm text-slate-700 bg-muted p-2 rounded">
+                          <div key={t._id} className="text-sm text-foreground/90 bg-muted p-2 rounded">
                             {highlightText(t.type, searchQuery)} ({highlightText(t.routeName, searchQuery)}) to {highlightText(t.destination, searchQuery)} - Status: {t.status}
                           </div>
                         ))}
@@ -500,7 +500,7 @@ export default function Dashboard() {
 
                   {/* Empty State */}
                   {Object.values(searchResults).every(arr => arr.length === 0) && (
-                    <div className="text-slate-500 text-sm py-4 text-center">No results found matching your search.</div>
+                    <div className="text-muted-foreground text-sm py-4 text-center">No results found matching your search.</div>
                   )}
                 </div>
               )}
@@ -513,7 +513,7 @@ export default function Dashboard() {
                   key={idx}
                   className="card-hover p-4 bg-card rounded-lg border border-border"
                 >
-                  <p className="text-sm text-slate-600 mb-2">{item.gate}</p>
+                  <p className="text-sm text-muted-foreground mb-2">{item.gate}</p>
                   <StatusBadge
                     status={
                       item.status === "live"
@@ -533,7 +533,7 @@ export default function Dashboard() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Left: Quick Actions */}
             <div className="md:col-span-2">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-6">
                 Quick Access
               </h2>
               <div className="grid md:grid-cols-2 gap-4">
@@ -548,7 +548,7 @@ export default function Dashboard() {
                     >
                       <button
                         onClick={() => handleActionClick(item.id)}
-                        className={`card-hover w-full p-6 bg-white rounded-lg border text-left transition-colors ${
+                        className={`card-hover w-full p-6 bg-card rounded-lg border text-left transition-colors ${
                           activeSection === item.id ? "border-indigo-500 bg-indigo-50/10" : "border-border hover:border-indigo-300"
                         }`}
                       >
@@ -557,10 +557,10 @@ export default function Dashboard() {
                         >
                           <Icon size={24} />
                         </div>
-                        <h3 className="font-semibold text-slate-900 mb-1">
+                        <h3 className="font-semibold text-foreground mb-1">
                           {item.title}
                         </h3>
-                        <p className="text-sm text-slate-600">
+                        <p className="text-sm text-muted-foreground">
                           {item.description}
                         </p>
                       </button>
@@ -573,32 +573,32 @@ export default function Dashboard() {
             {/* Right: Sidebar */}
             <div>
               <div className="card-hover p-6 bg-card rounded-lg border border-border mb-6 animate-slide-in-up">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-foreground mb-4">
                   Your Profile
                 </h3>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 border-b border-slate-100 pb-3">
+                  <div className="flex items-center gap-3 border-b border-border pb-3">
                     <img
                       src={user?.profileImage || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop"}
                       alt="Avatar"
                       className="w-10 h-10 rounded-full border border-border object-cover"
                     />
                     <div>
-                      <p className="text-slate-900 font-bold text-sm">{user?.fullName || "John Doe"}</p>
-                      <p className="text-xs text-slate-500 font-semibold uppercase">{user?.role || "Fan"}</p>
+                      <p className="text-foreground font-bold text-sm">{user?.fullName || "John Doe"}</p>
+                      <p className="text-xs text-muted-foreground font-semibold uppercase">{user?.role || "Fan"}</p>
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-600 uppercase tracking-wide">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
                       Email
                     </p>
-                    <p className="text-slate-900 font-medium">{user?.email || "john.doe@fifa.com"}</p>
+                    <p className="text-foreground font-medium">{user?.email || "john.doe@fifa.com"}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-600 uppercase tracking-wide">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
                       Language
                     </p>
-                    <p className="text-slate-900 font-medium">
+                    <p className="text-foreground font-medium">
                       {user?.language === "en" ? "English" : user?.language === "es" ? "Spanish" : user?.language || "English"}
                     </p>
                   </div>
@@ -606,10 +606,10 @@ export default function Dashboard() {
               </div>
 
               <div className="card-hover p-6 bg-gradient-to-br from-indigo-50 to-cyan-50 rounded-lg border border-indigo-200 animate-slide-in-up">
-                <h3 className="font-semibold text-slate-900 mb-3">
+                <h3 className="font-semibold text-foreground mb-3">
                   Pro Tip
                 </h3>
-                <p className="text-sm text-slate-700 mb-4">
+                <p className="text-sm text-foreground/90 mb-4">
                   Use the AI Assistant to ask about crowd levels and find the
                   best entry gate.
                 </p>
@@ -628,12 +628,12 @@ export default function Dashboard() {
           <div id="content-section" className="mt-12 animate-fade-in">
             {activeSection === "overview" && (
               <div className="card-hover p-8 bg-card rounded-lg border border-border">
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                <h2 className="text-2xl font-bold text-foreground mb-4">
                   Stadium Overview
                 </h2>
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <h3 className="font-semibold text-slate-900 mb-4">
+                    <h3 className="font-semibold text-foreground mb-4">
                       Today's Match
                     </h3>
                     <div className="space-y-3">
@@ -646,14 +646,14 @@ export default function Dashboard() {
                         <span className="font-semibold">{match?.awayTeam || "Team B"}</span>
                       </div>
                       <div className="border-t border-border pt-3">
-                        <p className="text-sm text-slate-600">
+                        <p className="text-sm text-muted-foreground">
                           Kickoff: {match?.kickoffTime || "8:00 PM"} • Stadium: {match?.stadiumId?.name || "MetLife Stadium"}
                         </p>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-slate-900 mb-4">
+                    <h3 className="font-semibold text-foreground mb-4">
                       Quick Stats
                     </h3>
                     <div className="space-y-3">
@@ -681,7 +681,7 @@ export default function Dashboard() {
 
             {activeSection === "map" && (
               <div className="card-hover p-8 bg-card rounded-lg border border-border">
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">
+                <h2 className="text-2xl font-bold text-foreground mb-4">
                   Live Stadium Map
                 </h2>
                 <MapView />
@@ -693,7 +693,7 @@ export default function Dashboard() {
               <div className="space-y-6">
                 {/* Tickets list */}
                 <div className="card-hover p-6 bg-card rounded-lg border border-border">
-                  <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                  <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
                     <TicketIcon size={24} className="text-indigo-600" />
                     My Booked Tickets
                   </h2>
@@ -724,8 +724,8 @@ export default function Dashboard() {
                           <EmptyMedia className="bg-indigo-50 text-indigo-600 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <TicketIcon size={18} />
                           </EmptyMedia>
-                          <EmptyTitle className="text-sm font-bold text-slate-800">No Tickets Booked</EmptyTitle>
-                          <EmptyDescription className="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
+                          <EmptyTitle className="text-sm font-bold text-foreground">No Tickets Booked</EmptyTitle>
+                          <EmptyDescription className="text-xs text-muted-foreground max-w-xs mx-auto mt-1 leading-normal">
                             Browse upcoming FIFA World Cup 2026 matches below to book your seat!
                           </EmptyDescription>
                         </EmptyHeader>
@@ -734,38 +734,38 @@ export default function Dashboard() {
                   ) : (
                     <div className="grid md:grid-cols-2 gap-4">
                       {tickets.map((t) => (
-                        <div key={t._id} className="p-4 bg-slate-50 border border-border rounded-lg flex flex-col justify-between hover:border-indigo-300 transition-colors">
-                          <div className="border-b border-dashed border-slate-300 pb-3 mb-3">
+                        <div key={t._id} className="p-4 bg-muted border border-border rounded-lg flex flex-col justify-between hover:border-indigo-300 transition-colors">
+                          <div className="border-b border-dashed border-border pb-3 mb-3">
                             <div className="flex justify-between items-start mb-2">
                               <span className="text-xs font-semibold px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-full">
                                 {t.status.toUpperCase()}
                               </span>
-                              <span className="text-[10px] text-slate-400">
+                              <span className="text-[10px] text-muted-foreground">
                                 Booked {new Date(t.purchaseDate).toLocaleDateString()}
                               </span>
                             </div>
-                            <h3 className="font-bold text-slate-900 text-base">
+                            <h3 className="font-bold text-foreground text-base">
                               {t.matchId?.homeTeam} vs {t.matchId?.awayTeam}
                             </h3>
-                            <p className="text-xs text-slate-600 mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               Kickoff: {t.matchId?.kickoffTime} • {new Date(t.matchId?.date).toLocaleDateString()}
                             </p>
-                            <p className="text-xs text-slate-500">
+                            <p className="text-xs text-muted-foreground">
                               {t.matchId?.stadiumId?.name}
                             </p>
                           </div>
                           <div className="flex items-center justify-between">
                             <div className="space-y-1">
-                              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Seat Details</p>
-                              <p className="text-sm font-bold text-slate-900">{t.seatNumber}</p>
-                              <p className="text-xs text-slate-600">Entrance: {t.gate}</p>
+                              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Seat Details</p>
+                              <p className="text-sm font-bold text-foreground">{t.seatNumber}</p>
+                              <p className="text-xs text-muted-foreground">Entrance: {t.gate}</p>
                             </div>
                             {/* Barcode/QR Code Sim */}
-                            <div className="flex flex-col items-center gap-1.5 p-1 bg-white border border-border rounded">
+                            <div className="flex flex-col items-center gap-1.5 p-1 bg-card border border-border rounded">
                               <div className="h-10 w-24 bg-slate-900 flex items-center justify-center text-[8px] text-white tracking-widest font-mono select-none">
                                 ||||||||||||||
                               </div>
-                              <span className="text-[8px] text-slate-400 font-mono">{t.QRCode?.split("-")?.[3] || "QR"}</span>
+                              <span className="text-[8px] text-muted-foreground font-mono">{t.QRCode?.split("-")?.[3] || "QR"}</span>
                             </div>
                           </div>
                           <div className="mt-4 pt-3 border-t border-border flex justify-end">
@@ -787,12 +787,12 @@ export default function Dashboard() {
                 {/* Available Matches to book */}
                 <div className="card-hover p-6 bg-card rounded-lg border border-border">
                   <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-                    <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
                       <Calendar size={24} className="text-indigo-600" />
                       Browse Scheduled Matches
                     </h2>
                     <div className="relative w-64">
-                      <Search className="absolute left-2.5 top-2.5 text-slate-400" size={16} />
+                      <Search className="absolute left-2.5 top-2.5 text-muted-foreground" size={16} />
                       <Input
                         placeholder="Search team or stadium..."
                         value={matchSearch}
@@ -822,11 +822,11 @@ export default function Dashboard() {
                     <div className="py-8">
                       <Empty className="bg-muted/50 border-dashed border-border">
                         <EmptyHeader>
-                          <EmptyMedia className="bg-slate-100 text-slate-500 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
+                          <EmptyMedia className="bg-muted text-muted-foreground rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
                             <Calendar size={18} />
                           </EmptyMedia>
-                          <EmptyTitle className="text-sm font-bold text-slate-800">No Matches Found</EmptyTitle>
-                          <EmptyDescription className="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
+                          <EmptyTitle className="text-sm font-bold text-foreground">No Matches Found</EmptyTitle>
+                          <EmptyDescription className="text-xs text-muted-foreground max-w-xs mx-auto mt-1 leading-normal">
                             We couldn't find any matches matching your query. Try another team name or stadium!
                           </EmptyDescription>
                         </EmptyHeader>
@@ -835,15 +835,15 @@ export default function Dashboard() {
                   ) : (
                     <div className="space-y-4">
                       {filteredMatches.map((m) => (
-                        <div key={m._id} className="p-4 bg-slate-50 border border-border rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div key={m._id} className="p-4 bg-muted border border-border rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
                           <div>
-                            <h3 className="font-bold text-slate-900 text-base">
+                            <h3 className="font-bold text-foreground text-base">
                               {m.homeTeam} vs {m.awayTeam}
                             </h3>
-                            <p className="text-xs text-slate-600 mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               Date: {new Date(m.date).toLocaleDateString()} • Kickoff: {m.kickoffTime}
                             </p>
-                            <p className="text-xs text-slate-500">
+                            <p className="text-xs text-muted-foreground">
                               Stadium: {m.stadiumId?.name} ({m.stadiumId?.city})
                             </p>
                           </div>
@@ -872,16 +872,16 @@ export default function Dashboard() {
 
                 {/* Booking dialog */}
                 <Dialog open={bookingOpen} onOpenChange={setBookingOpen}>
-                  <DialogContent className="sm:max-w-md bg-white border border-border shadow-xl rounded-lg">
+                  <DialogContent className="sm:max-w-md bg-card border border-border shadow-xl rounded-lg">
                     <DialogHeader>
                       <DialogTitle className="text-lg font-bold">Book Match Ticket</DialogTitle>
-                      <DialogDescription className="text-xs text-slate-500">
+                      <DialogDescription className="text-xs text-muted-foreground">
                         Select seat details for {selectedMatch?.homeTeam} vs {selectedMatch?.awayTeam}
                       </DialogDescription>
                     </DialogHeader>
                     <form onSubmit={handleBookTicket} className="space-y-4 pt-2">
                       <div className="space-y-1">
-                        <label className="text-xs font-semibold text-slate-700">Seat Designation</label>
+                        <label className="text-xs font-semibold text-foreground/90">Seat Designation</label>
                         <Input
                           placeholder="e.g. Section B, Row 12, Seat 4"
                           value={seatNumber}
@@ -892,13 +892,13 @@ export default function Dashboard() {
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-xs font-semibold text-slate-700">Preferred Entry Gate</label>
+                        <label className="text-xs font-semibold text-foreground/90">Preferred Entry Gate</label>
                         <select
                           value={gateNumber}
                           onChange={(e) => setGateNumber(e.target.value)}
                           required
                           disabled={bookingSubmit}
-                          className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                          className="w-full px-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                         >
                           <option value="">Select a Gate</option>
                           {(selectedMatch?.stadiumId?.gates || ["Gate 1", "Gate 2", "Gate 3", "Gate 4"]).map((gate: string) => (
@@ -908,7 +908,7 @@ export default function Dashboard() {
                           ))}
                         </select>
                       </div>
-                      <div className="flex justify-end gap-2 pt-3 border-t border-slate-100">
+                      <div className="flex justify-end gap-2 pt-3 border-t border-border">
                         <Button
                           type="button"
                           variant="outline"

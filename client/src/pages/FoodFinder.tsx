@@ -82,7 +82,7 @@ export default function FoodFinder() {
           {/* Search Bar */}
           <div className="mb-8 animate-slide-in-up">
             <div className="relative">
-              <Search className="absolute left-3 top-3 text-slate-400" size={20} />
+              <Search className="absolute left-3 top-3 text-muted-foreground" size={20} />
               <Input
                 placeholder="Search by name or category..."
                 value={searchTerm}

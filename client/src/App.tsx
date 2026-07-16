@@ -47,7 +47,7 @@ function LoadingFallback() {
         <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-xl font-extrabold animate-bounce shadow-lg shadow-indigo-200">
           SQ
         </div>
-        <div className="text-slate-500 font-semibold text-sm tracking-wide uppercase animate-pulse-soft animate-duration-1000">
+        <div className="text-muted-foreground font-semibold text-sm tracking-wide uppercase animate-pulse-soft animate-duration-1000">
           StadiumIQ Loading...
         </div>
       </div>

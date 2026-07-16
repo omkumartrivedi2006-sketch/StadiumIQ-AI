@@ -191,7 +191,7 @@ export default function Settings() {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Header */}
           <div className="mb-10 animate-slide-in-down">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <h1 className="text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
               <SettingsIcon className="text-indigo-600 animate-spin-slow" />
               Settings
             </h1>
@@ -226,15 +226,15 @@ export default function Settings() {
                 </CardHeader>
                 <CardContent className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-sm font-medium text-slate-700">Full Name</label>
+                    <label className="text-sm font-medium text-foreground/90">Full Name</label>
                     <Input value={fullName} onChange={(e) => setFullName(e.target.value)} required disabled={saving} className="btn-press" />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-sm font-medium text-slate-700">Mobile Phone</label>
+                    <label className="text-sm font-medium text-foreground/90">Mobile Phone</label>
                     <Input value={phone} onChange={(e) => setPhone(e.target.value)} required disabled={saving} type="tel" className="btn-press" />
                   </div>
                   <div className="space-y-1 md:col-span-2">
-                    <label className="text-sm font-medium text-slate-700">Country</label>
+                    <label className="text-sm font-medium text-foreground/90">Country</label>
                     <Input value={country} onChange={(e) => setCountry(e.target.value)} required disabled={saving} className="btn-press" />
                   </div>
                 </CardContent>
@@ -257,7 +257,7 @@ export default function Settings() {
                       className="w-16 h-16 rounded-full object-cover border border-border flex-shrink-0"
                     />
                     <div className="flex-grow space-y-1">
-                      <label className="text-sm font-medium text-slate-700">Avatar URL</label>
+                      <label className="text-sm font-medium text-foreground/90">Avatar URL</label>
                       <Input
                         placeholder="https://example.com/avatar.jpg"
                         value={profileImage}
@@ -286,7 +286,7 @@ export default function Settings() {
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
                       disabled={saving}
-                      className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                      className="w-full px-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                     >
                       {SUPPORTED_LANGUAGES.map((lang) => (
                         <option key={lang.code} value={lang.code}>
@@ -312,7 +312,7 @@ export default function Settings() {
                       onClick={toggleTheme}
                       variant="outline"
                       disabled={saving}
-                      className="w-full btn-press flex items-center justify-center gap-2 border-slate-300"
+                      className="w-full btn-press flex items-center justify-center gap-2 border-border"
                     >
                       {theme === "dark" ? (
                         <>
@@ -340,8 +340,8 @@ export default function Settings() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-sm font-semibold text-slate-800 block">Export Personal Data</span>
-                      <span className="text-xs text-slate-500">Download a JSON archive of your match tickets and chat history</span>
+                      <span className="text-sm font-semibold text-foreground block">Export Personal Data</span>
+                      <span className="text-xs text-muted-foreground">Download a JSON archive of your match tickets and chat history</span>
                     </div>
                     <Button
                       type="button"
@@ -355,10 +355,10 @@ export default function Settings() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-sm font-semibold text-slate-800 block">Search Visibility</span>
-                      <span className="text-xs text-slate-500">Allow search crawlers and other volunteers to locate your profile</span>
+                      <span className="text-sm font-semibold text-foreground block">Search Visibility</span>
+                      <span className="text-xs text-muted-foreground">Allow search crawlers and other volunteers to locate your profile</span>
                     </div>
-                    <input type="checkbox" defaultChecked className="w-4 h-4 text-indigo-600 border-slate-300 rounded btn-press focus:ring-indigo-600" />
+                    <input type="checkbox" defaultChecked className="w-4 h-4 text-indigo-600 border-border rounded btn-press focus:ring-indigo-600" />
                   </div>
                 </CardContent>
               </Card>
@@ -375,17 +375,17 @@ export default function Settings() {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-sm font-semibold text-slate-800 block">Emergency Alerts</span>
-                      <span className="text-xs text-slate-500">Receive immediate notifications during critical incidents</span>
+                      <span className="text-sm font-semibold text-foreground block">Emergency Alerts</span>
+                      <span className="text-xs text-muted-foreground">Receive immediate notifications during critical incidents</span>
                     </div>
-                    <input type="checkbox" defaultChecked disabled className="w-4 h-4 text-indigo-600 border-slate-300 rounded" />
+                    <input type="checkbox" defaultChecked disabled className="w-4 h-4 text-indigo-600 border-border rounded" />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-sm font-semibold text-slate-800 block">Food Queue Status</span>
-                      <span className="text-xs text-slate-500">Alert me when my food order is ready or crowd levels drop</span>
+                      <span className="text-sm font-semibold text-foreground block">Food Queue Status</span>
+                      <span className="text-xs text-muted-foreground">Alert me when my food order is ready or crowd levels drop</span>
                     </div>
-                    <input type="checkbox" defaultChecked disabled={saving} className="w-4 h-4 text-indigo-600 border-slate-300 rounded btn-press" />
+                    <input type="checkbox" defaultChecked disabled={saving} className="w-4 h-4 text-indigo-600 border-border rounded btn-press" />
                   </div>
                 </CardContent>
               </Card>
@@ -423,7 +423,7 @@ export default function Settings() {
                   )}
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">Current Password</label>
+                      <label className="text-sm font-medium text-foreground/90">Current Password</label>
                       <Input
                         type="password"
                         value={currentPassword}
@@ -435,7 +435,7 @@ export default function Settings() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">New Password</label>
+                      <label className="text-sm font-medium text-foreground/90">New Password</label>
                       <Input
                         type="password"
                         value={newPassword}
@@ -448,12 +448,12 @@ export default function Settings() {
                       {passwordStrength.label && (
                         <div className="space-y-1 mt-1.5">
                           <div className="flex justify-between items-center text-[10px] font-bold">
-                            <span className="text-slate-500 uppercase">Strength:</span>
+                            <span className="text-muted-foreground uppercase">Strength:</span>
                             <span className={passwordStrength.score >= 5 ? "text-green-600" : passwordStrength.score >= 3 ? "text-amber-500" : "text-red-500"}>
                               {passwordStrength.label}
                             </span>
                           </div>
-                          <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
                             <div
                               className={`h-full ${passwordStrength.color} transition-all duration-300`}
                               style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
@@ -461,10 +461,10 @@ export default function Settings() {
                           </div>
                         </div>
                       )}
-                      {passwordErrorMsg && <p className="text-[10px] text-slate-500 mt-1 leading-normal">{passwordErrorMsg}</p>}
+                      {passwordErrorMsg && <p className="text-[10px] text-muted-foreground mt-1 leading-normal">{passwordErrorMsg}</p>}
                     </div>
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">Confirm New Password</label>
+                      <label className="text-sm font-medium text-foreground/90">Confirm New Password</label>
                       <Input
                         type="password"
                         value={confirmNewPassword}
@@ -502,8 +502,8 @@ export default function Settings() {
               </CardHeader>
               <CardContent className="flex justify-between items-center">
                 <div>
-                  <p className="text-sm font-semibold text-slate-800">Delete Account</p>
-                  <p className="text-xs text-slate-500">Soft delete your StadiumIQ account. Your records will be preserved safely.</p>
+                  <p className="text-sm font-semibold text-foreground">Delete Account</p>
+                  <p className="text-xs text-muted-foreground">Soft delete your StadiumIQ account. Your records will be preserved safely.</p>
                 </div>
                 <Button 
                   onClick={handleDeleteAccount}

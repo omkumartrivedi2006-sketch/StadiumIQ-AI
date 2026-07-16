@@ -118,7 +118,7 @@ export default function Accessibility() {
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="mb-12 animate-slide-in-down">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">
+            <h1 className="text-4xl font-bold text-foreground mb-2">
               Accessibility Services
             </h1>
             <p className="text-muted-foreground">
@@ -127,10 +127,10 @@ export default function Accessibility() {
           </div>
 
           {/* AI Accessibility Assistant Card */}
-          <div className="mb-8 animate-slide-in-up p-6 bg-white rounded-lg border border-indigo-200 bg-gradient-to-r from-indigo-50/50 to-cyan-50/50">
+          <div className="mb-8 animate-slide-in-up p-6 bg-card rounded-lg border border-indigo-200 dark:border-indigo-800">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="text-indigo-600 animate-pulse" size={20} />
-              <h2 className="text-lg font-semibold text-slate-900">AI Accessibility Assistant</h2>
+              <h2 className="text-lg font-semibold text-foreground">AI Accessibility Assistant</h2>
             </div>
             <div className="flex gap-2 mb-3">
               <Input
@@ -152,7 +152,7 @@ export default function Accessibility() {
               </Button>
             </div>
             {aiReply && (
-              <div className="mt-4 p-4 bg-card rounded-lg border border-border text-sm text-slate-700 leading-relaxed shadow-sm">
+              <div className="mt-4 p-4 bg-card rounded-lg border border-border text-sm text-foreground/90 leading-relaxed shadow-sm">
                 <span className="font-semibold text-indigo-600 block mb-1">AI Recommendation:</span>
                 {aiReply}
               </div>
@@ -172,15 +172,15 @@ export default function Accessibility() {
                 <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mb-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-slate-600 mb-4">{feature.description}</p>
+                <p className="text-sm text-muted-foreground mb-4">{feature.description}</p>
                 <ul className="space-y-2">
                   {feature.details.map((detail, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 mt-1.5 flex-shrink-0" />
-                      <span className="text-sm text-slate-700">{detail}</span>
+                      <span className="text-sm text-foreground/90">{detail}</span>
                     </li>
                   ))}
                 </ul>
@@ -190,16 +190,16 @@ export default function Accessibility() {
 
           {/* Request Assistance */}
           <div className="animate-slide-in-up p-8 bg-card rounded-lg border border-border mb-12">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">
+            <h2 className="text-2xl font-bold text-foreground mb-6">
               Request Assistance
             </h2>
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-foreground mb-4">
                   Before Your Visit
                 </h3>
-                <p className="text-slate-700 mb-4">
+                <p className="text-foreground/90 mb-4">
                   Contact us in advance to arrange accommodations and services tailored to
                   your needs.
                 </p>
@@ -208,10 +208,10 @@ export default function Accessibility() {
                 </Button>
               </div>
               <div>
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-foreground mb-4">
                   During Your Visit
                 </h3>
-                <p className="text-slate-700 mb-4">
+                <p className="text-foreground/90 mb-4">
                   Our accessibility team is available throughout the stadium to provide
                   real-time assistance.
                 </p>
@@ -224,35 +224,35 @@ export default function Accessibility() {
 
           {/* Accessibility Contact */}
           <div className="animate-slide-in-up p-8 bg-gradient-to-r from-indigo-50 to-cyan-50 rounded-lg border border-indigo-200">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">
+            <h2 className="text-2xl font-bold text-foreground mb-6">
               Accessibility Support
             </h2>
 
             <div className="grid md:grid-cols-3 gap-6">
               <div>
-                <p className="text-sm text-slate-600 mb-2 uppercase tracking-wide font-semibold">
+                <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wide font-semibold">
                   Phone
                 </p>
-                <p className="text-2xl font-bold text-slate-900">+1-555-0102</p>
+                <p className="text-2xl font-bold text-foreground">+1-555-0102</p>
               </div>
               <div>
-                <p className="text-sm text-slate-600 mb-2 uppercase tracking-wide font-semibold">
+                <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wide font-semibold">
                   Email
                 </p>
-                <p className="text-lg font-bold text-slate-900">
+                <p className="text-lg font-bold text-foreground">
                   access@stadiumiq.com
                 </p>
               </div>
               <div>
-                <p className="text-sm text-slate-600 mb-2 uppercase tracking-wide font-semibold">
+                <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wide font-semibold">
                   Hours
                 </p>
-                <p className="text-lg font-bold text-slate-900">24/7 Available</p>
+                <p className="text-lg font-bold text-foreground">24/7 Available</p>
               </div>
             </div>
 
-            <div className="mt-6 p-4 bg-white rounded-lg border border-indigo-200">
-              <p className="text-sm text-slate-700">
+            <div className="mt-6 p-4 bg-card rounded-lg border border-indigo-200 dark:border-indigo-800">
+              <p className="text-sm text-foreground/90">
                 Our accessibility team is trained to assist with a wide range of needs. We
                 welcome feedback to continuously improve our services.
               </p>

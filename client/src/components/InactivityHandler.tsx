@@ -112,7 +112,7 @@ export function InactivityHandler() {
           <p className="text-sm text-muted-foreground leading-normal">
             Your StadiumIQ session has been inactive. For your security, you will be automatically signed out in:
           </p>
-          <div className="flex items-center gap-2 justify-center py-3 bg-slate-50 border border-slate-100 rounded-lg">
+          <div className="flex items-center gap-2 justify-center py-3 bg-muted border border-border rounded-lg">
             <Clock size={20} className="text-indigo-600 animate-pulse" />
             <span className="text-2xl font-mono font-bold text-foreground">
               00:{countdown < 10 ? `0${countdown}` : countdown}
@@ -124,7 +124,7 @@ export function InactivityHandler() {
             type="button"
             variant="outline"
             onClick={logoutUser}
-            className="btn-press border-border text-muted-foreground hover:bg-slate-50"
+            className="btn-press border-border text-muted-foreground hover:bg-muted"
           >
             Sign Out
           </Button>

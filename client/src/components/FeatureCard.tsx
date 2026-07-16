@@ -25,7 +25,7 @@ export function FeatureCard({
     <div
       className={cn(
         "card-hover p-6 rounded-lg border border-border bg-card",
-        gradient && "bg-gradient-to-br from-slate-50 to-white",
+        gradient && "bg-gradient-to-br from-muted/50 to-card",
         className
       )}
     >

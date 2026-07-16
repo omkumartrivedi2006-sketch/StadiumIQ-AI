@@ -39,7 +39,7 @@ export default function Feedback() {
         <div className="container mx-auto px-4 max-w-2xl">
           {/* Header */}
           <div className="mb-10 text-center animate-slide-in-down">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">Share Feedback</h1>
+            <h1 className="text-4xl font-bold text-foreground mb-2">Share Feedback</h1>
             <p className="text-muted-foreground">
               Help us improve StadiumIQ AI for FIFA World Cup 2026.
             </p>
@@ -61,8 +61,8 @@ export default function Feedback() {
                   <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto">
                     <CheckCircle2 size={24} />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900">Feedback Submitted!</h3>
-                  <p className="text-sm text-slate-600">
+                  <h3 className="text-lg font-bold text-foreground">Feedback Submitted!</h3>
+                  <p className="text-sm text-muted-foreground">
                     Thank you for helping us optimize stadium management. Your comments have been recorded.
                   </p>
                   <Button onClick={() => setSuccess(false)} variant="outline" className="btn-press">
@@ -73,7 +73,7 @@ export default function Feedback() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Rating Selector */}
                   <div className="space-y-2 text-center">
-                    <label className="text-sm font-semibold text-slate-700 block">Overall Rating</label>
+                    <label className="text-sm font-semibold text-foreground/90 block">Overall Rating</label>
                     <div className="flex justify-center gap-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -88,7 +88,7 @@ export default function Feedback() {
                             className={`${
                               star <= rating
                                 ? "text-amber-400 fill-amber-400"
-                                : "text-slate-300"
+                                : "text-muted/60 dark:text-muted-foreground/30"
                             }`}
                           />
                         </button>
@@ -98,12 +98,12 @@ export default function Feedback() {
 
                   {/* Category */}
                   <div className="space-y-1">
-                    <label className="text-sm font-medium text-slate-700">Category</label>
+                    <label className="text-sm font-medium text-foreground/90">Category</label>
                     <select
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       disabled={loading}
-                      className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                      className="w-full px-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                     >
                       <option value="app">App Features & AI Chatbot</option>
                       <option value="crowd">Crowd & Queue Information</option>
@@ -116,7 +116,7 @@ export default function Feedback() {
 
                   {/* Comments */}
                   <div className="space-y-1">
-                    <label className="text-sm font-medium text-slate-700">Your Feedback</label>
+                    <label className="text-sm font-medium text-foreground/90">Your Feedback</label>
                     <Textarea
                       placeholder="Write your suggestions, report issues, or tell us what went well..."
                       value={feedbackText}

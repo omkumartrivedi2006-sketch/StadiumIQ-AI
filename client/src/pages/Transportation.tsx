@@ -130,11 +130,11 @@ export default function Transportation() {
             <div className="py-12 bg-card border border-border rounded-lg mb-12">
               <Empty className="max-w-md mx-auto">
                 <EmptyHeader>
-                  <EmptyMedia className="bg-slate-100 text-slate-500 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
+                  <EmptyMedia className="bg-muted text-muted-foreground rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
                     <MapPin size={18} />
                   </EmptyMedia>
-                  <EmptyTitle className="text-sm font-bold text-slate-800">No Transit Data</EmptyTitle>
-                  <EmptyDescription className="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
+                  <EmptyTitle className="text-sm font-bold text-foreground">No Transit Data</EmptyTitle>
+                  <EmptyDescription className="text-xs text-muted-foreground max-w-xs mx-auto mt-1 leading-normal">
                     There are no active transportation options reported at the moment. Please consult the local SOS help desk.
                   </EmptyDescription>
                 </EmptyHeader>

@@ -242,7 +242,7 @@ export default function Profile() {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Header */}
           <div className="mb-8 animate-slide-in-down">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <h1 className="text-4xl font-bold text-foreground mb-2 flex items-center gap-2">
               <User className="text-indigo-600" />
               My Profile
             </h1>
@@ -280,16 +280,16 @@ export default function Profile() {
                   </div>
 
                   <div className="space-y-1">
-                    <h3 className="text-lg font-bold text-slate-800 leading-tight">{fullName || user?.fullName}</h3>
+                    <h3 className="text-lg font-bold text-foreground leading-tight">{fullName || user?.fullName}</h3>
                     <p className="text-xs font-semibold text-indigo-600 uppercase tracking-wider">{user?.role} Profile</p>
-                    <p className="text-xs text-slate-400">{user?.email}</p>
+                    <p className="text-xs text-muted-foreground">{user?.email}</p>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Crop Modal / Panel */}
               {imageSrc && (
-                <Card className="shadow border border-indigo-200 bg-white border-2 animate-scale-in">
+                <Card className="shadow border border-indigo-200 bg-card border-2 animate-scale-in">
                   <CardHeader className="p-4 border-b">
                     <CardTitle className="text-sm font-bold text-indigo-950">Crop Profile Photo</CardTitle>
                     <CardDescription className="text-[11px]">Drag to adjust position, slider to zoom</CardDescription>
@@ -304,11 +304,11 @@ export default function Profile() {
                         onMouseMove={handleMouseMove}
                         onMouseUp={handleMouseUp}
                         onMouseLeave={handleMouseUp}
-                        className="border border-border rounded-lg cursor-move bg-slate-100 touch-none shadow-inner"
+                        className="border border-border rounded-lg cursor-move bg-muted touch-none shadow-inner"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-medium text-slate-600 flex justify-between">
+                      <label className="text-[11px] font-medium text-muted-foreground flex justify-between">
                         <span>Zoom</span>
                         <span>{Math.round(zoom * 100)}%</span>
                       </label>
@@ -319,7 +319,7 @@ export default function Profile() {
                         step="0.05"
                         value={zoom}
                         onChange={(e) => setZoom(parseFloat(e.target.value))}
-                        className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none"
+                        className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none"
                       />
                     </div>
                     <div className="flex gap-2">
@@ -358,7 +358,7 @@ export default function Profile() {
                   <CardContent className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-sm font-medium text-slate-700">Full Name</label>
+                        <label className="text-sm font-medium text-foreground/90">Full Name</label>
                         <Input
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
@@ -368,7 +368,7 @@ export default function Profile() {
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-sm font-medium text-slate-700">Phone Number</label>
+                        <label className="text-sm font-medium text-foreground/90">Phone Number</label>
                         <Input
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
@@ -380,7 +380,7 @@ export default function Profile() {
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">Country of Residence</label>
+                      <label className="text-sm font-medium text-foreground/90">Country of Residence</label>
                       <Input
                         value={country}
                         onChange={(e) => setCountry(e.target.value)}
@@ -400,12 +400,12 @@ export default function Profile() {
                   </CardHeader>
                   <CardContent className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">Preferred Language</label>
+                      <label className="text-sm font-medium text-foreground/90">Preferred Language</label>
                       <select
                         value={language}
                         onChange={(e) => setLanguage(e.target.value)}
                         disabled={saving}
-                        className="w-full px-3 py-2 bg-white border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
+                        className="w-full px-3 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 btn-press"
                       >
                         {SUPPORTED_LANGUAGES.map((lang) => (
                           <option key={lang.code} value={lang.code}>
@@ -416,15 +416,15 @@ export default function Profile() {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-sm font-medium text-slate-700">Notification Alerts</label>
+                      <label className="text-sm font-medium text-foreground/90">Notification Alerts</label>
                       <div className="flex items-center gap-2 pt-2.5">
                         <input
                           type="checkbox"
                           id="pushNotif"
                           defaultChecked
-                          className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-600 btn-press"
+                          className="w-4 h-4 text-indigo-600 border-border rounded focus:ring-indigo-600 btn-press"
                         />
-                        <label htmlFor="pushNotif" className="text-sm text-slate-600">
+                        <label htmlFor="pushNotif" className="text-sm text-muted-foreground">
                           Receive live queue & match updates
                         </label>
                       </div>
@@ -455,8 +455,8 @@ export default function Profile() {
                 </CardHeader>
                 <CardContent className="flex justify-between items-center">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-800">Deactivate Account</h4>
-                    <p className="text-xs text-slate-500 max-w-md mt-0.5">
+                    <h4 className="text-sm font-bold text-foreground">Deactivate Account</h4>
+                    <p className="text-xs text-muted-foreground max-w-md mt-0.5">
                       Temporarily disable your profile, logged tickets, and history. You can contact support to reactivate.
                     </p>
                   </div>
@@ -476,21 +476,21 @@ export default function Profile() {
 
       {/* Custom AlertDialog for Deactivation */}
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent className="max-w-md bg-white border border-border rounded-xl shadow-2xl p-6">
+        <DialogContent className="max-w-md bg-card border border-border rounded-xl shadow-2xl p-6">
           <DialogHeader className="space-y-3">
             <div className="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto">
               <ShieldAlert size={24} />
             </div>
-            <DialogTitle className="text-xl font-bold text-slate-900 text-center">
+            <DialogTitle className="text-xl font-bold text-foreground text-center">
               Are you absolutely sure?
             </DialogTitle>
-            <DialogDescription className="text-sm text-slate-600 text-center leading-relaxed">
+            <DialogDescription className="text-sm text-muted-foreground text-center leading-relaxed">
               This action will immediately log you out, revoke all active sessions, and mark your StadiumIQ profile as inactive. Your details will be archived securely.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="flex gap-2 justify-stretch pt-4 border-t border-slate-100">
+          <DialogFooter className="flex gap-2 justify-stretch pt-4 border-t border-border">
             <DialogClose asChild>
-              <Button variant="outline" className="flex-1 text-slate-700 btn-press">
+              <Button variant="outline" className="flex-1 text-foreground/90 btn-press">
                 No, Keep Account
               </Button>
             </DialogClose>
