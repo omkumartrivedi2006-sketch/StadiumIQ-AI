@@ -235,7 +235,7 @@ export default function Emergency() {
           </div>
 
           {/* Important Information */}
-          <div className="animate-slide-in-up p-6 bg-amber-50 rounded-lg border border-amber-200">
+          <div className="animate-slide-in-up p-6 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-900/50">
             <div className="flex gap-4">
               <AlertCircle className="text-amber-600 flex-shrink-0" size={24} />
               <div>

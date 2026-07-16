@@ -223,7 +223,7 @@ export default function Accessibility() {
           </div>
 
           {/* Accessibility Contact */}
-          <div className="animate-slide-in-up p-8 bg-gradient-to-r from-indigo-50 to-cyan-50 rounded-lg border border-indigo-200">
+          <div className="animate-slide-in-up p-8 bg-gradient-to-r from-indigo-50 to-cyan-50 dark:from-indigo-950/20 dark:to-cyan-950/20 rounded-lg border border-indigo-200 dark:border-indigo-900/50">
             <h2 className="text-2xl font-bold text-foreground mb-6">
               Accessibility Support
             </h2>

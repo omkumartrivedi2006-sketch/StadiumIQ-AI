@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Calendar, Search, MapPin, Clock, ArrowRight, Star } from "lucide-react";
 import { useLocation } from "wouter";
 import { apiClient } from "@/api/client";
+import { socketService } from "@/services/socket";
 
 export default function Schedule() {
   const [, setLocation] = useLocation();
@@ -28,6 +29,23 @@ export default function Schedule() {
       }
     }
     fetchMatches();
+
+    // 30-second refresh interval
+    const interval = setInterval(fetchMatches, 30000);
+
+    // WebSocket real-time listener
+    const handleMatchUpdate = (updatedMatches: any[]) => {
+      console.log("[Socket] Received live match update on schedule page:", updatedMatches);
+      if (updatedMatches && updatedMatches.length > 0) {
+        setMatches(updatedMatches);
+      }
+    };
+    socketService.on("match-update", handleMatchUpdate);
+
+    return () => {
+      clearInterval(interval);
+      socketService.off("match-update", handleMatchUpdate);
+    };
   }, []);
 
   const filtered = matches.filter((m) => {
@@ -88,8 +106,15 @@ export default function Schedule() {
                           <Star size={14} className="fill-current" />
                           <span>FIFA World Cup 2026</span>
                         </div>
-                        <h3 className="text-xl font-bold text-foreground">
-                          {m.homeTeam} vs {m.awayTeam}
+                        <h3 className="text-xl font-bold text-foreground flex items-center justify-between gap-4 flex-wrap">
+                          <span>
+                            {m.homeTeam} {m.homeScore !== undefined && m.homeScore !== null ? `(${m.homeScore})` : ''} vs {m.awayTeam} {m.awayScore !== undefined && m.awayScore !== null ? `(${m.awayScore})` : ''}
+                          </span>
+                          {m.status === "live" && (
+                            <span className="text-xs font-semibold px-2 py-0.5 bg-red-100 text-red-700 rounded-full animate-pulse-soft flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-red-600"></span> LIVE {m.minute}'
+                            </span>
+                          )}
                         </h3>
                         <div className="flex flex-wrap gap-4 text-xs text-muted-foreground pt-1">
                           <span className="flex items-center gap-1.5">

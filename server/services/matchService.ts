@@ -1,18 +1,38 @@
 import { matchRepository } from "../repositories/matchRepository";
 import { stadiumRepository } from "../repositories/stadiumRepository";
+import { sportsMatchRepository } from "./sportsApi/repositories/SportsMatchRepository";
 
 export const matchService = {
   async getAllMatches(filter: any, options: any) {
-    // Return populated stadium details
-    const optionsWithPopulate = {
-      ...options,
-      populate: options.populate || "stadiumId",
+    // Fetch live synchronized matches from our sportsMatchRepository
+    const docs = await sportsMatchRepository.getAllMatches(filter?.status);
+    
+    // Apply basic filtering if stadiumId is specified
+    let filteredDocs = docs;
+    if (filter?.stadiumId) {
+      filteredDocs = docs.filter((d: any) => 
+        d.stadiumId?._id?.toString() === filter.stadiumId.toString() ||
+        d.stadiumId?.toString() === filter.stadiumId.toString()
+      );
+    }
+
+    // Apply pagination
+    const page = options?.page || 1;
+    const limit = options?.limit || 10;
+    const startIndex = (page - 1) * limit;
+    const paginatedDocs = filteredDocs.slice(startIndex, startIndex + limit);
+
+    return {
+      docs: paginatedDocs,
+      totalDocs: filteredDocs.length,
+      limit,
+      page,
+      pages: Math.ceil(filteredDocs.length / limit) || 1
     };
-    return matchRepository.find(filter, optionsWithPopulate);
   },
 
   async getMatchById(id: string) {
-    return matchRepository.findById(id, "stadiumId");
+    return sportsMatchRepository.getMatchById(id);
   },
 
   async createMatch(data: any) {
@@ -38,3 +58,4 @@ export const matchService = {
     return matchRepository.delete(id);
   },
 };
+

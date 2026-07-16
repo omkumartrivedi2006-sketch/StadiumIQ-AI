@@ -300,9 +300,9 @@ export default function VolunteerDashboard() {
                 </Button>
               </div>
 
-              <div className="card-hover p-6 bg-gradient-to-br from-indigo-50 to-cyan-50 rounded-lg border border-indigo-200">
+              <div className="card-hover p-6 bg-gradient-to-br from-indigo-50 to-cyan-50 dark:from-indigo-950/20 dark:to-cyan-950/20 rounded-lg border border-indigo-200 dark:border-indigo-900/50">
                 <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                  <MessageSquare size={18} className="text-indigo-600" />
+                  <MessageSquare size={18} className="text-indigo-600 animate-pulse-soft" />
                   Help Channels
                 </h3>
                 <p className="text-sm text-foreground/90 mb-4">

@@ -120,12 +120,12 @@ export function Navigation() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden lg:flex items-center justify-center flex-1 mx-6 gap-3 xl:gap-5 max-w-5xl">
           {displayItems.map((item) => {
             const isActive = checkActive(item.href);
             return (
               <Link key={item.href} href={getHref(item.href)}>
-                <a className={`text-sm font-medium transition-colors ${
+                <a className={`text-xs xl:text-sm font-medium transition-colors whitespace-nowrap ${
                   isActive
                     ? "text-indigo-600 dark:text-indigo-400 font-semibold animate-fade-in"
                     : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
@@ -138,7 +138,7 @@ export function Navigation() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-2 xl:gap-3 flex-shrink-0">
           <Button
             variant="ghost"
             size="sm"
@@ -158,34 +158,34 @@ export function Navigation() {
           {isAuthenticated ? (
             <>
               <NotificationCenter />
-              {user?.profileImage ? (
-                <button
-                  onClick={() => setLocation(`/${user?.role}/profile`)}
-                  className="w-8 h-8 rounded-full border border-indigo-200 dark:border-indigo-700 overflow-hidden btn-press cursor-pointer flex-shrink-0"
-                  title="My Profile"
-                >
-                  <img src={user?.profileImage} alt="User Avatar" className="w-full h-full object-cover" />
-                </button>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setLocation(`/${user?.role}/profile`)}
-                  className="btn-press"
-                  title="My Profile"
-                >
-                  <User size={18} className="text-foreground/70" />
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setLocation(`/${user?.role}/settings`)}
-                className="btn-press"
-                title="Settings"
-              >
-                <Settings size={18} className="text-foreground/70" />
-              </Button>
+               {user?.profileImage ? (
+                 <button
+                   onClick={() => setLocation(`/${user?.role}/profile`)}
+                   className="w-8 h-8 rounded-full border border-indigo-200 dark:border-indigo-700 overflow-hidden btn-press cursor-pointer flex-shrink-0"
+                   title="My Profile"
+                 >
+                   <img src={user?.profileImage} alt="User Avatar" className="w-full h-full object-cover" />
+                 </button>
+               ) : (
+                 <Button
+                   variant="ghost"
+                   size="sm"
+                   onClick={() => setLocation(`/${user?.role}/profile`)}
+                   className="btn-press"
+                   title="My Profile"
+                 >
+                   <User size={18} className="text-foreground/70" />
+                 </Button>
+               )}
+               <Button
+                 variant="ghost"
+                 size="sm"
+                 onClick={() => setLocation(`/${user?.role}/settings`)}
+                 className="btn-press"
+                 title="Settings"
+               >
+                 <Settings size={18} className="text-foreground/70" />
+               </Button>
               <Button onClick={handleSignOut} variant="outline" size="sm" className="btn-press border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950">
                 Sign Out
               </Button>
@@ -204,7 +204,7 @@ export function Navigation() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden btn-press text-foreground"
+          className="lg:hidden btn-press text-foreground"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
@@ -214,7 +214,7 @@ export function Navigation() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden border-t border-border bg-background animate-slide-in-down">
+        <div className="lg:hidden border-t border-border bg-background animate-slide-in-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {displayItems.map((item) => {
               const isActive = checkActive(item.href);
@@ -287,6 +287,7 @@ export function Navigation() {
                   >
                     <Settings size={16} /> Settings
                   </Button>
+
                   <Button onClick={handleSignOut} variant="outline" size="sm" className="w-full btn-press border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950">
                     Sign Out
                   </Button>

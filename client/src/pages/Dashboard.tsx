@@ -27,6 +27,7 @@ import { crowdService, GateStatus } from "@/services/crowd";
 import { searchService, SearchResults } from "@/services/search";
 import { apiClient } from "@/api/client";
 import { toast } from "sonner";
+import { socketService } from "@/services/socket";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
@@ -183,6 +184,31 @@ export default function Dashboard() {
     }
     loadData();
     loadTicketsAndMatches();
+
+    // 30-second refresh interval
+    const interval = setInterval(() => {
+      loadData();
+      loadTicketsAndMatches();
+    }, 30000);
+
+    // WebSocket real-time listener
+    const handleMatchUpdate = (updatedMatches: any[]) => {
+      console.log("[Socket] Received live match update on dashboard:", updatedMatches);
+      if (updatedMatches && updatedMatches.length > 0) {
+        setMatches(updatedMatches);
+        setMatch((prev: any) => {
+          if (!prev) return updatedMatches[0];
+          const found = updatedMatches.find((m: any) => m._id === prev._id);
+          return found || updatedMatches[0];
+        });
+      }
+    };
+    socketService.on("match-update", handleMatchUpdate);
+
+    return () => {
+      clearInterval(interval);
+      socketService.off("match-update", handleMatchUpdate);
+    };
   }, []);
 
   const handleActionClick = (id: string) => {
@@ -599,7 +625,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="card-hover p-6 bg-gradient-to-br from-indigo-50 to-cyan-50 rounded-lg border border-indigo-200 animate-slide-in-up">
+              <div className="card-hover p-6 bg-gradient-to-br from-indigo-50 to-cyan-50 dark:from-indigo-950/20 dark:to-cyan-950/20 rounded-lg border border-indigo-200 dark:border-indigo-900/50 animate-slide-in-up">
                 <h3 className="font-semibold text-foreground mb-3">
                   Pro Tip
                 </h3>
@@ -633,16 +659,25 @@ export default function Dashboard() {
                     <div className="space-y-3">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Home Team</span>
-                        <span className="font-semibold">{match?.homeTeam || "Team A"}</span>
+                        <span className="font-semibold">
+                          {match?.homeTeam || "Team A"} {match?.homeScore !== undefined && match?.homeScore !== null ? `(${match.homeScore})` : ''}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Away Team</span>
-                        <span className="font-semibold">{match?.awayTeam || "Team B"}</span>
+                        <span className="font-semibold">
+                          {match?.awayTeam || "Team B"} {match?.awayScore !== undefined && match?.awayScore !== null ? `(${match.awayScore})` : ''}
+                        </span>
                       </div>
-                      <div className="border-t border-border pt-3">
+                      <div className="border-t border-border pt-3 flex justify-between items-center flex-wrap gap-2">
                         <p className="text-sm text-muted-foreground">
                           Kickoff: {match?.kickoffTime || "8:00 PM"} • Stadium: {match?.stadiumId?.name || "MetLife Stadium"}
                         </p>
+                        {match?.status === "live" && (
+                          <span className="text-xs font-semibold px-2 py-0.5 bg-red-100 text-red-700 rounded-full animate-pulse-soft flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-600"></span> LIVE {match.minute}'
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

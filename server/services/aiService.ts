@@ -5,6 +5,8 @@ import { sosService } from "./sosService";
 import { stadiumRepository } from "../repositories/stadiumRepository";
 import { matchService } from "./matchService";
 import { analyticsService } from "./analyticsService";
+import { sportsStandingRepository } from "./sportsApi/repositories/SportsStandingRepository";
+import { sportsStadiumRepository } from "./sportsApi/repositories/SportsStadiumRepository";
 
 // CENTRALIZED PROMPT TEMPLATES
 const promptTemplates = {
@@ -127,15 +129,41 @@ export const aiService = {
           const matchesResp = await matchService.getAllMatches({}, { limit: 5 });
           const stadiumResp = await stadiumRepository.find({}, { limit: 5 });
           
+          let standingsStr = "Standings not available.";
+          try {
+            const standingsData = await sportsStandingRepository.getStandings();
+            standingsStr = standingsData.standings.map((st: any) => 
+              `* ${st.group}:\n` + st.table.map((t: any) => 
+                `  - Pos ${t.position}. ${t.team.name}: P${t.playedGames} W${t.won} D${t.draw} L${t.lost} Pts${t.points} GD${t.goalDifference} (${t.qualificationStatus})`
+              ).join("\n")
+            ).join("\n\n");
+          } catch (e) {
+            console.error("Failed to build standings context for AI:", e);
+          }
+
+          const weatherReports: string[] = [];
+          if (stadiumResp.docs) {
+            for (const s of stadiumResp.docs) {
+              try {
+                const weather = await sportsStadiumRepository.getStadiumWeather(s._id.toString());
+                weatherReports.push(`- Stadium: ${s.name} weather is ${weather.condition}, Temp: ${weather.temperature}, Humidity: ${weather.humidity}`);
+              } catch (e) {}
+            }
+          }
+          const weatherStr = weatherReports.length > 0 ? weatherReports.join("\n") : "No live weather available.";
+
           const matchStr = matchesResp.docs && matchesResp.docs.length > 0
-            ? matchesResp.docs.map((m: any) => `- Match: ${m.homeTeam} vs ${m.awayTeam} at ${m.stadiumId?.name || "MetLife Stadium"} on ${new Date(m.date).toLocaleDateString()} (${m.kickoffTime})`).join("\n")
+            ? matchesResp.docs.map((m: any) => {
+                const liveInfo = m.liveData ? ` (STATUS: ${m.status.toUpperCase()}, SCORE: ${m.liveData.score.home}-${m.liveData.score.away}, MIN: ${m.liveData.minute}', PERIOD: ${m.liveData.period})` : ` (STATUS: Scheduled)`;
+                return `- Match: ${m.homeTeam} vs ${m.awayTeam} at ${m.stadiumId?.name || "MetLife Stadium"} on ${new Date(m.date).toLocaleDateString()} (${m.kickoffTime})${liveInfo}`;
+              }).join("\n")
             : "No matches scheduled.";
             
           const stadiumStr = stadiumResp.docs && stadiumResp.docs.length > 0
             ? stadiumResp.docs.map((s: any) => `- Stadium ${s.name} (${s.city}), Capacity: ${s.capacity}, Gates: ${(s.gates || []).join(", ")}, Facilities: Wheelchair Ramps, Elevators, High-Contrast Displays`).join("\n")
             : "No stadium layouts listed.";
 
-          return `Upcoming Tournament Matches:\n${matchStr}\n\nVenue Accessibility & gates layout:\n${stadiumStr}`;
+          return `Upcoming Tournament Matches & Live Scores:\n${matchStr}\n\nTournament Group Standings:\n${standingsStr}\n\nStadium Weather & Conditions:\n${weatherStr}\n\nVenue Accessibility & gates layout:\n${stadiumStr}`;
         }
       }
     } catch (e) {
