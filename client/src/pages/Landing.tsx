@@ -126,9 +126,9 @@ export default function Landing() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-cyan-500/20 rounded-2xl blur-3xl" />
                 <img
-                  src="/manus-storage/hero-stadium_886678e4.png"
+                  src="/hero-stadium.jpg"
                   alt="Stadium AI Assistant"
-                  className="relative rounded-2xl shadow-2xl w-full h-auto"
+                  className="relative rounded-2xl shadow-2xl w-full h-[400px] object-cover border border-slate-100/50"
                 />
               </div>
             </div>
