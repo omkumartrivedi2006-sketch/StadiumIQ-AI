@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Moon, Sun, Settings, User } from "lucide-react";
+import { Menu, X, Moon, Sun, Settings, User, Bell } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,39 +24,47 @@ export function Navigation() {
     switch (role) {
       case "fan":
         return [
-          { label: "Dashboard", href: "/dashboard" },
-          { label: "AI Assistant", href: "/chat" },
-          { label: "Stadium Navigation", href: "/accessibility" },
-          { label: "Tickets", href: "/dashboard#tickets" },
-          { label: "Food Finder", href: "/food" },
-          { label: "Transport", href: "/transport" },
+          { label: "Dashboard", href: "/fan/dashboard" },
+          { label: "AI Assistant", href: "/fan/chat" },
+          { label: "Match Schedule", href: "/fan/schedule" },
+          { label: "My Tickets", href: "/fan/tickets" },
+          { label: "Stadium Navigation", href: "/fan/navigation" },
+          { label: "Food Finder", href: "/fan/food" },
+          { label: "Transportation", href: "/fan/transport" },
+          { label: "Accessibility", href: "/fan/accessibility" },
         ];
       case "volunteer":
         return [
-          { label: "Dashboard", href: "/volunteer" },
-          { label: "Assigned Tasks", href: "/volunteer#tasks" },
-          { label: "Crowd Reports", href: "/volunteer#reports" },
-          { label: "Navigation", href: "/accessibility" },
+          { label: "Dashboard", href: "/volunteer/dashboard" },
+          { label: "Assigned Tasks", href: "/volunteer/tasks" },
+          { label: "Assigned Zone", href: "/volunteer/zone" },
+          { label: "Crowd Reports", href: "/volunteer/crowd-reports" },
+          { label: "Incident Reports", href: "/volunteer/incident-reports" },
+          { label: "Navigation", href: "/volunteer/navigation" },
+          { label: "Communication", href: "/volunteer/communication" },
         ];
       case "organizer":
         return [
-          { label: "Dashboard", href: "/organizer" },
-          { label: "Match Operations", href: "/organizer#matches" },
-          { label: "Crowd Analytics", href: "/organizer#analytics" },
-          { label: "Volunteer Management", href: "/organizer#volunteers" },
-          { label: "Reports", href: "/organizer#reports" },
+          { label: "Dashboard", href: "/organizer/dashboard" },
+          { label: "Match Operations", href: "/organizer/matches" },
+          { label: "Stadium Operations", href: "/organizer/stadiums" },
+          { label: "Crowd Analytics", href: "/organizer/crowd-analytics" },
+          { label: "Volunteer Management", href: "/organizer/volunteers" },
+          { label: "Reports", href: "/organizer/reports" },
         ];
       case "admin":
         return [
-          { label: "Dashboard", href: "/admin" },
-          { label: "User Management", href: "/admin#users" },
-          { label: "Stadium Management", href: "/admin#stadiums" },
-          { label: "Match Management", href: "/admin#matches" },
-          { label: "AI Logs", href: "/admin#ai-logs" },
-          { label: "Analytics", href: "/admin#analytics" },
+          { label: "Dashboard", href: "/admin/dashboard" },
+          { label: "User Management", href: "/admin/users" },
+          { label: "Role Management", href: "/admin/roles" },
+          { label: "Stadium Management", href: "/admin/stadiums" },
+          { label: "Match Management", href: "/admin/matches" },
+          { label: "AI Logs", href: "/admin/ai-logs" },
+          { label: "Analytics", href: "/admin/analytics" },
+          { label: "System Monitoring", href: "/admin/monitoring" },
         ];
       default:
-        return [{ label: "Dashboard", href: "/dashboard" }];
+        return [{ label: "Dashboard", href: "/fan/dashboard" }];
     }
   };
 
@@ -152,17 +160,17 @@ export function Navigation() {
               <NotificationCenter />
               {user?.profileImage ? (
                 <button
-                  onClick={() => setLocation("/profile")}
+                  onClick={() => setLocation(`/${user?.role}/profile`)}
                   className="w-8 h-8 rounded-full border border-indigo-200 dark:border-indigo-700 overflow-hidden btn-press cursor-pointer flex-shrink-0"
                   title="My Profile"
                 >
-                  <img src={user.profileImage} alt="User Avatar" className="w-full h-full object-cover" />
+                  <img src={user?.profileImage} alt="User Avatar" className="w-full h-full object-cover" />
                 </button>
               ) : (
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => setLocation("/profile")}
+                  onClick={() => setLocation(`/${user?.role}/profile`)}
                   className="btn-press"
                   title="My Profile"
                 >
@@ -172,7 +180,7 @@ export function Navigation() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setLocation("/settings")}
+                onClick={() => setLocation(`/${user?.role}/settings`)}
                 className="btn-press"
                 title="Settings"
               >
@@ -246,14 +254,21 @@ export function Navigation() {
               </Button>
               {isAuthenticated ? (
                 <>
-                  <div className="flex justify-between items-center px-4 py-2 border-y border-border">
-                    <span className="text-xs text-muted-foreground font-medium">Alerts</span>
-                    <NotificationCenter />
-                  </div>
                   <Button
                     onClick={() => {
                       setIsOpen(false);
-                      setLocation("/profile");
+                      setLocation(`/${user?.role}/notifications`);
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full btn-press gap-2 justify-center"
+                  >
+                    <Bell size={16} /> Notifications
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setIsOpen(false);
+                      setLocation(`/${user?.role}/profile`);
                     }}
                     variant="outline"
                     size="sm"
@@ -264,7 +279,7 @@ export function Navigation() {
                   <Button
                     onClick={() => {
                       setIsOpen(false);
-                      setLocation("/settings");
+                      setLocation(`/${user?.role}/settings`);
                     }}
                     variant="outline"
                     size="sm"

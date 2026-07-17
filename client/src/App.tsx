@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
+import { useAuth } from "./contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -44,6 +45,53 @@ const About = lazy(() => import("@/pages/About"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
+
+// Fan Sub-Pages
+const Tickets = lazy(() => import("@/pages/Tickets"));
+const Schedule = lazy(() => import("@/pages/Schedule"));
+const StadiumNavigation = lazy(() => import("@/pages/StadiumNavigation"));
+const NotificationsPage = lazy(() => import("@/pages/NotificationsPage"));
+
+// Volunteer Sub-Pages
+const VolunteerTasks = lazy(() => import("@/pages/volunteer/VolunteerTasks"));
+const VolunteerZone = lazy(() => import("@/pages/volunteer/VolunteerZone"));
+const CrowdReports = lazy(() => import("@/pages/volunteer/CrowdReports"));
+const IncidentReports = lazy(() => import("@/pages/volunteer/IncidentReports"));
+const VolunteerCommunication = lazy(() => import("@/pages/volunteer/VolunteerCommunication"));
+
+// Organizer Sub-Pages
+const MatchOperations = lazy(() => import("@/pages/organizer/MatchOperations"));
+const StadiumOperations = lazy(() => import("@/pages/organizer/StadiumOperations"));
+const VolunteerManagement = lazy(() => import("@/pages/organizer/VolunteerManagement"));
+const OrganizerReports = lazy(() => import("@/pages/organizer/OrganizerReports"));
+
+// Admin Sub-Pages
+const UserManagement = lazy(() => import("@/pages/admin/UserManagement"));
+const RoleManagement = lazy(() => import("@/pages/admin/RoleManagement"));
+const StadiumManagement = lazy(() => import("@/pages/admin/StadiumManagement"));
+const MatchManagement = lazy(() => import("@/pages/admin/MatchManagement"));
+const AILogs = lazy(() => import("@/pages/admin/AILogs"));
+const AdminAnalytics = lazy(() => import("@/pages/admin/AdminAnalytics"));
+const SystemMonitoring = lazy(() => import("@/pages/admin/SystemMonitoring"));
+
+// Redirect helper components for unified path management
+function RoleDashboardRedirect() {
+  const { user } = useAuth();
+  if (!user) return <Redirect to="/login" />;
+  return <Redirect to={`/${user.role}/dashboard`} />;
+}
+
+function RoleProfileRedirect() {
+  const { user } = useAuth();
+  if (!user) return <Redirect to="/login" />;
+  return <Redirect to={`/${user.role}/profile`} />;
+}
+
+function RoleSettingsRedirect() {
+  const { user } = useAuth();
+  if (!user) return <Redirect to="/login" />;
+  return <Redirect to={`/${user.role}/settings`} />;
+}
 
 function LoadingFallback() {
   return (
@@ -90,34 +138,14 @@ function Router() {
         <Route path={"/404"} component={NotFound} />
 
         {/* Private Features Gated by Roles */}
-        <Route path={"/chat"}>
-          <AuthGuard allowedRoles={["fan", "volunteer", "admin"]}>
-            <AIChat />
-          </AuthGuard>
-        </Route>
-        <Route path={"/food"}>
-          <AuthGuard allowedRoles={["fan", "admin"]}>
-            <FoodFinder />
-          </AuthGuard>
-        </Route>
-        <Route path={"/lost-found"}>
-          <AuthGuard allowedRoles={["fan", "volunteer", "admin"]}>
-            <LostFound />
-          </AuthGuard>
-        </Route>
+        <Route path={"/chat"}><Redirect to="/fan/chat" /></Route>
+        <Route path={"/food"}><Redirect to="/fan/food" /></Route>
+        <Route path={"/lost-found"}><Redirect to="/fan/lost-found" /></Route>
+        <Route path={"/transport"}><Redirect to="/fan/transport" /></Route>
+        <Route path={"/accessibility"}><Redirect to="/fan/accessibility" /></Route>
         <Route path={"/emergency"}>
           <AuthGuard>
             <Emergency />
-          </AuthGuard>
-        </Route>
-        <Route path={"/transport"}>
-          <AuthGuard allowedRoles={["fan", "volunteer", "admin"]}>
-            <Transportation />
-          </AuthGuard>
-        </Route>
-        <Route path={"/accessibility"}>
-          <AuthGuard>
-            <Accessibility />
           </AuthGuard>
         </Route>
 
@@ -127,38 +155,232 @@ function Router() {
             <RoleSelection />
           </AuthGuard>
         </Route>
-        <Route path={"/settings"}>
-          <AuthGuard>
-            <Settings />
-          </AuthGuard>
-        </Route>
-        <Route path={"/profile"}>
-          <AuthGuard>
-            <Profile />
-          </AuthGuard>
-        </Route>
+        <Route path={"/dashboard"} component={RoleDashboardRedirect} />
+        <Route path={"/profile"} component={RoleProfileRedirect} />
+        <Route path={"/settings"} component={RoleSettingsRedirect} />
 
-        {/* Role-Specific Protected Dashboards */}
-        <Route path={"/dashboard"}>
-          <AuthGuard allowedRoles={["fan", "volunteer", "organizer", "admin"]}>
+        {/* Fan Routes */}
+        <Route path={"/fan/dashboard"}>
+          <AuthGuard allowedRoles={["fan"]}>
             <Dashboard />
           </AuthGuard>
         </Route>
-        <Route path={"/volunteer"}>
+        <Route path={"/fan/chat"}>
+          <AuthGuard allowedRoles={["fan", "volunteer", "admin"]}>
+            <AIChat />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/schedule"}>
+          <AuthGuard allowedRoles={["fan"]}>
+            <Schedule />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/tickets"}>
+          <AuthGuard allowedRoles={["fan"]}>
+            <Tickets />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/navigation"}>
+          <AuthGuard allowedRoles={["fan"]}>
+            <StadiumNavigation />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/food"}>
+          <AuthGuard allowedRoles={["fan", "admin"]}>
+            <FoodFinder />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/lost-found"}>
+          <AuthGuard allowedRoles={["fan", "volunteer", "admin"]}>
+            <LostFound />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/transport"}>
+          <AuthGuard allowedRoles={["fan", "volunteer", "admin"]}>
+            <Transportation />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/accessibility"}>
+          <AuthGuard>
+            <Accessibility />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/notifications"}>
+          <AuthGuard allowedRoles={["fan"]}>
+            <NotificationsPage />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/profile"}>
+          <AuthGuard allowedRoles={["fan"]}>
+            <Profile />
+          </AuthGuard>
+        </Route>
+        <Route path={"/fan/settings"}>
+          <AuthGuard allowedRoles={["fan"]}>
+            <Settings />
+          </AuthGuard>
+        </Route>
+
+        {/* Volunteer Routes */}
+        <Route path={"/volunteer/dashboard"}>
           <AuthGuard allowedRoles={["volunteer", "admin"]}>
             <VolunteerDashboard />
           </AuthGuard>
         </Route>
-        <Route path={"/organizer"}>
+        <Route path={"/volunteer/tasks"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <VolunteerTasks />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/zone"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <VolunteerZone />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/crowd-reports"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <CrowdReports />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/incident-reports"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <IncidentReports />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/navigation"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <StadiumNavigation />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/communication"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <VolunteerCommunication />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/notifications"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <NotificationsPage />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/profile"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <Profile />
+          </AuthGuard>
+        </Route>
+        <Route path={"/volunteer/settings"}>
+          <AuthGuard allowedRoles={["volunteer"]}>
+            <Settings />
+          </AuthGuard>
+        </Route>
+
+        {/* Organizer Routes */}
+        <Route path={"/organizer/dashboard"}>
           <AuthGuard allowedRoles={["organizer", "admin"]}>
             <OrganizerDashboard />
           </AuthGuard>
         </Route>
-        <Route path={"/admin"}>
+        <Route path={"/organizer/matches"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <MatchOperations />
+          </AuthGuard>
+        </Route>
+        <Route path={"/organizer/stadiums"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <StadiumOperations />
+          </AuthGuard>
+        </Route>
+        <Route path={"/organizer/crowd-analytics"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <StadiumOperations />
+          </AuthGuard>
+        </Route>
+        <Route path={"/organizer/volunteers"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <VolunteerManagement />
+          </AuthGuard>
+        </Route>
+        <Route path={"/organizer/reports"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <OrganizerReports />
+          </AuthGuard>
+        </Route>
+        <Route path={"/organizer/notifications"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <NotificationsPage />
+          </AuthGuard>
+        </Route>
+        <Route path={"/organizer/profile"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <Profile />
+          </AuthGuard>
+        </Route>
+        <Route path={"/organizer/settings"}>
+          <AuthGuard allowedRoles={["organizer"]}>
+            <Settings />
+          </AuthGuard>
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path={"/admin/dashboard"}>
           <AuthGuard allowedRoles={["admin"]}>
             <AdminDashboard />
           </AuthGuard>
         </Route>
+        <Route path={"/admin/users"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <UserManagement />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/roles"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <RoleManagement />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/stadiums"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <StadiumManagement />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/matches"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <MatchManagement />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/ai-logs"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <AILogs />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/analytics"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <AdminAnalytics />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/monitoring"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <SystemMonitoring />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/notifications"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <NotificationsPage />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/profile"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <Profile />
+          </AuthGuard>
+        </Route>
+        <Route path={"/admin/settings"}>
+          <AuthGuard allowedRoles={["admin"]}>
+            <Settings />
+          </AuthGuard>
+        </Route>
+
+        {/* Fallback routes */}
+        <Route path={"/volunteer"}><Redirect to="/volunteer/dashboard" /></Route>
+        <Route path={"/organizer"}><Redirect to="/organizer/dashboard" /></Route>
+        <Route path={"/admin"}><Redirect to="/admin/dashboard" /></Route>
 
         {/* Final fallback route */}
         <Route component={NotFound} />

@@ -126,14 +126,8 @@ export default function Dashboard() {
 
   // Role Redirect Check
   useEffect(() => {
-    if (user) {
-      if (user.role === "admin") {
-        setLocation("/admin");
-      } else if (user.role === "volunteer") {
-        setLocation("/volunteer");
-      } else if (user.role === "organizer") {
-        setLocation("/organizer");
-      }
+    if (user && user.role !== "fan") {
+      setLocation(`/${user.role}/dashboard`);
     }
   }, [user, setLocation]);
 
