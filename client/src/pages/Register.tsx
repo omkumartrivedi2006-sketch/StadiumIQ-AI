@@ -131,7 +131,7 @@ export default function Register() {
         acceptTerms,
       });
 
-      toast.success("Welcome! Registration completed successfully.");
+      toast.success("Welcome! Registration completed successfully."); // Trigger CI rebuild with verified toast import
 
       // Role-based redirects on successful registration
       if (user.role === "admin") {
