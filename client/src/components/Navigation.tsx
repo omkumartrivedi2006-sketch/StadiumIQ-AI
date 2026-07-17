@@ -20,24 +20,20 @@ export function Navigation() {
     return "/dashboard";
   };
 
-  const navItems = isAuthenticated
-    ? [
-        { label: "Dashboard", href: getDashboardHref() },
-        { label: "AI Assistant", href: "/chat" },
-        { label: "Food Finder", href: "/food", roleGated: ["fan", "admin"] },
-        { label: "Transport", href: "/transport" },
-        { label: "SOS Help", href: "/emergency" },
-        { label: "Accessibility", href: "/accessibility" },
-        { label: "Lost & Found", href: "/lost-found" },
-      ].filter((item) => !item.roleGated || item.roleGated.includes(user?.role || ""))
-    : [
-        { label: "Features", href: "#features" },
-      ];
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Features", href: "/features" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "About", href: "/about" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
+  ];
+
+  const displayItems = isAuthenticated
+    ? [{ label: "Dashboard", href: getDashboardHref() }, ...navItems]
+    : navItems;
 
   const getHref = (href: string) => {
-    if (href.startsWith("#") && location !== "/") {
-      return `/${href}`;
-    }
     return href;
   };
 
@@ -70,13 +66,13 @@ export function Navigation() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => {
+          {displayItems.map((item) => {
             const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
             return (
               <Link key={item.href} href={getHref(item.href)}>
                 <a className={`text-sm font-medium transition-colors ${
                   isActive
-                    ? "text-indigo-600 dark:text-indigo-400 font-semibold"
+                    ? "text-indigo-600 dark:text-indigo-400 font-semibold animate-fade-in"
                     : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
                 }`}>
                   {item.label}
@@ -165,7 +161,7 @@ export function Navigation() {
       {isOpen && (
         <div className="md:hidden border-t border-border bg-background animate-slide-in-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
-            {navItems.map((item) => {
+            {displayItems.map((item) => {
               const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
               return (
                 <Link key={item.href} href={getHref(item.href)}>

@@ -37,6 +37,14 @@ const Offline = lazy(() => import("@/pages/Offline"));
 const Unauthorized = lazy(() => import("@/pages/Unauthorized"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
+// Marketing and Legal pages
+const Features = lazy(() => import("@/pages/Features"));
+const Pricing = lazy(() => import("@/pages/Pricing"));
+const About = lazy(() => import("@/pages/About"));
+const Blog = lazy(() => import("@/pages/Blog"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
+const Terms = lazy(() => import("@/pages/Terms"));
+
 function LoadingFallback() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background animate-fade-in">
@@ -61,6 +69,12 @@ function Router() {
       <Switch>
         {/* Public Routes */}
         <Route path={"/"} component={Landing} />
+        <Route path={"/features"} component={Features} />
+        <Route path={"/pricing"} component={Pricing} />
+        <Route path={"/about"} component={About} />
+        <Route path={"/blog"} component={Blog} />
+        <Route path={"/privacy"} component={Privacy} />
+        <Route path={"/terms"} component={Terms} />
         <Route path={"/login"} component={Login} />
         <Route path={"/register"} component={Register} />
         <Route path={"/forgot-password"} component={ForgotPassword} />
