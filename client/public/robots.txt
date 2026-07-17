@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /volunteer
+Disallow: /organizer
+Disallow: /settings
+Disallow: /profile
+Sitemap: https://stadiumiq.ai/sitemap.xml

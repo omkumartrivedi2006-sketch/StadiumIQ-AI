@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ManusDialog } from "@/components/ManusDialog";
 import { Shield, Loader2, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -21,6 +22,7 @@ export default function Login() {
     setError("");
     try {
       const user = await login(email, password);
+      toast.success("Welcome back! Signed in successfully.");
       // Dynamic redirection based on role
       if (user.role === "admin") {
         setLocation("/admin");
@@ -33,6 +35,7 @@ export default function Login() {
       }
     } catch (err: any) {
       setError(err.message || "Invalid email or password");
+      toast.error(err.message || "Invalid email or password");
     }
   };
 
@@ -47,6 +50,7 @@ export default function Login() {
     try {
       const demoEmail = `${role}@demo.stadiumiq.ai`;
       const user = await login(demoEmail, "demo1234");
+      toast.success(`Logged in as Demo ${role.toUpperCase()}`);
       if (user.role === "admin") {
         setLocation("/admin");
       } else if (user.role === "volunteer") {
@@ -58,6 +62,7 @@ export default function Login() {
       }
     } catch (err: any) {
       setError(err.message || `Failed to log in as demo ${role}`);
+      toast.error(`Failed to log in as demo ${role}`);
     }
   };
 
@@ -95,7 +100,9 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading}
-                  className="btn-press"
+                  autoFocus
+                  autoComplete="email"
+                  className="btn-press focus:ring-2 focus:ring-indigo-600"
                 />
               </div>
               <div className="space-y-2">
@@ -112,7 +119,8 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={loading}
-                  className="btn-press"
+                  autoComplete="current-password"
+                  className="btn-press focus:ring-2 focus:ring-indigo-600"
                 />
               </div>
               <Button type="submit" disabled={loading} className="w-full btn-press bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex items-center justify-center gap-2">

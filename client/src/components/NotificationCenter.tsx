@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyMedia } from "@/components/ui/empty";
 import { Button } from "@/components/ui/button";
 import { Bell, Trash2, Check, Megaphone, AlertTriangle, Ticket, Info, Loader2 } from "lucide-react";
 import { apiClient } from "@/api/client";
@@ -164,8 +165,18 @@ export function NotificationCenter() {
         </div>
         <div className="max-h-64 overflow-y-auto divide-y divide-slate-100">
           {notifications.length === 0 ? (
-            <div className="p-8 text-center text-xs text-slate-500">
-              No notifications yet.
+            <div className="p-6">
+              <Empty className="p-4 md:p-6 bg-slate-50/50 border border-slate-100 rounded-lg">
+                <EmptyHeader>
+                  <EmptyMedia className="bg-indigo-50 text-indigo-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">
+                    <Bell size={14} />
+                  </EmptyMedia>
+                  <EmptyTitle className="text-xs font-semibold text-slate-800">No Notifications</EmptyTitle>
+                  <EmptyDescription className="text-[10px] text-slate-500 max-w-[180px] mx-auto mt-0.5 leading-normal">
+                    You're all caught up! There are no announcements or alerts at this time.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             </div>
           ) : (
             notifications.map((notif) => (

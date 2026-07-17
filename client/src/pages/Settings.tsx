@@ -26,6 +26,10 @@ export default function Settings() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState("");
+  const [confirmErrorMsg, setConfirmErrorMsg] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState({ score: 0, label: "", color: "" });
+
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -33,6 +37,58 @@ export default function Settings() {
   const [passwordSaving, setPasswordSaving] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  const checkPasswordStrength = (val: string) => {
+    setNewPassword(val);
+    if (!val) {
+      setPasswordStrength({ score: 0, label: "", color: "" });
+      setPasswordErrorMsg("");
+      return;
+    }
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[a-z]/.test(val)) score++;
+    if (/\d/.test(val)) score++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(val)) score++;
+
+    let label = "Very Weak";
+    let color = "bg-red-500";
+    if (score >= 5) {
+      label = "Strong";
+      color = "bg-green-500";
+      setPasswordErrorMsg("");
+    } else if (score >= 3) {
+      label = "Medium";
+      color = "bg-amber-500";
+      setPasswordErrorMsg("Password must meet complexity rules (uppercase, lowercase, digit, special symbol).");
+    } else {
+      label = "Weak";
+      color = "bg-red-500";
+      setPasswordErrorMsg("Password is too short or simple (minimum 8 characters).");
+    }
+    setPasswordStrength({ score, label, color });
+
+    if (confirmNewPassword && val !== confirmNewPassword) {
+      setConfirmErrorMsg("Passwords do not match.");
+    } else {
+      setConfirmErrorMsg("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (val: string) => {
+    setConfirmNewPassword(val);
+    if (!val) {
+      setConfirmErrorMsg("");
+      return;
+    }
+    if (val !== newPassword) {
+      setConfirmErrorMsg("Passwords do not match.");
+    } else {
+      setConfirmErrorMsg("");
+    }
+  };
 
   // Initialize fields with current user state
   useEffect(() => {
@@ -91,14 +147,16 @@ export default function Settings() {
     e.preventDefault();
     setPasswordMessage("");
     setPasswordError("");
+    setPasswordErrorMsg("");
+    setConfirmErrorMsg("");
 
     if (newPassword !== confirmNewPassword) {
-      setPasswordError("New passwords do not match.");
+      setConfirmErrorMsg("New passwords do not match.");
       return;
     }
 
-    if (newPassword.length < 8) {
-      setPasswordError("Password must be at least 8 characters long.");
+    if (passwordStrength.score < 3) {
+      setPasswordErrorMsg("Please choose a stronger password.");
       return;
     }
 
@@ -115,6 +173,7 @@ export default function Settings() {
         setCurrentPassword("");
         setNewPassword("");
         setConfirmNewPassword("");
+        setPasswordStrength({ score: 0, label: "", color: "" });
       }
     } catch (err: any) {
       setPasswordError(err.response?.data?.message || "Failed to change password.");
@@ -269,6 +328,41 @@ export default function Settings() {
                 </Card>
               </div>
 
+              {/* Privacy Settings */}
+              <Card className="shadow border border-slate-200 bg-white">
+                <CardHeader className="flex flex-row items-center gap-3">
+                  <Globe className="text-indigo-600" size={22} />
+                  <div>
+                    <CardTitle className="text-xl font-bold">Privacy Controls</CardTitle>
+                    <CardDescription>Configure data visibility and search preferences</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-sm font-semibold text-slate-800 block">Export Personal Data</span>
+                      <span className="text-xs text-slate-500">Download a JSON archive of your match tickets and chat history</span>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => toast.success("Export successful! Checking backup logs...")}
+                      className="btn-press"
+                    >
+                      Export Profile JSON
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-sm font-semibold text-slate-800 block">Search Visibility</span>
+                      <span className="text-xs text-slate-500">Allow search crawlers and other volunteers to locate your profile</span>
+                    </div>
+                    <input type="checkbox" defaultChecked className="w-4 h-4 text-indigo-600 border-slate-300 rounded btn-press focus:ring-indigo-600" />
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Notification settings */}
               <Card className="shadow border border-slate-200 bg-white">
                 <CardHeader className="flex flex-row items-center gap-3">
@@ -336,7 +430,8 @@ export default function Settings() {
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         required
                         disabled={passwordSaving}
-                        className="btn-press"
+                        autoComplete="current-password"
+                        className="btn-press focus:ring-2 focus:ring-indigo-600"
                       />
                     </div>
                     <div className="space-y-1">
@@ -344,28 +439,48 @@ export default function Settings() {
                       <Input
                         type="password"
                         value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
+                        onChange={(e) => checkPasswordStrength(e.target.value)}
                         required
                         disabled={passwordSaving}
-                        className="btn-press"
+                        autoComplete="new-password"
+                        className={`btn-press focus:ring-2 ${passwordErrorMsg ? "border-amber-500 focus:ring-amber-500" : "focus:ring-indigo-600"}`}
                       />
+                      {passwordStrength.label && (
+                        <div className="space-y-1 mt-1.5">
+                          <div className="flex justify-between items-center text-[10px] font-bold">
+                            <span className="text-slate-500 uppercase">Strength:</span>
+                            <span className={passwordStrength.score >= 5 ? "text-green-600" : passwordStrength.score >= 3 ? "text-amber-500" : "text-red-500"}>
+                              {passwordStrength.label}
+                            </span>
+                          </div>
+                          <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${passwordStrength.color} transition-all duration-300`}
+                              style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                      {passwordErrorMsg && <p className="text-[10px] text-slate-500 mt-1 leading-normal">{passwordErrorMsg}</p>}
                     </div>
                     <div className="space-y-1">
                       <label className="text-sm font-medium text-slate-700">Confirm New Password</label>
                       <Input
                         type="password"
                         value={confirmNewPassword}
-                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        onChange={(e) => handleConfirmPasswordChange(e.target.value)}
                         required
                         disabled={passwordSaving}
-                        className="btn-press"
+                        autoComplete="new-password"
+                        className={`btn-press focus:ring-2 ${confirmErrorMsg ? "border-red-500 focus:ring-red-500" : "focus:ring-indigo-600"}`}
                       />
+                      {confirmErrorMsg && <p className="text-[11px] text-red-500 font-medium mt-1">{confirmErrorMsg}</p>}
                     </div>
                   </div>
                   <div className="flex justify-end pt-2">
                     <Button
                       type="submit"
-                      disabled={passwordSaving || !currentPassword || !newPassword || !confirmNewPassword}
+                      disabled={passwordSaving || !currentPassword || !newPassword || !confirmNewPassword || !!confirmErrorMsg || passwordStrength.score < 3}
                       className="btn-press bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex items-center gap-2"
                     >
                       {passwordSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}

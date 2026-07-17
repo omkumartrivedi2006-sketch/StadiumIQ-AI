@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, Link } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,34 +22,97 @@ export default function Register() {
   const [country, setCountry] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
 
-  // Validation States
+  // Real-time Validation States
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmError, setConfirmError] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState({ score: 0, label: "", color: "" });
   const [error, setError] = useState("");
 
-  const validatePassword = (pass: string) => {
-    if (pass.length < 8) return "Password must be at least 8 characters long";
-    if (!/[A-Z]/.test(pass)) return "Password must contain at least one uppercase letter";
-    if (!/[a-z]/.test(pass)) return "Password must contain at least one lowercase letter";
-    if (!/\d/.test(pass)) return "Password must contain at least one number";
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pass)) return "Password must contain at least one special character";
-    return null;
+  const handleEmailChange = (val: string) => {
+    setEmail(val);
+    if (!val) {
+      setEmailError("");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val)) {
+      setEmailError("Please enter a valid email address.");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const checkPasswordStrength = (val: string) => {
+    setPassword(val);
+    if (!val) {
+      setPasswordStrength({ score: 0, label: "", color: "" });
+      setPasswordError("");
+      return;
+    }
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[a-z]/.test(val)) score++;
+    if (/\d/.test(val)) score++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(val)) score++;
+
+    let label = "Very Weak";
+    let color = "bg-red-500";
+    if (score >= 5) {
+      label = "Strong";
+      color = "bg-green-500";
+      setPasswordError("");
+    } else if (score >= 3) {
+      label = "Medium";
+      color = "bg-amber-500";
+      setPasswordError("Password must meet complexity rules (uppercase, lowercase, digit, special symbol).");
+    } else {
+      label = "Weak";
+      color = "bg-red-500";
+      setPasswordError("Password is too short or simple (minimum 8 characters).");
+    }
+    setPasswordStrength({ score, label, color });
+
+    // Re-verify confirm password if it already has value
+    if (confirmPassword && val !== confirmPassword) {
+      setConfirmError("Passwords do not match.");
+    } else {
+      setConfirmError("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (val: string) => {
+    setConfirmPassword(val);
+    if (!val) {
+      setConfirmError("");
+      return;
+    }
+    if (val !== password) {
+      setConfirmError("Passwords do not match.");
+    } else {
+      setConfirmError("");
+    }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // Form checks
+    // Submit validations
+    if (emailError) {
+      setError("Please fix the email address error.");
+      return;
+    }
+    if (passwordStrength.score < 3) {
+      setError("Please choose a stronger password.");
+      return;
+    }
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords do not match.");
       return;
     }
-
-    const passError = validatePassword(password);
-    if (passError) {
-      setError(passError);
-      return;
-    }
-
     if (!acceptTerms) {
       setError("You must accept the terms and conditions");
       return;
@@ -65,6 +129,8 @@ export default function Register() {
         country,
         acceptTerms,
       });
+
+      toast.success("Welcome! Registration completed successfully.");
 
       // Role-based redirects on successful registration
       if (user.role === "admin") {
@@ -116,7 +182,9 @@ export default function Register() {
                     onChange={(e) => setFullName(e.target.value)}
                     required
                     disabled={loading}
-                    className="btn-press"
+                    autoFocus
+                    autoComplete="name"
+                    className="btn-press focus:ring-2 focus:ring-indigo-600"
                   />
                 </div>
                 <div className="space-y-1">
@@ -125,11 +193,13 @@ export default function Register() {
                     type="email"
                     placeholder="name@example.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => handleEmailChange(e.target.value)}
                     required
                     disabled={loading}
-                    className="btn-press"
+                    autoComplete="email"
+                    className={`btn-press focus:ring-2 ${emailError ? "border-red-500 focus:ring-red-500" : "focus:ring-indigo-600"}`}
                   />
+                  {emailError && <p className="text-[11px] text-red-500 font-medium mt-1">{emailError}</p>}
                 </div>
               </div>
 
@@ -143,7 +213,8 @@ export default function Register() {
                     onChange={(e) => setPhone(e.target.value)}
                     required
                     disabled={loading}
-                    className="btn-press"
+                    autoComplete="tel"
+                    className="btn-press focus:ring-2 focus:ring-indigo-600"
                   />
                 </div>
                 <div className="space-y-1">
@@ -155,7 +226,8 @@ export default function Register() {
                     onChange={(e) => setCountry(e.target.value)}
                     required
                     disabled={loading}
-                    className="btn-press"
+                    autoComplete="country-name"
+                    className="btn-press focus:ring-2 focus:ring-indigo-600"
                   />
                 </div>
               </div>
@@ -182,11 +254,29 @@ export default function Register() {
                     type="password"
                     placeholder="Min 8 chars, mixed"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => checkPasswordStrength(e.target.value)}
                     required
                     disabled={loading}
-                    className="btn-press"
+                    autoComplete="new-password"
+                    className={`btn-press focus:ring-2 ${passwordError ? "border-amber-500 focus:ring-amber-500" : "focus:ring-indigo-600"}`}
                   />
+                  {passwordStrength.label && (
+                    <div className="space-y-1.5 mt-1.5">
+                      <div className="flex justify-between items-center text-[10px] font-bold">
+                        <span className="text-slate-500 uppercase">Strength:</span>
+                        <span className={passwordStrength.score >= 5 ? "text-green-600" : passwordStrength.score >= 3 ? "text-amber-500" : "text-red-500"}>
+                          {passwordStrength.label}
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${passwordStrength.color} transition-all duration-300`}
+                          style={{ width: `${(passwordStrength.score / 5) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {passwordError && <p className="text-[10px] text-slate-500 mt-1 leading-normal">{passwordError}</p>}
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-slate-700">Confirm Password</label>
@@ -194,11 +284,13 @@ export default function Register() {
                     type="password"
                     placeholder="Repeat password"
                     value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => handleConfirmPasswordChange(e.target.value)}
                     required
                     disabled={loading}
-                    className="btn-press"
+                    autoComplete="new-password"
+                    className={`btn-press focus:ring-2 ${confirmError ? "border-red-500 focus:ring-red-500" : "focus:ring-indigo-600"}`}
                   />
+                  {confirmError && <p className="text-[11px] text-red-500 font-medium mt-1">{confirmError}</p>}
                 </div>
               </div>
 

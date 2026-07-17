@@ -179,8 +179,11 @@ export default function AIChat() {
               )}
               {isLoading && (
                 <div className="animate-slide-in-up flex justify-start">
-                  <div className="bg-slate-100 text-slate-900 px-4 py-3 rounded-lg rounded-bl-none">
-                    <Loader2 size={20} className="animate-spin" />
+                  <div className="bg-slate-100 text-slate-500 px-4 py-3.5 rounded-lg rounded-bl-none flex items-center gap-1.5 shadow-sm border border-slate-100">
+                    <span className="sr-only">AI is typing...</span>
+                    <div className="w-2.5 h-2.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-2.5 h-2.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-2.5 h-2.5 bg-slate-400 rounded-full animate-bounce" />
                   </div>
                 </div>
               )}

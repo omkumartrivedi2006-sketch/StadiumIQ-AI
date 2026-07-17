@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Moon, Sun, Settings } from "lucide-react";
+import { Menu, X, Moon, Sun, Settings, User } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -56,7 +56,7 @@ export function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
@@ -98,6 +98,25 @@ export function Navigation() {
           {isAuthenticated ? (
             <>
               <NotificationCenter />
+              {user?.profileImage ? (
+                <button
+                  onClick={() => setLocation("/profile")}
+                  className="w-8 h-8 rounded-full border border-indigo-200 overflow-hidden btn-press cursor-pointer flex-shrink-0"
+                  title="My Profile"
+                >
+                  <img src={user.profileImage} alt="User Avatar" className="w-full h-full object-cover" />
+                </button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setLocation("/profile")}
+                  className="btn-press"
+                  title="My Profile"
+                >
+                  <User size={18} className="text-slate-700" />
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
@@ -171,6 +190,17 @@ export function Navigation() {
                     <span className="text-xs text-slate-500 font-medium">Alerts</span>
                     <NotificationCenter />
                   </div>
+                  <Button
+                    onClick={() => {
+                      setIsOpen(false);
+                      setLocation("/profile");
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="w-full btn-press gap-2 justify-center"
+                  >
+                    <User size={16} /> My Profile
+                  </Button>
                   <Button
                     onClick={() => {
                       setIsOpen(false);

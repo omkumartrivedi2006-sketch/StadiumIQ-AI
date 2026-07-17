@@ -24,32 +24,43 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex items-center justify-center min-h-screen p-8 bg-background">
-          <div className="flex flex-col items-center w-full max-w-2xl p-8">
-            <AlertTriangle
-              size={48}
-              className="text-destructive mb-6 flex-shrink-0"
-            />
-
-            <h2 className="text-xl mb-4">An unexpected error occurred.</h2>
-
-            <div className="p-4 w-full rounded bg-muted overflow-auto mb-6">
-              <pre className="text-sm text-muted-foreground whitespace-break-spaces">
-                {this.state.error?.stack}
-              </pre>
+        <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-slate-50 to-slate-100">
+          <div className="w-full max-w-lg p-8 bg-white border border-slate-200 shadow-xl rounded-2xl text-center">
+            <div className="flex justify-center mb-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-red-100 rounded-full animate-pulse" />
+                <AlertTriangle className="relative h-16 w-16 text-red-500" />
+              </div>
             </div>
+
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">500</h1>
+            <h2 className="text-xl font-semibold text-slate-700 mb-4">
+              Unexpected Application Error
+            </h2>
+            <p className="text-slate-600 mb-6 leading-relaxed">
+              We encountered a temporary technical glitch. Please try reloading the page.
+            </p>
 
             <button
               onClick={() => window.location.reload()}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg",
-                "bg-primary text-primary-foreground",
-                "hover:opacity-90 cursor-pointer"
-              )}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-md transition-all btn-press cursor-pointer"
             >
               <RotateCcw size={16} />
-              Reload Page
+              Reload Application
             </button>
+
+            {this.state.error && (
+              <details className="mt-6 text-left w-full border border-slate-200 rounded-lg bg-slate-50 overflow-hidden">
+                <summary className="text-[11px] font-bold text-slate-500 hover:text-slate-700 cursor-pointer p-2.5 bg-slate-100 select-none">
+                  Show Technical Stacktrace
+                </summary>
+                <div className="p-3 max-h-40 overflow-y-auto border-t border-slate-200">
+                  <pre className="text-[10px] font-mono text-slate-600 whitespace-pre-wrap leading-normal">
+                    {this.state.error.stack || this.state.error.message}
+                  </pre>
+                </div>
+              </details>
+            )}
           </div>
         </div>
       );

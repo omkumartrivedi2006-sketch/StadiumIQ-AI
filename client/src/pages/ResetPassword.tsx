@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { KeyRound, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 import { apiClient } from "@/api/client";
+import { toast } from "sonner";
 
 export default function ResetPassword() {
   const [, setLocation] = useLocation();
@@ -41,17 +42,20 @@ export default function ResetPassword() {
 
     if (!token) {
       setError("Missing token.");
+      toast.error("Missing token.");
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
     const passError = validatePassword(password);
     if (passError) {
       setError(passError);
+      toast.error(passError);
       return;
     }
 
@@ -64,14 +68,19 @@ export default function ResetPassword() {
 
       if (response.data?.success) {
         setSuccess(true);
+        toast.success("Password reset successfully! Redirecting...");
         setTimeout(() => {
           setLocation("/login");
         }, 3000);
       } else {
-        setError(response.data?.message || "Failed to reset password.");
+        const errMsg = response.data?.message || "Failed to reset password.";
+        setError(errMsg);
+        toast.error(errMsg);
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to reset password.");
+      const errMsg = err.response?.data?.message || "Failed to reset password.";
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }

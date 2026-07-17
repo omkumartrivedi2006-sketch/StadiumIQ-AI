@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { MapView } from "@/components/Map";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyMedia } from "@/components/ui/empty";
 import {
   MessageSquare,
   MapPin,
@@ -16,6 +18,7 @@ import {
   Calendar,
   Search,
   Trash2,
+  X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
@@ -36,22 +39,73 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const handleSearch = async (val: string) => {
-    setSearchQuery(val);
-    if (!val.trim()) {
+  // Load recent searches on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("recent_searches");
+    if (saved) {
+      try {
+        setRecentSearches(JSON.parse(saved));
+      } catch (e) {
+        setRecentSearches([]);
+      }
+    }
+  }, []);
+
+  const addRecentSearch = (query: string) => {
+    if (!query.trim()) return;
+    const clean = query.trim();
+    const updated = [clean, ...recentSearches.filter((s) => s !== clean)].slice(0, 5);
+    setRecentSearches(updated);
+    localStorage.setItem("recent_searches", JSON.stringify(updated));
+  };
+
+  const clearRecentSearches = () => {
+    setRecentSearches([]);
+    localStorage.removeItem("recent_searches");
+  };
+
+  // Debounced search trigger (300ms delay)
+  useEffect(() => {
+    if (!searchQuery.trim()) {
       setSearchResults(null);
       return;
     }
-    setSearchLoading(true);
-    try {
-      const res = await searchService.search(val);
-      setSearchResults(res);
-    } catch (err) {
-      console.error("Search failed:", err);
-    } finally {
-      setSearchLoading(false);
-    }
+    const delayDebounceFn = setTimeout(async () => {
+      setSearchLoading(true);
+      try {
+        const res = await searchService.search(searchQuery);
+        setSearchResults(res);
+        addRecentSearch(searchQuery);
+      } catch (err) {
+        console.error("Search failed:", err);
+      } finally {
+        setSearchLoading(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  const highlightText = (text: string, query: string) => {
+    if (!query.trim()) return text;
+    const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")})`, "gi");
+    const parts = text.split(regex);
+    return (
+      <>
+        {parts.map((part, i) =>
+          regex.test(part) ? (
+            <mark key={i} className="bg-indigo-100 text-indigo-900 rounded px-0.5 font-semibold">
+              {part}
+            </mark>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
   };
 
   // Tickets & Matches States
@@ -89,13 +143,31 @@ export default function Dashboard() {
       const ticketsResp = await apiClient.get("/tickets");
       if (ticketsResp.data?.success && ticketsResp.data?.data?.docs) {
         setTickets(ticketsResp.data.data.docs);
+        localStorage.setItem("cached_tickets", JSON.stringify(ticketsResp.data.data.docs));
       }
       const matchesResp = await apiClient.get("/matches");
       if (matchesResp.data?.success && matchesResp.data?.data?.docs) {
         setMatches(matchesResp.data.data.docs);
+        localStorage.setItem("cached_matches", JSON.stringify(matchesResp.data.data.docs));
       }
     } catch (err) {
-      console.error("Failed to load tickets/matches:", err);
+      console.error("Failed to load tickets/matches from server, checking cache:", err);
+      const cachedT = localStorage.getItem("cached_tickets");
+      if (cachedT) {
+        try {
+          setTickets(JSON.parse(cachedT));
+        } catch (e) {
+          console.error("Failed to parse cached tickets", e);
+        }
+      }
+      const cachedM = localStorage.getItem("cached_matches");
+      if (cachedM) {
+        try {
+          setMatches(JSON.parse(cachedM));
+        } catch (e) {
+          console.error("Failed to parse cached matches", e);
+        }
+      }
     } finally {
       setTicketsLoading(false);
     }
@@ -269,19 +341,101 @@ export default function Dashboard() {
             </div>
 
             {/* Global Search Bar */}
-            <div className="mb-8 relative">
+            <div className="mb-8 relative" onMouseLeave={() => setShowSuggestions(false)}>
               <div className="relative">
                 <Search className="absolute left-3 top-3.5 text-slate-400" size={20} />
                 <Input
                   placeholder="Global search matches, stadiums, tickets, food stalls, transportation..."
                   value={searchQuery}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-10 py-6 text-base shadow-sm bg-white"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setShowSuggestions(true)}
+                  className="pl-10 pr-10 py-6 text-base shadow-sm bg-white"
                 />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-10 top-4 text-slate-400 hover:text-slate-600 btn-press"
+                    title="Clear search"
+                  >
+                    <X size={18} />
+                  </button>
+                )}
                 {searchLoading && (
                   <Loader2 className="absolute right-3 top-4 animate-spin text-slate-400" size={18} />
                 )}
               </div>
+
+              {/* Suggestions / Recent Searches Dropdown */}
+              {showSuggestions && (
+                <div className="absolute left-0 right-0 z-20 mt-1 bg-white rounded-lg border border-slate-200 shadow-lg p-4 animate-scale-in">
+                  <div className="flex items-center justify-between border-b pb-2 mb-3">
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Search Assistant</span>
+                    <button
+                      type="button"
+                      onClick={() => setShowSuggestions(false)}
+                      className="text-xs text-slate-500 hover:text-slate-700 font-semibold"
+                    >
+                      Close
+                    </button>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {/* Recent Searches */}
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <h4 className="text-xs font-bold text-slate-700">Recent Searches</h4>
+                        {recentSearches.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={clearRecentSearches}
+                            className="text-[10px] text-red-500 hover:underline font-semibold"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                      {recentSearches.length === 0 ? (
+                        <p className="text-xs text-slate-400 italic">No recent searches</p>
+                      ) : (
+                        <div className="flex flex-wrap gap-1.5">
+                          {recentSearches.map((s, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => {
+                                setSearchQuery(s);
+                                setShowSuggestions(false);
+                              }}
+                              className="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded btn-press"
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Suggestions */}
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-700 mb-2">Suggested Stadium Queries</h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {["Gate 1", "Matches", "Food queue times", "Transport route", "SOS"].map((s, idx) => (
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() => {
+                              setSearchQuery(s);
+                              setShowSuggestions(false);
+                            }}
+                            className="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-600 px-2 py-1 rounded font-medium btn-press"
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Search Results Display */}
               {searchResults && searchQuery.trim() && (
@@ -295,7 +449,7 @@ export default function Dashboard() {
                       <div className="space-y-1.5">
                         {searchResults.matches.map((m) => (
                           <div key={m._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
-                            {m.homeTeam} vs {m.awayTeam} ({m.status}) - {new Date(m.date).toLocaleDateString()}
+                            {highlightText(`${m.homeTeam} vs ${m.awayTeam}`, searchQuery)} ({m.status}) - {new Date(m.date).toLocaleDateString()}
                           </div>
                         ))}
                       </div>
@@ -309,7 +463,7 @@ export default function Dashboard() {
                       <div className="space-y-1.5">
                         {searchResults.stadiums.map((s) => (
                           <div key={s._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
-                            {s.name} in {s.city} (Capacity: {s.capacity})
+                            {highlightText(s.name, searchQuery)} in {highlightText(s.city, searchQuery)} (Capacity: {s.capacity})
                           </div>
                         ))}
                       </div>
@@ -323,7 +477,7 @@ export default function Dashboard() {
                       <div className="space-y-1.5">
                         {searchResults.foodVendors.map((f) => (
                           <div key={f._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
-                            {f.name} ({f.category}) at {f.location} - {f.rating}★
+                            {highlightText(f.name, searchQuery)} ({highlightText(f.category, searchQuery)}) at {f.location} - {f.rating}★
                           </div>
                         ))}
                       </div>
@@ -337,7 +491,7 @@ export default function Dashboard() {
                       <div className="space-y-1.5">
                         {searchResults.transport.map((t) => (
                           <div key={t._id} className="text-sm text-slate-700 bg-slate-50 p-2 rounded">
-                            {t.type} ({t.routeName}) to {t.destination} - Status: {t.status}
+                            {highlightText(t.type, searchQuery)} ({highlightText(t.routeName, searchQuery)}) to {highlightText(t.destination, searchQuery)} - Status: {t.status}
                           </div>
                         ))}
                       </div>
@@ -544,13 +698,38 @@ export default function Dashboard() {
                     My Booked Tickets
                   </h2>
                   {ticketsLoading ? (
-                    <div className="text-center py-6 text-slate-500 flex items-center justify-center gap-2">
-                      <Loader2 className="animate-spin" size={18} />
-                      Loading tickets...
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {[1, 2].map((i) => (
+                        <div key={i} className="p-4 border border-slate-200 rounded-lg space-y-3 bg-slate-50/50">
+                          <div className="flex justify-between">
+                            <Skeleton className="h-4 w-20" />
+                            <Skeleton className="h-3 w-16" />
+                          </div>
+                          <Skeleton className="h-5 w-48" />
+                          <Skeleton className="h-3.5 w-32" />
+                          <div className="flex justify-between items-center pt-2">
+                            <div className="space-y-1.5">
+                              <Skeleton className="h-2 w-16" />
+                              <Skeleton className="h-4 w-24" />
+                            </div>
+                            <Skeleton className="h-10 w-24" />
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   ) : tickets.length === 0 ? (
-                    <div className="text-center py-6 text-slate-500">
-                      No active tickets booked. Browse upcoming matches below to book one!
+                    <div className="py-8">
+                      <Empty className="bg-slate-50/50 border-dashed border-slate-200">
+                        <EmptyHeader>
+                          <EmptyMedia className="bg-indigo-50 text-indigo-600 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
+                            <TicketIcon size={18} />
+                          </EmptyMedia>
+                          <EmptyTitle className="text-sm font-bold text-slate-800">No Tickets Booked</EmptyTitle>
+                          <EmptyDescription className="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
+                            Browse upcoming FIFA World Cup 2026 matches below to book your seat!
+                          </EmptyDescription>
+                        </EmptyHeader>
+                      </Empty>
                     </div>
                   ) : (
                     <div className="grid md:grid-cols-2 gap-4">
@@ -624,9 +803,35 @@ export default function Dashboard() {
                   </div>
 
                   {ticketsLoading ? (
-                    <div className="text-center py-6 text-slate-500">Loading matches...</div>
+                    <div className="space-y-4">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="p-4 border border-slate-200 rounded-lg flex flex-col md:flex-row justify-between gap-4 bg-slate-50/50">
+                          <div className="space-y-2">
+                            <Skeleton className="h-5 w-48" />
+                            <Skeleton className="h-3.5 w-32" />
+                            <Skeleton className="h-3 w-40" />
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <Skeleton className="h-4 w-24" />
+                            <Skeleton className="h-9 w-28" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   ) : filteredMatches.length === 0 ? (
-                    <div className="text-center py-6 text-slate-500">No upcoming matches scheduled.</div>
+                    <div className="py-8">
+                      <Empty className="bg-slate-50/50 border-dashed border-slate-200">
+                        <EmptyHeader>
+                          <EmptyMedia className="bg-slate-100 text-slate-500 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
+                            <Calendar size={18} />
+                          </EmptyMedia>
+                          <EmptyTitle className="text-sm font-bold text-slate-800">No Matches Found</EmptyTitle>
+                          <EmptyDescription className="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
+                            We couldn't find any matches matching your query. Try another team name or stadium!
+                          </EmptyDescription>
+                        </EmptyHeader>
+                      </Empty>
+                    </div>
                   ) : (
                     <div className="space-y-4">
                       {filteredMatches.map((m) => (

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { KeyRound, Loader2, AlertCircle, CheckCircle2, ArrowLeft } from "lucide-react";
 import { apiClient } from "@/api/client";
+import { toast } from "sonner";
 
 export default function ForgotPassword() {
   const [, setLocation] = useLocation();
@@ -24,11 +25,16 @@ export default function ForgotPassword() {
       const response = await apiClient.post("/auth/forgot-password", { email });
       if (response.data?.success) {
         setSuccess(true);
+        toast.success("Password reset link sent to your email.");
       } else {
-        setError(response.data?.message || "Failed to request password reset");
+        const errMsg = response.data?.message || "Failed to request password reset";
+        setError(errMsg);
+        toast.error(errMsg);
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+      const errMsg = err.response?.data?.message || "Something went wrong. Please try again.";
+      setError(errMsg);
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }

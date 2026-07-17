@@ -27,10 +27,25 @@ export const aiService = {
             timestamp: new Date(chat.timestamp || chat.createdAt),
           });
         });
+        localStorage.setItem("cached_chat_history", JSON.stringify(msgs));
         return msgs;
       }
     } catch (e) {
-      console.error("Failed to load chat history from backend:", e);
+      console.error("Failed to load chat history from backend, checking cache:", e);
+    }
+
+    const cached = localStorage.getItem("cached_chat_history");
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        // Convert timestamp strings back to Date objects
+        return parsed.map((m: any) => ({
+          ...m,
+          timestamp: new Date(m.timestamp),
+        }));
+      } catch (err) {
+        console.error("Error parsing cached chat history:", err);
+      }
     }
     return [];
   },

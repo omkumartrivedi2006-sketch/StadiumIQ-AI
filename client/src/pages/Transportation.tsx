@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Clock, DollarSign, Users, MapPin, Sparkles, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyMedia } from "@/components/ui/empty";
 import { transportService, TransportOption } from "@/services/transport";
 import { aiService } from "@/services/ai";
 import { toast } from "sonner";
@@ -107,7 +109,37 @@ export default function Transportation() {
 
           {/* Transport Options Grid */}
           {loading ? (
-            <div className="text-center py-12 text-slate-500">Loading transit schedules...</div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="p-6 bg-white rounded-lg border border-slate-200 space-y-4">
+                  <Skeleton className="h-10 w-10 rounded-lg" />
+                  <Skeleton className="h-6 w-32" />
+                  <div className="space-y-3">
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-4 w-36" />
+                    <Skeleton className="h-4 w-44" />
+                  </div>
+                  <div className="flex items-center justify-between pt-2">
+                    <Skeleton className="h-4 w-12" />
+                    <Skeleton className="h-9 w-20 rounded" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : transportOptions.length === 0 ? (
+            <div className="py-12 bg-white border border-slate-200 rounded-lg mb-12">
+              <Empty className="max-w-md mx-auto">
+                <EmptyHeader>
+                  <EmptyMedia className="bg-slate-100 text-slate-500 rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-2">
+                    <MapPin size={18} />
+                  </EmptyMedia>
+                  <EmptyTitle className="text-sm font-bold text-slate-800">No Transit Data</EmptyTitle>
+                  <EmptyDescription className="text-xs text-slate-500 max-w-xs mx-auto mt-1 leading-normal">
+                    There are no active transportation options reported at the moment. Please consult the local SOS help desk.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {transportOptions.map((option, idx) => (
