@@ -102,8 +102,8 @@ export default function Login() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-medium text-foreground">Password</label>
-                  <Link href="/forgot-password">
-                    <a className="text-xs text-indigo-600 hover:underline">Forgot password?</a>
+                  <Link href="/forgot-password" className="text-xs text-indigo-600 hover:underline">
+                    Forgot password?
                   </Link>
                 </div>
                 <Input
@@ -172,8 +172,8 @@ export default function Login() {
 
             <div className="text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link href="/register">
-                <a className="text-indigo-600 font-semibold hover:underline">Sign Up</a>
+              <Link href="/register" className="text-indigo-600 font-semibold hover:underline">
+                Sign Up
               </Link>
             </div>
           </CardContent>

@@ -28,10 +28,20 @@ import { searchService, SearchResults } from "@/services/search";
 import { apiClient } from "@/api/client";
 import { toast } from "sonner";
 import { socketService } from "@/services/socket";
+import { useLocation as useGeoLocation } from "@/contexts/LocationContext";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const { user, logout } = useAuth();
+  const { 
+    trackingStatus, 
+    isTracking, 
+    accuracy, 
+    pauseTracking, 
+    resumeTracking, 
+    deleteHistory, 
+    requestPermission 
+  } = useGeoLocation();
   const [activeSection, setActiveSection] = useState<string>("overview");
   const [gates, setGates] = useState<GateStatus[]>([]);
   const [match, setMatch] = useState<any>(null);
@@ -621,6 +631,76 @@ export default function Dashboard() {
                     <p className="text-foreground font-medium">
                       {user?.language === "en" ? "English" : user?.language === "es" ? "Spanish" : user?.language || "English"}
                     </p>
+                  </div>
+
+                  <div className="border-t border-border pt-4">
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-2">
+                      Location Privacy
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <StatusBadge
+                          status={
+                            trackingStatus === "granted" && isTracking
+                              ? "live"
+                              : trackingStatus === "granted"
+                              ? "caution"
+                              : "unavailable"
+                          }
+                          label={
+                            trackingStatus === "granted" && isTracking
+                              ? `Live active (${accuracy ? Math.round(accuracy) + 'm' : 'GPS'})`
+                              : trackingStatus === "granted"
+                              ? "Tracking Paused"
+                              : "Disabled"
+                          }
+                        />
+                      </div>
+                      
+                      <div className="flex gap-2 flex-wrap">
+                        {trackingStatus === "granted" && (
+                          <>
+                            {isTracking ? (
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="h-7 px-2.5 text-[10px]"
+                                onClick={pauseTracking}
+                              >
+                                Pause Tracking
+                              </Button>
+                            ) : (
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="h-7 px-2.5 text-[10px]"
+                                onClick={resumeTracking}
+                              >
+                                Resume Tracking
+                              </Button>
+                            )}
+                          </>
+                        )}
+                        {trackingStatus === "prompt" && (
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="h-7 px-2.5 text-[10px] bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-950/20"
+                            onClick={requestPermission}
+                          >
+                            Enable GPS
+                          </Button>
+                        )}
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          className="h-7 px-2.5 text-[10px] text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20"
+                          onClick={deleteHistory}
+                        >
+                          Clear GPS History
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

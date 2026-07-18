@@ -95,16 +95,22 @@ self.addEventListener("fetch", (e) => {
       if (cachedResponse) {
         return cachedResponse;
       }
-      return fetch(e.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== "basic") {
+      return fetch(e.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type !== "basic") {
+            return response;
+          }
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, responseClone);
+          });
           return response;
-        }
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(e.request, responseClone);
+        })
+        .catch((err) => {
+          console.warn("[Service Worker] Fetch failed for asset:", e.request.url);
+          // Return a basic error response instead of throwing uncaught promise errors
+          return new Response("Network error", { status: 408, statusText: "Network Error" });
         });
-        return response;
-      });
     })
   );
 });

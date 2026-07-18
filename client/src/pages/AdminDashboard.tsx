@@ -8,7 +8,9 @@ import {
   LogOut,
   Search,
   Loader2,
+  Compass,
 } from "lucide-react";
+import { MapView } from "@/components/Map";
 import { useLocation } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
@@ -414,6 +416,17 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Map Operations */}
+          <div className="mt-8 animate-slide-in-up">
+            <div className="card-hover p-6 bg-card rounded-lg border border-border">
+              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <Compass size={24} className="text-indigo-600 animate-pulse-soft" />
+                Live Map Operations & Safety Telemetry
+              </h2>
+              <MapView />
             </div>
           </div>
 

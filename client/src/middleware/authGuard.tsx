@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "wouter";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Spinner } from "@/components/ui/spinner";
 
 interface AuthGuardProps {

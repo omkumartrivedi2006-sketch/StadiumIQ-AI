@@ -40,6 +40,8 @@ import lostFoundRoutes from "./routes/lostFoundRoutes";
 import aiRoutes from "./routes/aiRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import sportsRoutes from "./routes/sportsRoutes";
+import locationRoutes from "./routes/locationRoutes";
+import mapRoutes from "./routes/mapRoutes";
 
 
 dotenv.config();
@@ -92,6 +94,8 @@ async function startServer() {
   app.use("/api/lost-found", lostFoundRoutes);
   app.use("/api/ai", aiRoutes);
   app.use("/api/search", searchRoutes);
+  app.use("/api/location", locationRoutes);
+  app.use("/api/map", mapRoutes);
   app.use("/api", sportsRoutes);
 
   // Serve static files from dist/public in production

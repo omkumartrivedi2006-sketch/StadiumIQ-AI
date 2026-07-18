@@ -2,7 +2,8 @@ import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Input } from "@/components/ui/input";
-import { Heart, MessageSquare, AlertCircle, Languages, LogOut, ShieldAlert, Users, Loader2 } from "lucide-react";
+import { Heart, MessageSquare, AlertCircle, Languages, LogOut, ShieldAlert, Users, Loader2, Compass } from "lucide-react";
+import { MapView } from "@/components/Map";
 import { useLocation } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
@@ -210,6 +211,15 @@ export default function VolunteerDashboard() {
                     )}
                   </div>
                 )}
+              </div>
+
+              {/* Live Stadium Wayfinding Map */}
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
+                <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
+                  <Compass size={22} className="text-indigo-600" />
+                  Live Incident Map & Indoor Wayfinding
+                </h2>
+                <MapView />
               </div>
             </div>
 

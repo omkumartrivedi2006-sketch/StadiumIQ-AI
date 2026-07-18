@@ -4,6 +4,8 @@ import { FeatureCard } from "@/components/FeatureCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
+import { useState } from "react";
+import { useLocation as useGeoLocation } from "@/contexts/LocationContext";
 import {
   MessageSquare,
   MapPin,
@@ -18,6 +20,8 @@ import {
 
 export default function Landing() {
   const [, setLocation] = useLocation();
+  const { trackingStatus, requestPermission } = useGeoLocation();
+  const [dismissed, setDismissed] = useState(false);
 
   const features = [
     {
@@ -96,6 +100,30 @@ export default function Landing() {
 
         <div className="container mx-auto relative z-10">
           <div className="max-w-2xl animate-slide-in-up">
+            {trackingStatus === "prompt" && !dismissed && (
+              <div className="mb-6 p-5 rounded-xl border border-indigo-500/20 bg-background/80 backdrop-blur-md shadow-xl animate-fade-in">
+                <p className="text-sm font-medium text-foreground mb-3 leading-relaxed">
+                  Enable your live location to receive AI-powered navigation, nearby facilities, emergency assistance, crowd updates, and real-time stadium guidance.
+                </p>
+                <div className="flex gap-3">
+                  <Button 
+                    size="sm" 
+                    onClick={requestPermission}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium btn-press"
+                  >
+                    Allow Location
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={() => setDismissed(true)}
+                    className="border-border font-medium bg-background/50 btn-press"
+                  >
+                    Not Now
+                  </Button>
+                </div>
+              </div>
+            )}
             <div className="mb-6">
               <StatusBadge
                 status="live"

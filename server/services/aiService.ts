@@ -7,6 +7,46 @@ import { matchService } from "./matchService";
 import { analyticsService } from "./analyticsService";
 import { sportsStandingRepository } from "./sportsApi/repositories/SportsStandingRepository";
 import { sportsStadiumRepository } from "./sportsApi/repositories/SportsStadiumRepository";
+import { liveLocationRepository } from "../repositories/liveLocationRepository";
+import { mapLocationRepository } from "../repositories/mapLocationRepository";
+import { parkingSlotRepository } from "../repositories/parkingSlotRepository";
+import { routeRepository } from "../repositories/routeRepository";
+
+const METLIFE_FACILITIES = {
+  gates: [
+    { name: "Gate 1 (North)", lat: 40.8145, lng: -74.0755 },
+    { name: "Gate 2 (East)", lat: 40.8138, lng: -74.0725 },
+    { name: "Gate 3 (South)", lat: 40.8123, lng: -74.0736 },
+    { name: "Gate 4 (West)", lat: 40.8128, lng: -74.0760 },
+  ],
+  medical: [
+    { name: "First Aid & Medical Room C", lat: 40.8132, lng: -74.0740 },
+    { name: "Emergency Dispatch Desk - Gate 3", lat: 40.8124, lng: -74.0735 },
+  ],
+  food: [
+    { name: "World Cup Food Plaza", lat: 40.8139, lng: -74.0748 },
+    { name: "Halal & Vegan Stalls Court", lat: 40.8131, lng: -74.0739 },
+  ],
+  accessibility: [
+    { name: "ADA Accessible Lift & Ramp - Section B", lat: 40.8136, lng: -74.0746 },
+    { name: "Accessible Restroom - Gate 3 Lobby", lat: 40.8125, lng: -74.0737 },
+  ],
+};
+
+function getDistanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371e3; // Earth radius in meters
+  const phi1 = (lat1 * Math.PI) / 180;
+  const phi2 = (lat2 * Math.PI) / 180;
+  const deltaPhi = ((lat2 - lat1) * Math.PI) / 180;
+  const deltaLambda = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+    Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}
 
 // CENTRALIZED PROMPT TEMPLATES
 const promptTemplates = {
@@ -122,8 +162,44 @@ export const aiService = {
             return `- Stadium: ${s.name} (${s.city}), Gate statuses: ${gatesStr}`;
           }).join("\n");
         }
-        case "navigation":
-        case "accessibility":
+        case "navigation": {
+          const locationsResult = await mapLocationRepository.find({}, { limit: 100 });
+          const routesResult = await routeRepository.find({}, { limit: 100 });
+          const parkingResult = await parkingSlotRepository.find({}, { limit: 100 });
+
+          const locStr = locationsResult.docs.map(loc => 
+            `- ${loc.name} (Category: ${loc.category}, Lat: ${loc.latitude}, Lng: ${loc.longitude}, Status: ${loc.status}, Hours: ${loc.openingHours})`
+          ).join("\n");
+
+          const routeStr = routesResult.docs.map(r => 
+            `- Route "${r.name}" (${r.category}): from [${r.startLatitude}, ${r.startLongitude}] to [${r.endLatitude}, ${r.endLongitude}] - Distance: ${r.distance}m, Walk Time: ${r.walkTime} min`
+          ).join("\n");
+
+          const parkStr = parkingResult.docs.map(p => 
+            `- Parking Lot "${p.parkingName}" (${p.parkingType}): Lat: ${p.latitude}, Lng: ${p.longitude}, Available: ${p.availableSlots}/${p.capacity} slots, Status: ${p.status}`
+          ).join("\n");
+
+          return `STADIUM WAYFINDING MAP LOCATIONS:\n${locStr}\n\nPRE-DEFINED ROUTES:\n${routeStr}\n\nPARKING PLOTS:\n${parkStr}`;
+        }
+        case "accessibility": {
+          const locationsResult = await mapLocationRepository.find({ category: { $in: ["restroom", "seating", "medical", "gate"] } }, { limit: 100 });
+          const routesResult = await routeRepository.find({ category: "wheelchair" }, { limit: 100 });
+          const parkingResult = await parkingSlotRepository.find({ parkingType: "Accessible" }, { limit: 50 });
+
+          const locStr = locationsResult.docs.map(loc => 
+            `- ${loc.name} (Category: ${loc.category}, Lat: ${loc.latitude}, Lng: ${loc.longitude})`
+          ).join("\n");
+
+          const routeStr = routesResult.docs.map(r => 
+            `- Accessible Wheelchair Path "${r.name}": Distance: ${r.distance}m, Walk Time: ${r.walkTime} min`
+          ).join("\n");
+
+          const parkStr = parkingResult.docs.map(p => 
+            `- Accessible Parking "${p.parkingName}": Available: ${p.availableSlots}/${p.capacity} slots`
+          ).join("\n");
+
+          return `ACCESSIBLE FACILITIES:\n${locStr}\n\nACCESSIBLE PATHS:\n${routeStr}\n\nACCESSIBLE PARKING:\n${parkStr}`;
+        }
         case "chat":
         default: {
           const matchesResp = await matchService.getAllMatches({}, { limit: 5 });
@@ -186,7 +262,51 @@ export const aiService = {
     const maxTokens = Number(process.env.AI_MAX_TOKENS || 2048);
     const timeoutVal = Number(process.env.AI_TIMEOUT || 30000);
 
-    const context = await this.buildContext(feature);
+    // Look up user's active live location
+    let locationContext = "";
+    try {
+      const userLoc = await liveLocationRepository.findOne({ userId, online: true });
+      if (userLoc) {
+        const uLat = userLoc.latitude;
+        const uLng = userLoc.longitude;
+
+        const findNearest = (list: { name: string; lat: number; lng: number }[]) => {
+          let nearest = list[0];
+          let minDist = getDistanceInMeters(uLat, uLng, nearest.lat, nearest.lng);
+          for (let i = 1; i < list.length; i++) {
+            const d = getDistanceInMeters(uLat, uLng, list[i].lat, list[i].lng);
+            if (d < minDist) {
+              minDist = d;
+              nearest = list[i];
+            }
+          }
+          return { name: nearest.name, distance: Math.round(minDist) };
+        };
+
+        const nearestGate = findNearest(METLIFE_FACILITIES.gates);
+        const nearestMedical = findNearest(METLIFE_FACILITIES.medical);
+        const nearestFood = findNearest(METLIFE_FACILITIES.food);
+        const nearestADA = findNearest(METLIFE_FACILITIES.accessibility);
+
+        locationContext = `
+USER CURRENT GEOLOCATION:
+- Coordinates: Latitude: ${uLat}, Longitude: ${uLng} (GPS Accuracy: ${userLoc.accuracy}m)
+- Nearest Gate: ${nearestGate.name} (~${nearestGate.distance} meters away)
+- Nearest Medical Room: ${nearestMedical.name} (~${nearestMedical.distance} meters away)
+- Nearest Food Stall: ${nearestFood.name} (~${nearestFood.distance} meters away)
+- Nearest Accessible ADA Facility: ${nearestADA.name} (~${nearestADA.distance} meters away)
+- Heading/Movement Direction: ${userLoc.heading !== null ? userLoc.heading + "°" : "Unknown"}
+- Current Speed: ${userLoc.speed !== null ? userLoc.speed + " m/s" : "Static/Standing"}
+- Timestamp of last GPS ping: ${userLoc.updatedAt}
+
+Provide navigation, proximity wayfinding directions, and emergency support instructions using this live user location!
+`;
+      }
+    } catch (e) {
+      console.error("Failed to append live location to AI context:", e);
+    }
+
+    const context = (await this.buildContext(feature)) + locationContext;
     const systemPrompt = promptTemplates[feature](role, language, context);
 
     // Increment AI Request Analytics
@@ -196,9 +316,65 @@ export const aiService = {
       console.error("Analytics sync failed:", e);
     }
 
-    // FALLBACK IF API KEY IS PLACEHOLDER OR MISSING
-    if (!apiKey || apiKey === "placeholder_gemini_api_key") {
-      console.warn("GEMINI_API_KEY is missing or placeholder. Running Mock AI Fallback...");
+    // FETCH CONVERSATION HISTORY (Last 10 turns for the user & feature)
+    const historyDocs = await chatHistoryRepository.find(
+      { userId, feature },
+      { sort: { timestamp: 1 }, limit: 10 }
+    );
+
+    const isGeminiKeyValid = apiKey && apiKey !== "placeholder_gemini_api_key" && apiKey.startsWith("AIzaSy");
+
+    // FALLBACK IF GEMINI API KEY IS INVALID OR PLACEHOLDER
+    if (!isGeminiKeyValid) {
+      console.warn("GEMINI_API_KEY is missing, placeholder, or invalid. Trying OpenAI Fallback...");
+      const openaiKey = process.env.OPENAI_API_KEY;
+      if (openaiKey && !openaiKey.startsWith("your_") && !openaiKey.startsWith("sk-proj-your")) {
+        try {
+          const messages = [
+            { role: "system", content: systemPrompt },
+            ...historyDocs.docs.map((chat: any) => ([
+              { role: "user", content: chat.prompt },
+              { role: "assistant", content: chat.response }
+            ])).flat(),
+            { role: "user", content: prompt }
+          ];
+
+          const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${openaiKey}`
+            },
+            body: JSON.stringify({
+              model: "gpt-4o-mini",
+              messages,
+              temperature,
+              max_tokens: maxTokens
+            })
+          });
+
+          if (openaiResponse.ok) {
+            const data: any = await openaiResponse.json();
+            const aiResponse = data.choices?.[0]?.message?.content;
+            if (aiResponse) {
+              await chatHistoryRepository.create({
+                userId,
+                role,
+                prompt,
+                response: aiResponse,
+                feature,
+                language,
+                timestamp: new Date()
+              });
+              return aiResponse;
+            }
+          }
+        } catch (openaiErr: any) {
+          console.error("OpenAI Fallback Error:", openaiErr.message);
+        }
+      }
+
+      console.warn("OpenAI fallback also failed or unconfigured. Running Mock AI Fallback...");
       const mockReply = this.generateMockAIResponse(feature, language, prompt, context);
       
       // Save mock query to history database
@@ -214,12 +390,6 @@ export const aiService = {
       return mockReply;
     }
 
-    // FETCH CONVERSATION HISTORY (Last 10 turns for the user & feature)
-    const historyDocs = await chatHistoryRepository.find(
-      { userId, feature },
-      { sort: { timestamp: 1 }, limit: 10 }
-    );
-    
     const contents: any[] = [];
     
     // Append history turns
@@ -301,8 +471,54 @@ export const aiService = {
         console.error(`Gemini API connection error on attempt ${attempt}:`, err.message);
 
         if (attempt === maxAttempts) {
-          // If all network retries failed, fallback to mock so server continues responding
-          console.warn("All Gemini API connection attempts failed. Falling back to Mock AI...");
+          // If all network retries failed, fallback to OpenAI before resorting to Mock AI!
+          console.warn("All Gemini API connection attempts failed. Trying OpenAI Fallback...");
+          const openaiKey = process.env.OPENAI_API_KEY;
+          if (openaiKey && !openaiKey.startsWith("your_") && !openaiKey.startsWith("sk-proj-your")) {
+            try {
+              const messages = [
+                { role: "system", content: systemPrompt },
+                ...historyDocs.docs.map((chat: any) => ([
+                  { role: "user", content: chat.prompt },
+                  { role: "assistant", content: chat.response }
+                ])).flat(),
+                { role: "user", content: prompt }
+              ];
+              const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${openaiKey}`
+                },
+                body: JSON.stringify({
+                  model: "gpt-4o-mini",
+                  messages,
+                  temperature,
+                  max_tokens: maxTokens
+                })
+              });
+              if (openaiResponse.ok) {
+                const data: any = await openaiResponse.json();
+                const aiResponse = data.choices?.[0]?.message?.content;
+                if (aiResponse) {
+                  await chatHistoryRepository.create({
+                    userId,
+                    role,
+                    prompt,
+                    response: aiResponse,
+                    feature,
+                    language,
+                    timestamp: new Date()
+                  });
+                  return aiResponse;
+                }
+              }
+            } catch (openaiErr: any) {
+              console.error("OpenAI Fallback Error:", openaiErr.message);
+            }
+          }
+
+          console.warn("OpenAI fallback also failed or unconfigured. Falling back to Mock AI...");
           const mockReply = this.generateMockAIResponse(feature, language, prompt, context);
           await chatHistoryRepository.create({
             userId,

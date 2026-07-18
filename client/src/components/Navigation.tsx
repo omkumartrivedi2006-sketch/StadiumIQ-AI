@@ -110,35 +110,31 @@ export function Navigation() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/">
-          <a className="flex items-center gap-2 font-bold text-xl text-indigo-600 hover:text-indigo-700 transition-colors">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-sm font-bold animate-pulse-soft">
-              SQ
-            </div>
-            <span>StadiumIQ</span>
-          </a>
+        <Link href="/" className="flex items-center gap-2 font-bold text-xl text-indigo-600 hover:text-indigo-700 transition-colors">
+          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-sm font-bold animate-pulse-soft">
+            SQ
+          </div>
+          <span>StadiumIQ</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center justify-center flex-1 mx-6 gap-3 xl:gap-5 max-w-5xl">
+        <div className="hidden xl:flex items-center justify-center flex-1 mx-6 gap-3 xl:gap-5 max-w-5xl">
           {displayItems.map((item) => {
             const isActive = checkActive(item.href);
             return (
-              <Link key={item.href} href={getHref(item.href)}>
-                <a className={`text-xs xl:text-sm font-medium transition-colors whitespace-nowrap ${
-                  isActive
-                    ? "text-indigo-600 dark:text-indigo-400 font-semibold animate-fade-in"
-                    : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
-                }`}>
-                  {item.label}
-                </a>
+              <Link key={item.href} href={getHref(item.href)} className={`text-xs xl:text-sm font-medium transition-colors whitespace-nowrap ${
+                isActive
+                  ? "text-indigo-600 dark:text-indigo-400 font-semibold animate-fade-in"
+                  : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
+              }`}>
+                {item.label}
               </Link>
             );
           })}
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-3 flex-shrink-0">
+        <div className="hidden xl:flex items-center gap-2 xl:gap-3 flex-shrink-0">
           <Button
             variant="ghost"
             size="sm"
@@ -204,7 +200,7 @@ export function Navigation() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="lg:hidden btn-press text-foreground"
+          className="xl:hidden btn-press text-foreground"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
@@ -214,22 +210,20 @@ export function Navigation() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="lg:hidden border-t border-border bg-background animate-slide-in-down">
+        <div className="xl:hidden border-t border-border bg-background animate-slide-in-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {displayItems.map((item) => {
               const isActive = checkActive(item.href);
               return (
-                <Link key={item.href} href={getHref(item.href)}>
-                  <a
-                    className={`text-sm font-medium transition-colors py-2 border-b border-border ${
-                      isActive
-                        ? "text-indigo-600 dark:text-indigo-400 font-semibold"
-                        : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.label}
-                  </a>
+                <Link key={item.href} href={getHref(item.href)}
+                  className={`text-sm font-medium transition-colors py-2 border-b border-border ${
+                    isActive
+                      ? "text-indigo-600 dark:text-indigo-400 font-semibold"
+                      : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
                 </Link>
               );
             })}

@@ -20,8 +20,8 @@ export const socketService = {
       });
 
       socket.on("connect", () => {
-        console.log("[Socket.IO] Connected successfully. Joining role room:", role);
-        socket?.emit("join-role-room", role);
+        console.log("[Socket.IO] Connected successfully. Registering user:", userId);
+        socket?.emit("register-user", { userId, role });
       });
 
       socket.on("connect_error", (err) => {
@@ -47,6 +47,14 @@ export const socketService = {
       socket.disconnect();
       socket = null;
       console.log("[Socket.IO] Disconnected");
+    }
+  },
+
+  emit(event: string, data: any) {
+    if (socket) {
+      socket.emit(event, data);
+    } else {
+      console.warn("[Socket.IO] Cannot emit event. Socket is offline:", event);
     }
   },
 

@@ -31,29 +31,19 @@ export function Footer() {
             <h4 className="font-semibold text-foreground mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="/about">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About Us</a>
-                </Link>
+                <Link href="/about" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">About Us</Link>
               </li>
               <li>
-                <Link href="/features">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Features</a>
-                </Link>
+                <Link href="/features" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Features</Link>
               </li>
               <li>
-                <Link href="/pricing">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Pricing</a>
-                </Link>
+                <Link href="/pricing" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Pricing</Link>
               </li>
               <li>
-                <Link href="/blog">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Blog</a>
-                </Link>
+                <Link href="/blog" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Blog</Link>
               </li>
               <li>
-                <Link href="/contact">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</a>
-                </Link>
+                <Link href="/contact" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Contact</Link>
               </li>
             </ul>
           </div>
@@ -62,14 +52,10 @@ export function Footer() {
             <h4 className="font-semibold text-foreground mb-4">Legal</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link href="/privacy">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Privacy Policy</a>
-                </Link>
+                <Link href="/privacy" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Privacy Policy</Link>
               </li>
               <li>
-                <Link href="/terms">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Terms & Conditions</a>
-                </Link>
+                <Link href="/terms" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Terms & Conditions</Link>
               </li>
             </ul>
           </div>
@@ -81,14 +67,10 @@ export function Footer() {
                 <a href="/features#docs" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Documentation</a>
               </li>
               <li>
-                <Link href="/contact">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Help Center</a>
-                </Link>
+                <Link href="/contact" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Help Center</Link>
               </li>
               <li>
-                <Link href="/contact#faq">
-                  <a className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">FAQ</a>
-                </Link>
+                <Link href="/contact#faq" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">FAQ</Link>
               </li>
             </ul>
           </div>

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { userRepository } from "../repositories/userRepository";
 import { stadiumRepository } from "../repositories/stadiumRepository";
 import { matchRepository } from "../repositories/matchRepository";
@@ -10,13 +11,43 @@ import { crowdReportRepository } from "../repositories/crowdReportRepository";
 import { sosReportRepository } from "../repositories/sosReportRepository";
 import { chatHistoryRepository } from "../repositories/chatHistoryRepository";
 import { authService } from "../services/authService";
+import { stadiumMapRepository } from "../repositories/stadiumMapRepository";
+import { mapLocationRepository } from "../repositories/mapLocationRepository";
+import { parkingSlotRepository } from "../repositories/parkingSlotRepository";
+import { servicePointRepository } from "../repositories/servicePointRepository";
+import { routeRepository } from "../repositories/routeRepository";
+import { zoneRepository } from "../repositories/zoneRepository";
 
 export async function seedDatabase() {
   try {
     console.log("Checking if database needs seeding...");
     const userCount = await userRepository.count();
     if (userCount > 0) {
-      console.log("Database already contains data. Skipping auto-seeding.");
+      const mapCount = await stadiumMapRepository.count();
+      if (mapCount === 0) {
+        console.log("Database has users but lacks map coordinates. Seeding map coordinates only...");
+        
+        // Find MetLife stadium
+        const stadiumResult = await stadiumRepository.find({ name: "MetLife Stadium" }, { limit: 1 });
+        const metlifeStadium = stadiumResult.docs[0];
+
+        const organizerResult = await userRepository.find({ email: "organizer@demo.stadiumiq.ai" }, { limit: 1 });
+        const demoOrganizer = organizerResult.docs[0];
+
+        const volunteerResult = await userRepository.find({ email: "volunteer@demo.stadiumiq.ai" }, { limit: 1 });
+        const demoVolunteer = volunteerResult.docs[0];
+
+        if (metlifeStadium) {
+          await seedMapDataOnly(
+            metlifeStadium._id,
+            demoOrganizer?._id || new mongoose.Types.ObjectId(),
+            demoVolunteer?._id || new mongoose.Types.ObjectId()
+          );
+          console.log("Map coordinates seeded successfully to existing DB.");
+        }
+      } else {
+        console.log("Database already contains data. Skipping auto-seeding.");
+      }
       return;
     }
 
@@ -33,6 +64,12 @@ export async function seedDatabase() {
       crowdReportRepository.clear(),
       sosReportRepository.clear(),
       chatHistoryRepository.clear(),
+      stadiumMapRepository.clear(),
+      mapLocationRepository.clear(),
+      parkingSlotRepository.clear(),
+      servicePointRepository.clear(),
+      routeRepository.clear(),
+      zoneRepository.clear(),
     ]);
 
     console.log("Seeding users (including demo accounts)...");
@@ -380,8 +417,168 @@ export async function seedDatabase() {
       },
     ]);
 
+    await seedMapDataOnly(metlifeStadium._id, demoOrganizer._id, demoVolunteer._id);
+
     console.log("Database seeded successfully!");
   } catch (error) {
     console.error("Database seeding failure:", error);
+  }
+}
+
+export async function seedMapDataOnly(stadiumId: any, demoOrganizerId: any, demoVolunteerId: any) {
+  try {
+    // Seed Stadium Map Config
+    console.log("Seeding stadium map configuration...");
+    await stadiumMapRepository.create({
+      stadiumId,
+      name: "MetLife Stadium Map Layout",
+      center: { lat: 40.8135, lng: -74.0744 },
+      zoom: 16,
+      boundaryCoordinates: [
+        { lat: 40.8160, lng: -74.0780 },
+        { lat: 40.8160, lng: -74.0710 },
+        { lat: 40.8110, lng: -74.0710 },
+        { lat: 40.8110, lng: -74.0780 }
+      ]
+    });
+
+    // Seed Map Locations (Gates, Restrooms, Medical, Emergency exits, seating)
+    console.log("Seeding map locations...");
+    await mapLocationRepository.create([
+      { name: "Gate 1 (North Entrance)", stadiumId, latitude: 40.8145, longitude: -74.0755, category: "gate", description: "North entrance gate near Lot A", status: "active" },
+      { name: "Gate 2 (East Entrance)", stadiumId, latitude: 40.8138, longitude: -74.0725, category: "gate", description: "East entrance gate near Lot B", status: "active" },
+      { name: "Gate 3 (South Entrance)", stadiumId, latitude: 40.8123, longitude: -74.0736, category: "gate", description: "South entrance gate - low congestion", status: "active" },
+      { name: "Gate 4 (West Entrance)", stadiumId, latitude: 40.8128, longitude: -74.0760, category: "gate", description: "West entrance gate near rideshare", status: "active" },
+      { name: "First Aid & Medical Room C", stadiumId, latitude: 40.8132, longitude: -74.0740, category: "medical", description: "First Aid & Medical Room C", status: "active" },
+      { name: "Emergency Dispatch Desk - Gate 3", stadiumId, latitude: 40.8124, longitude: -74.0735, category: "medical", description: "First Aid near south entrance", status: "active" },
+      { name: "Main Emergency Exit Gate 4", stadiumId, latitude: 40.8128, longitude: -74.0760, category: "emergency", description: "Main emergency evacuation assembly exit", status: "active" },
+      { name: "Seating Section B - ADA Lift", stadiumId, latitude: 40.8136, longitude: -74.0746, category: "seating", description: "Section B seat rows with ADA lift access", status: "active" },
+      { name: "Restroom - Gate 3 Lobby", stadiumId, latitude: 40.8125, longitude: -74.0737, category: "restroom", description: "Wheelchair accessible restroom", status: "active" }
+    ]);
+
+    // Seed Parking slots
+    console.log("Seeding parking slots...");
+    await parkingSlotRepository.create([
+      { parkingName: "Parking Lot A (Premium)", stadiumId, latitude: 40.8105, longitude: -74.0780, capacity: 500, availableSlots: 154, occupiedSlots: 346, parkingType: "VIP", nearestEntrance: "Gate 4", status: "active" },
+      { parkingName: "Parking Lot B (General / Shuttle)", stadiumId, latitude: 40.8112, longitude: -74.0705, capacity: 2000, availableSlots: 875, occupiedSlots: 1125, parkingType: "Public", nearestEntrance: "Gate 2", status: "active" },
+      { parkingName: "Accessible ADA Parking Row 1", stadiumId, latitude: 40.8120, longitude: -74.0750, capacity: 50, availableSlots: 22, occupiedSlots: 28, parkingType: "Accessible", nearestEntrance: "Gate 3", status: "active" }
+    ]);
+
+    // Seed Service points
+    console.log("Seeding service points...");
+    await servicePointRepository.create([
+      { name: "Stadium ATM - Gate 1", stadiumId, latitude: 40.8144, longitude: -74.0752, category: "ATM", description: "Chase ATM near north entrance", status: "active" },
+      { name: "Mobile Charging Station - Concourse B", stadiumId, latitude: 40.8134, longitude: -74.0742, category: "Charging Station", description: "Free multi-port charging station", status: "active" },
+      { name: "Water Refill Station - Section C", stadiumId, latitude: 40.8133, longitude: -74.0745, category: "Water Station", description: "Chilled water station", status: "active" },
+      { name: "Lost & Found Central Hub", stadiumId, latitude: 40.8130, longitude: -74.0734, category: "Lost & Found", description: "Stadium operations desk", status: "active" }
+    ]);
+
+    // Seed Routes
+    console.log("Seeding routes...");
+    await routeRepository.create([
+      {
+        name: "Parking A to Gate 3",
+        stadiumId,
+        startLatitude: 40.8105,
+        startLongitude: -74.0780,
+        endLatitude: 40.8123,
+        endLongitude: -74.0736,
+        waypoints: [
+          { lat: 40.8105, lng: -74.0780 },
+          { lat: 40.8115, lng: -74.0760 },
+          { lat: 40.8123, lng: -74.0736 }
+        ],
+        distance: 420,
+        walkTime: 5,
+        category: "pedestrian",
+        status: "open"
+      },
+      {
+        name: "Gate 3 to Section B Seat",
+        stadiumId,
+        startLatitude: 40.8123,
+        startLongitude: -74.0736,
+        endLatitude: 40.8136,
+        endLongitude: -74.0746,
+        waypoints: [
+          { lat: 40.8123, lng: -74.0736 },
+          { lat: 40.8130, lng: -74.0742 },
+          { lat: 40.8136, lng: -74.0746 }
+        ],
+        distance: 180,
+        walkTime: 3,
+        category: "pedestrian",
+        status: "open"
+      },
+      {
+        name: "Accessible Pathway Gate 3",
+        stadiumId,
+        startLatitude: 40.8123,
+        startLongitude: -74.0736,
+        endLatitude: 40.8136,
+        endLongitude: -74.0746,
+        waypoints: [
+          { lat: 40.8123, lng: -74.0736 },
+          { lat: 40.8125, lng: -74.0737 },
+          { lat: 40.8136, lng: -74.0746 }
+        ],
+        distance: 180,
+        walkTime: 4,
+        category: "wheelchair",
+        status: "open"
+      },
+      {
+        name: "Emergency Exit Section B",
+        stadiumId,
+        startLatitude: 40.8136,
+        startLongitude: -74.0746,
+        endLatitude: 40.8105,
+        endLongitude: -74.0780,
+        waypoints: [
+          { lat: 40.8136, lng: -74.0746 },
+          { lat: 40.8130, lng: -74.0742 },
+          { lat: 40.8123, lng: -74.0736 },
+          { lat: 40.8115, lng: -74.0760 },
+          { lat: 40.8105, lng: -74.0780 }
+        ],
+        distance: 550,
+        walkTime: 6,
+        category: "evacuation",
+        status: "open"
+      }
+    ]);
+
+    // Seed Zones
+    console.log("Seeding zones...");
+    await zoneRepository.create([
+      {
+        name: "North Operations Zone",
+        stadiumId,
+        category: "operational",
+        polygonCoordinates: [
+          { lat: 40.8150, lng: -74.0760 },
+          { lat: 40.8155, lng: -74.0740 },
+          { lat: 40.8140, lng: -74.0740 },
+          { lat: 40.8140, lng: -74.0760 }
+        ],
+        assignedTo: [demoOrganizerId],
+        crowdLevel: "Medium"
+      },
+      {
+        name: "South Volunteer Zone",
+        stadiumId,
+        category: "volunteer",
+        polygonCoordinates: [
+          { lat: 40.8130, lng: -74.0750 },
+          { lat: 40.8130, lng: -74.0730 },
+          { lat: 40.8120, lng: -74.0730 },
+          { lat: 40.8120, lng: -74.0750 }
+        ],
+        assignedTo: [demoVolunteerId],
+        crowdLevel: "Low"
+      }
+    ]);
+  } catch (err) {
+    console.error("Failed to seed map coordinates:", err);
   }
 }

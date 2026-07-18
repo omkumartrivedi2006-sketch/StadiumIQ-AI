@@ -27,6 +27,38 @@ const sosReportSchema = new Schema(
       ref: "User",
       default: null,
     },
+    latitude: {
+      type: Number,
+      default: null,
+    },
+    longitude: {
+      type: Number,
+      default: null,
+    },
+    accuracy: {
+      type: Number,
+      default: null,
+    },
+    nearestStadiumSection: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    nearestGate: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    nearestVolunteer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    nearestMedicalRoom: {
+      type: String,
+      default: null,
+      trim: true,
+    },
   },
   {
     timestamps: true,

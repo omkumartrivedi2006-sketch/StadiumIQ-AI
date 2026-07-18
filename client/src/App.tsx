@@ -1,13 +1,14 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Route, Switch, Redirect } from "wouter";
-import { useAuth } from "./contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { Spinner } from "@/components/ui/spinner";
 import { AuthGuard } from "@/middleware/authGuard";
+import { LocationProvider } from "@/contexts/LocationContext";
 import { toast } from "sonner";
 import { RouteProgress } from "@/components/RouteProgress";
 import { ScrollToTop } from "@/components/ScrollToTop";
@@ -423,13 +424,15 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light" switchable>
         <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <RouteProgress />
-            <ScrollToTop />
-            <InactivityHandler />
-            <Router />
-          </TooltipProvider>
+          <LocationProvider>
+            <TooltipProvider>
+              <Toaster />
+              <RouteProgress />
+              <ScrollToTop />
+              <InactivityHandler />
+              <Router />
+            </TooltipProvider>
+          </LocationProvider>
         </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>

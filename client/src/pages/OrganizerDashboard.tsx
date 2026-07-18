@@ -3,7 +3,8 @@ import { useLocation } from "wouter";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, BarChart3, AlertTriangle, Send, LogOut, Search, Loader2 } from "lucide-react";
+import { Calendar, BarChart3, AlertTriangle, Send, LogOut, Search, Loader2, Compass } from "lucide-react";
+import { MapView } from "@/components/Map";
 import { useAuth } from "@/contexts/AuthContext";
 import { apiClient } from "@/api/client";
 import { searchService, SearchResults } from "@/services/search";
@@ -252,6 +253,15 @@ export default function OrganizerDashboard() {
                     <p className="text-sm text-muted-foreground">No active announcements currently broadcasted.</p>
                   )}
                 </div>
+              </div>
+
+              {/* Live Stadium Map Operations */}
+              <div className="card-hover p-6 bg-card rounded-lg border border-border">
+                <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
+                  <Compass size={22} className="text-indigo-600" />
+                  Live Stadium Map Operations
+                </h2>
+                <MapView />
               </div>
             </div>
 

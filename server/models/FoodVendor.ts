@@ -42,6 +42,28 @@ const foodVendorSchema = new Schema(
       required: [true, "Vendor location (e.g. Section A, Gate 3) is required"],
       trim: true,
     },
+    latitude: {
+      type: Number,
+      default: 40.8135,
+    },
+    longitude: {
+      type: Number,
+      default: -74.0744,
+    },
+    description: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    openingHours: {
+      type: String,
+      default: "11:00 AM - 11:00 PM",
+    },
+    status: {
+      type: String,
+      default: "active",
+      enum: ["active", "closed", "busy"],
+    },
   },
   {
     timestamps: true,
