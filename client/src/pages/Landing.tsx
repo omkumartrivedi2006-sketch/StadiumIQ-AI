@@ -4,8 +4,9 @@ import { FeatureCard } from "@/components/FeatureCard";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation as useGeoLocation } from "@/contexts/LocationContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   MessageSquare,
   MapPin,
@@ -22,6 +23,21 @@ export default function Landing() {
   const [, setLocation] = useLocation();
   const { trackingStatus, requestPermission } = useGeoLocation();
   const [dismissed, setDismissed] = useState(false);
+  const { user, isAuthenticated, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && isAuthenticated && user) {
+      if (user.role === "admin") {
+        setLocation("/admin");
+      } else if (user.role === "volunteer") {
+        setLocation("/volunteer");
+      } else if (user.role === "organizer") {
+        setLocation("/organizer");
+      } else {
+        setLocation("/fan/dashboard");
+      }
+    }
+  }, [isAuthenticated, user, loading, setLocation]);
 
   const features = [
     {

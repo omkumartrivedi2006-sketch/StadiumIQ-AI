@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Star, Clock, MapPin, Search, Sparkles, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { foodService, FoodStall } from "@/services/food";
 import { aiService } from "@/services/ai";
 import { toast } from "sonner";
 
 export default function FoodFinder() {
+  const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [foodStalls, setFoodStalls] = useState<FoodStall[]>([]);
   const [loading, setLoading] = useState(true);
@@ -176,12 +178,25 @@ export default function FoodFinder() {
                   </div>
 
                   {/* CTA */}
-                  <Button
-                    onClick={() => handleOrder(stall.id, stall.name)}
-                    className="w-full btn-press bg-indigo-600 hover:bg-indigo-700"
-                  >
-                    Order Now
-                  </Button>
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => handleOrder(stall.id, stall.name)}
+                      className="w-full btn-press bg-indigo-600 hover:bg-indigo-700 font-semibold"
+                    >
+                      Order Now
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        localStorage.setItem("highlight_category", "food");
+                        localStorage.setItem("highlight_name", stall.name);
+                        setLocation("/fan/navigation");
+                      }}
+                      variant="outline"
+                      className="w-full btn-press border-indigo-200 text-indigo-600 hover:bg-indigo-50 font-semibold flex items-center gap-1.5"
+                    >
+                      <MapPin size={14} /> Locate on Map
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>

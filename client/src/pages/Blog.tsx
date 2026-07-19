@@ -78,7 +78,7 @@ export default function Blog() {
   const regularPosts = filteredArticles.filter((a) => a.id !== featured?.id);
 
   // Simple Pagination Logic
-  const postsPerPage = 2;
+  const postsPerPage = 6;
   const totalPages = Math.ceil(regularPosts.length / postsPerPage);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;

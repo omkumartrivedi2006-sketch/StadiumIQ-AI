@@ -44,6 +44,8 @@ export default function Dashboard() {
   } = useGeoLocation();
   const [activeSection, setActiveSection] = useState<string>("overview");
   const [gates, setGates] = useState<GateStatus[]>([]);
+  const [mapHighlightCategory, setMapHighlightCategory] = useState<string>("");
+  const [mapHighlightName, setMapHighlightName] = useState<string>("");
   const [match, setMatch] = useState<any>(null);
 
   // Global Search State
@@ -219,6 +221,21 @@ export default function Dashboard() {
       clearInterval(interval);
       socketService.off("match-update", handleMatchUpdate);
     };
+  }, []);
+
+  useEffect(() => {
+    const cat = localStorage.getItem("highlight_category");
+    const name = localStorage.getItem("highlight_name");
+    if (cat && name) {
+      setActiveSection("map");
+      setMapHighlightCategory(cat);
+      setMapHighlightName(name);
+      localStorage.removeItem("highlight_category");
+      localStorage.removeItem("highlight_name");
+      setTimeout(() => {
+        document.getElementById("content-section")?.scrollIntoView({ behavior: "smooth" });
+      }, 200);
+    }
   }, []);
 
   const handleActionClick = (id: string) => {
@@ -541,7 +558,15 @@ export default function Dashboard() {
               {displayGates.map((item, idx) => (
                 <div
                   key={idx}
-                  className="card-hover p-4 bg-card rounded-lg border border-border"
+                  onClick={() => {
+                    setActiveSection("map");
+                    setMapHighlightCategory("gates");
+                    setMapHighlightName(item.gate);
+                    setTimeout(() => {
+                      document.getElementById("content-section")?.scrollIntoView({ behavior: "smooth" });
+                    }, 100);
+                  }}
+                  className="card-hover p-4 bg-card rounded-lg border border-border cursor-pointer hover:border-indigo-300 transition-colors"
                 >
                   <p className="text-sm text-muted-foreground mb-2">{item.gate}</p>
                   <StatusBadge
@@ -793,7 +818,7 @@ export default function Dashboard() {
                 <h2 className="text-2xl font-bold text-foreground mb-4">
                   Live Stadium Map
                 </h2>
-                <MapView />
+                <MapView highlightCategory={mapHighlightCategory} highlightName={mapHighlightName} />
               </div>
             )}
 

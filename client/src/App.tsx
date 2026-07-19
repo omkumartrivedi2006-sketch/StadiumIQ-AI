@@ -63,6 +63,7 @@ const VolunteerCommunication = lazy(() => import("@/pages/volunteer/VolunteerCom
 // Organizer Sub-Pages
 const MatchOperations = lazy(() => import("@/pages/organizer/MatchOperations"));
 const StadiumOperations = lazy(() => import("@/pages/organizer/StadiumOperations"));
+const CrowdAnalytics = lazy(() => import("@/pages/organizer/CrowdAnalytics"));
 const VolunteerManagement = lazy(() => import("@/pages/organizer/VolunteerManagement"));
 const OrganizerReports = lazy(() => import("@/pages/organizer/OrganizerReports"));
 
@@ -292,7 +293,7 @@ function Router() {
         </Route>
         <Route path={"/organizer/crowd-analytics"}>
           <AuthGuard allowedRoles={["organizer"]}>
-            <StadiumOperations />
+            <CrowdAnalytics />
           </AuthGuard>
         </Route>
         <Route path={"/organizer/volunteers"}>

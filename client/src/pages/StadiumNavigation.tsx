@@ -1,10 +1,25 @@
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { MapView } from "@/components/Map";
 import { MapPin, Info, ArrowUpRight } from "lucide-react";
 
 export default function StadiumNavigation() {
+  const [highlightCategory, setHighlightCategory] = useState<string>("");
+  const [highlightName, setHighlightName] = useState<string>("");
+
+  useEffect(() => {
+    const cat = localStorage.getItem("highlight_category");
+    const name = localStorage.getItem("highlight_name");
+    if (cat && name) {
+      setHighlightCategory(cat);
+      setHighlightName(name);
+      localStorage.removeItem("highlight_category");
+      localStorage.removeItem("highlight_name");
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-background flex flex-col justify-between">
       <div>
@@ -28,7 +43,7 @@ export default function StadiumNavigation() {
               <div className="lg:col-span-3">
                 <Card className="border border-border bg-card shadow-sm overflow-hidden h-[500px] flex flex-col justify-between">
                   <CardContent className="p-0 flex-1 relative">
-                    <MapView />
+                    <MapView highlightCategory={highlightCategory} highlightName={highlightName} />
                   </CardContent>
                 </Card>
               </div>

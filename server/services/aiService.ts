@@ -57,6 +57,11 @@ The user is logged in with the role: [${role}].
 You must respond in the language corresponding to code: [${language}] (e.g. en, es, fr, pt, ar, hi).
 Be friendly, professional, and role-appropriate.
 
+FORMATTING RULES:
+- Provide highly detailed, structured, and informative answers.
+- Use Markdown formatting: bold titles, clean bullet points, numbered steps, or markdown tables for schedules/food stalls/transport lines.
+- Always be concise but extremely clear, avoiding raw coordinates and providing helpful landmarks.
+
 OPERATIONAL WORLD CUP STADIUM CONTEXT:
 ${context}
 `,
@@ -67,6 +72,10 @@ Provide clear, step-by-step route suggestions, directions, or walking guidance.
 The user's role is: [${role}].
 You must respond in the language code: [${language}].
 Highlight wheelchair-friendly entrances, lifts, restrooms, or emergency exits where appropriate.
+
+FORMATTING RULES:
+- Give clean, step-by-step directions using bullet points.
+- Highlight specific entry/exit gate numbers and reference locations.
 
 STADIUM NAVIGATION & GATE WAYFINDING CONTEXT:
 ${context}
@@ -79,6 +88,10 @@ Provide suggestions on less crowded entrances or exits.
 The user's role is: [${role}].
 You must respond in the language code: [${language}].
 
+FORMATTING RULES:
+- Present congestion lists in clear Markdown tables or bulleted sections.
+- Make recommendations bold to grab immediate attention.
+
 LIVE GATE OCCUPANCY & CROWD STATUS CONTEXT:
 ${context}
 `,
@@ -88,6 +101,10 @@ You are the "Transport & Transit Assistant" for the FIFA World Cup 2026.
 Provide transit suggestions (Metro lanes, bus shuttles, rideshare zones, parking availability, and walking paths).
 The user's role is: [${role}].
 You must respond in the language code: [${language}].
+
+FORMATTING RULES:
+- List parking zones, metro lines, and shuttles clearly using bold titles or Markdown tables.
+- Mention estimated queue times and walking distances to gates.
 
 TRANSIT OPTION & PARKING STATUS CONTEXT:
 ${context}
@@ -100,6 +117,10 @@ Sort or filter by waiting time, ratings, and proximity.
 The user's role is: [${role}].
 You must respond in the language code: [${language}].
 
+FORMATTING RULES:
+- Use bullet points and bold text to list recommended food stalls.
+- Clearly present: Specialty, Location (Section/Gate), Queue Time, and Rating.
+
 AVAILABLE FOOD VENDORS & LIVE QUEUE CONTEXT:
 ${context}
 `,
@@ -109,6 +130,10 @@ You are the "Accessibility Assistant" for the FIFA World Cup 2026.
 Recommend wheelchair routes, elevators, ramps, accessible restrooms, medical rooms, hearing loops, and visual assist guides.
 The user's role is: [${role}].
 You must respond in the language code: [${language}].
+
+FORMATTING RULES:
+- Be highly descriptive about step-free access routes, lifts, elevators, and accessible amenities.
+- Use clean, structured list elements.
 
 ACCESSIBILITY ACCUMULATIONS CONTEXT:
 ${context}
@@ -120,6 +145,10 @@ Provide IMMEDIATE, calm, and concise security recommendations or evacuation guid
 Instruct the user on what to do for medical rooms, fires, safety incidents, or lost items.
 The user's role is: [${role}].
 You must respond in the language code: [${language}].
+
+FORMATTING RULES:
+- Keep guidelines short, bold, and numbered for quick, emergency readability.
+- Clearly point out emergency phone numbers and the nearest gate exit.
 
 EMERGENCY LOGISTICS & RESCUE CONTACTS CONTEXT:
 ${context}
@@ -322,7 +351,7 @@ Provide navigation, proximity wayfinding directions, and emergency support instr
       { sort: { timestamp: 1 }, limit: 10 }
     );
 
-    const isGeminiKeyValid = apiKey && apiKey !== "placeholder_gemini_api_key" && apiKey.startsWith("AIzaSy");
+    const isGeminiKeyValid = apiKey && apiKey !== "placeholder_gemini_api_key" && apiKey.trim().length > 10;
 
     // FALLBACK IF GEMINI API KEY IS INVALID OR PLACEHOLDER
     if (!isGeminiKeyValid) {
@@ -400,9 +429,8 @@ Provide navigation, proximity wayfinding directions, and emergency support instr
       });
     }
 
-    // Append system prompt instruction at the start of current prompt
-    const fullUserPrompt = `[System Instructions]: ${systemPrompt}\n\n[User Prompt]: ${prompt}`;
-    contents.push({ role: "user", parts: [{ text: fullUserPrompt }] });
+    // Append current user message cleanly
+    contents.push({ role: "user", parts: [{ text: prompt }] });
 
     // EXECUTE HTTP REQUEST WITH RETRY LOGIC
     let attempt = 0;
@@ -424,6 +452,9 @@ Provide navigation, proximity wayfinding directions, and emergency support instr
             },
             body: JSON.stringify({
               contents,
+              systemInstruction: systemPrompt ? {
+                parts: [{ text: systemPrompt }]
+              } : undefined,
               generationConfig: {
                 temperature,
                 maxOutputTokens: maxTokens,
@@ -559,64 +590,64 @@ Provide navigation, proximity wayfinding directions, and emergency support instr
     switch (feature) {
       case "food": {
         if (input.includes("halal")) {
-          return `${prefix}Based on our database vendors, I highly recommend 'Halal Bites' at Food Court Zone, currently sporting a 4.8★ rating with an estimated waiting queue of 8 minutes.`;
+          return `${prefix}\n\n### Recommended Halal Stall\n* **Name**: *Halal Bites*\n* **Location**: Food Court Zone (Near Section B)\n* **Rating**: 4.8 ★\n* **Est. Queue**: 8 mins\n* **Specialty**: Chicken over rice, Falafel wraps.`;
         }
         if (input.includes("vegan") || input.includes("veg")) {
-          return `${prefix}For vegan/vegetarian diets, 'Green Bowl Organic' at Section D is the best choice. They offer healthy salads, wraps (4.7★), and queue waiting time is just 5 minutes.`;
+          return `${prefix}\n\n### Recommended Vegan/Vegetarian Stall\n* **Name**: *Green Bowl Organic*\n* **Location**: Section D\n* **Rating**: 4.7 ★\n* **Est. Queue**: 5 mins\n* **Specialty**: Vegan salads, grain bowls, hummus wraps.`;
         }
-        return `${prefix}Here are the best rated food stalls near you:\n- Burger Palace (Section C, 5m queue, 4.6★)\n- Pizza Stadium (Section B, 10m queue, 4.7★)\n- Taco Express (Gate 3, 3m queue, 4.5★). Let me know if you want to place a quick order!`;
+        return `${prefix}\n\n### Popular Food Stalls Near You\n\n| Stall Name | Location | Queue Time | Rating |\n| :--- | :--- | :--- | :--- |\n| **Burger Palace** | Section C | 5m queue | 4.6 ★ |\n| **Pizza Stadium** | Section B | 10m queue | 4.7 ★ |\n| **Taco Express** | Gate 3 | 3m queue | 4.5 ★ |`;
       }
       
       case "transport": {
         if (input.includes("metro")) {
-          return `${prefix}The World Cup Stadium Express Metro Line departs from Transit Plaza (outside Gate 2) every 4 minutes. Trains run 2 hours post-match.`;
+          return `${prefix}\n\n### 🚇 MetLife Stadium Metro Transit\n* **Route**: Stadium Express Line\n* **Departure**: Transit Plaza (outside **Gate 2**)\n* **Frequency**: Every 4 minutes\n* **Duration**: Active up to 2 hours post-match.`;
         }
         if (input.includes("park") || input.includes("car")) {
-          return `${prefix}Parking Zone B has 124 available spots, and Parking Zone C is fully occupied. I suggest booking your parking pass via transit portal immediately.`;
+          return `${prefix}\n\n### 🚗 Live Parking Lot Occupancy\n* **Zone B**: 124 spots available (Recommended)\n* **Zone C**: **FULL**\n\n*Tip: Book your parking pass via the transport portal immediately to avoid queues.*`;
         }
-        return `${prefix}For the fastest exit, I suggest taking the Stadium Shuttle Bus (Line A) from Gate 4, which is currently running with zero delays.`;
+        return `${prefix}\n\n### 🚌 Fast Exit Transit Recommendations\n* Take the **Stadium Shuttle Bus (Line A)** from **Gate 4** (Zero delays reported).\n* Head to the Rideshare Zone near **Gate 3** for taxi bookings.`;
       }
 
       case "accessibility": {
         if (input.includes("wheelchair") || input.includes("ramp") || input.includes("lift")) {
-          return `${prefix}MetLife Stadium features step-free wheelchair ramps at all main entrances. Elevators are situated directly in Section B and Section C, providing smooth access to all seating levels.`;
+          return `${prefix}\n\n### ♿ Accessible Routes & Facilities\n* **Ramps**: Step-free wheelchair ramps are active at all main entrances (**Gates 1, 3, & 4**).\n* **Elevators**: Positioned directly inside **Section B** and **Section C** to access all seating levels.\n* **Assistance**: Contact any volunteer in a blue jersey for immediate escorting.`;
         }
         if (input.includes("hear") || input.includes("deaf") || input.includes("audio")) {
-          return `${prefix}Assistive hearing loop systems are available at the main Customer Service Desk near Gate 3. You can also listen to audio match commentary on Channel 90.5 FM.`;
+          return `${prefix}\n\n### 🦻 Hearing & Visual Aids\n* **Hearing Loops**: Available at the main Customer Service Desk near **Gate 3**.\n* **Live Commentary**: Tune in to FM Channel **90.5** for real-time match commentary.`;
         }
-        return `${prefix}MetLife Stadium is fully ADA-compliant. We offer dedicated accessible entrances at Gates 1, 3, and 4. Ground staff are stationed at each gate to assist you.`;
+        return `${prefix}\n\n### ♿ ADA Accessibility Information\n* Dedicated accessible gates are located at **Gate 1, Gate 3, and Gate 4**.\n* Wheelchair-accessible restrooms are located near the Gate 3 lobby.`;
       }
 
       case "navigation": {
         if (input.includes("washroom") || input.includes("restroom") || input.includes("toilet")) {
-          return `${prefix}The nearest restroom is located behind Section B, Row 10 (approx. 1 min walk). It includes full wheelchair-accessible cabins.`;
+          return `${prefix}\n\n### 🚻 Nearest Restroom Directions\n* **Location**: Behind **Section B, Row 10** (approx. 1 min walk).\n* **Accessibility**: Features fully wheelchair-accessible cabins and baby-changing tables.`;
         }
         if (input.includes("exit") || input.includes("leave")) {
-          return `${prefix}The fastest exit route from your section is via Gate 3 staircase. The path is currently clear with very low foot traffic.`;
+          return `${prefix}\n\n### 🚶 Fast Exit Routing\n* Exit via the **Gate 3 staircase**.\n* The walkway is currently clear with very low foot traffic.`;
         }
-        return `${prefix}To find your seat, head through Gate 4, walk straight down the corridor, and take the left staircase up to Section B. Ground volunteers are standing by to guide you.`;
+        return `${prefix}\n\n### 📍 Directions to Section B\n1. Head through **Gate 4**.\n2. Walk straight down the main corridor.\n3. Take the left staircase up to **Section B**.\n\n*Note: Ground volunteers are standing by to guide you.*`;
       }
 
       case "crowd": {
         if (input.includes("gate 1")) {
-          return `${prefix}Gate 1 is currently experiencing heavy congestion due to security screenings. Wait time is approximately 22 minutes. I recommend entering through Gate 3 instead.`;
+          return `${prefix}\n\n### ⚠️ Gate 1 High Congestion Alert\n* **Current Wait Time**: ~22 minutes (Heavy security screening).\n* **Recommendation**: Divert to **Gate 3** (under 3 min wait time).`;
         }
-        return `${prefix}Current live gate crowd status:\n- Gate 1: High crowd (20m wait)\n- Gate 2: Medium crowd (10m wait)\n- Gate 3: Low crowd (2m wait)\n- Gate 4: Medium crowd (8m wait). Enter via Gate 3 for the fastest entry.`;
+        return `${prefix}\n\n### 📊 Live Gate Congestion Overview\n\n| Entrance Gate | Crowd Level | Est. Wait Time |\n| :--- | :--- | :--- |\n| **Gate 1** | 🔴 High | 20 mins |\n| **Gate 2** | 🟡 Medium | 10 mins |\n| **Gate 3** | 🟢 Low | 2 mins |\n| **Gate 4** | 🟡 Medium | 8 mins |\n\n*Recommendation: Enter via Gate 3 for the fastest access.*`;
       }
 
       case "emergency": {
-        return `${prefix}[🚨 EMERGENCY ALERT] Please stay calm. A security dispatch has been notified. Responders are heading to your location. If safe to do so, move towards the nearest emergency exit at Gate 3. First aid medical rooms are situated directly by Gate 3.`;
+        return `${prefix}\n\n### 🚨 EMERGENCY EVACUATION PROCEDURES\n1. **Stay Calm**: Emergency services have been dispatched to your section.\n2. **Nearest Exit**: Proceed to **Gate 3** (assembly point).\n3. **Medical Room**: First Aid room is located near the **Gate 3 lobby**.\n\n*Security Contacts: dial +1 (555) 0100 for dispatch desk.*`;
       }
 
       case "chat":
       default: {
         if (input.includes("match") || input.includes("schedule") || input.includes("who plays")) {
-          return `${prefix}The next upcoming match at this venue is Argentina vs France, scheduled for 8:00 PM today. Gates open at 5:00 PM. Enjoy the game!`;
+          return `${prefix}\n\n### 📅 Match Schedule Today\n* **Fixture**: 🇦🇷 Argentina vs 🇫🇷 France\n* **Time**: Kickoff at **8:00 PM**\n* **Gates Open**: 5:00 PM\n* **Venue**: MetLife Stadium`;
         }
         if (input.includes("rule") || input.includes("bag")) {
-          return `${prefix}Stadium policy rules prohibit bags larger than 12x6x12 inches. Clear plastic bags are permitted. Food and beverage items from outside are not allowed inside the stadium gates.`;
+          return `${prefix}\n\n### 🚫 Stadium Policy Rules\n* **Bags**: Prohibited if larger than **12" x 6" x 12"**. Clear plastic bags are permitted.\n* **Food/Drinks**: Outside food and beverages are not allowed inside the stadium gates.`;
         }
-        return `${prefix}I can assist you with all stadium operations. I see you are logged in as a World Cup user. You can ask me about navigation, crowd levels, transport services, food ordering, and first-aid rooms.`;
+        return `${prefix}\n\nHow can I help you today? You can ask me about:\n* 🗺️ **Navigation**: "Directions to my seat" or "nearest restroom"\n* 🍔 **Food**: "Halal food options" or "find vegan stalls"\n* 🚌 **Transport**: "How to reach the metro" or "parking slots"\n* 📊 **Crowds**: "Gate 1 congestion wait time"`;
       }
     }
   }

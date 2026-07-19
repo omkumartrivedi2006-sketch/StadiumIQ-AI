@@ -67,6 +67,8 @@ interface MapViewProps {
   initialCenter?: google.maps.LatLngLiteral;
   initialZoom?: number;
   onMapReady?: (map: google.maps.Map) => void;
+  highlightCategory?: string;
+  highlightName?: string;
 }
 
 export function MapView({
@@ -74,6 +76,8 @@ export function MapView({
   initialCenter = VENUE_COORDS,
   initialZoom = 16,
   onMapReady,
+  highlightCategory,
+  highlightName,
 }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map | null>(null);
@@ -579,6 +583,48 @@ export function MapView({
     init();
   }, [init]);
 
+  // Handle highlight category props from parent components
+  useEffect(() => {
+    if (!highlightCategory) return;
+    
+    // Set active category
+    setActiveCategory(highlightCategory);
+    setActivePath("");
+
+    // Load category markers
+    if (highlightCategory === "gates") {
+      addMarkersForList(dbMarkers.filter(m => m.category === "gate"), "gates");
+    } else if (highlightCategory === "parking") {
+      addMarkersForList(dbParking, "parking");
+    } else if (highlightCategory === "medical") {
+      addMarkersForList(dbMarkers.filter(m => m.category === "medical" || m.category === "emergency"), "medical");
+    } else if (highlightCategory === "food") {
+      addMarkersForList(dbFood, "food");
+    } else if (highlightCategory === "services") {
+      addMarkersForList(dbServices, "services");
+    } else if (highlightCategory === "ada") {
+      addMarkersForList(dbMarkers.filter(m => m.category === "seating" || m.category === "restroom" || m.category === "gate"), "ada");
+    }
+  }, [highlightCategory, dbMarkers, dbParking, dbFood, dbServices]);
+
+  // Handle specific item highlighting and centering
+  useEffect(() => {
+    if (!highlightName || markers.current.length === 0) return;
+
+    // Search for a Google Maps marker with matching title
+    const targetMarker = markers.current.find(m => 
+      m.getTitle()?.toLowerCase().includes(highlightName.toLowerCase())
+    );
+
+    if (targetMarker) {
+      if (window.google?.maps) {
+        window.google.maps.event.trigger(targetMarker, "click");
+        map.current?.panTo(targetMarker.getPosition()!);
+        map.current?.setZoom(17);
+      }
+    }
+  }, [highlightName, activeCategory]);
+
   return (
     <div className="flex flex-col md:flex-row gap-6 w-full min-h-[500px]">
       
@@ -797,10 +843,11 @@ export function MapView({
               {/* Seeding Gate Pins in SVG */}
               {dbMarkers.filter(m => m.category === "gate").map(gate => {
                 const { x, y } = getSvgCoords(gate.latitude, gate.longitude);
+                const isHighlighted = highlightName && gate.name.toLowerCase().includes(highlightName.toLowerCase());
                 return (
                   <g key={gate._id} className="cursor-pointer" onClick={() => handleNavigateTo(gate)}>
-                    <ellipse cx={x} cy={y} rx="18" ry="8" fill="#1e293b" stroke="#3b82f6" strokeWidth="1.5" />
-                    <text x={x} y={y + 3} fill="#3b82f6" fontSize="6" fontWeight="bold" textAnchor="middle">{gate.name.split(" ")[0].toUpperCase()}</text>
+                    <ellipse cx={x} cy={y} rx={isHighlighted ? 24 : 18} ry={isHighlighted ? 12 : 8} fill={isHighlighted ? "#4f46e5" : "#1e293b"} stroke="#3b82f6" strokeWidth={isHighlighted ? 3 : 1.5} />
+                    <text x={x} y={y + 3} fill={isHighlighted ? "#ffffff" : "#3b82f6"} fontSize="6" fontWeight="bold" textAnchor="middle">{gate.name.split(" ")[0].toUpperCase()}</text>
                   </g>
                 );
               })}
@@ -819,40 +866,44 @@ export function MapView({
               {/* Active Landmark category markers */}
               {activeCategory === "medical" && dbMarkers.filter(m => m.category === "medical" || m.category === "emergency").map(med => {
                 const { x, y } = getSvgCoords(med.latitude, med.longitude);
+                const isHighlighted = highlightName && med.name.toLowerCase().includes(highlightName.toLowerCase());
                 return (
                   <g key={med._id} className="cursor-pointer" onClick={() => handleNavigateTo(med)}>
-                    <circle cx={x} cy={y} r="8" fill="rgba(239, 68, 68, 0.3)" className="pulsing-dot" />
-                    <circle cx={x} cy={y} r="5" fill="#ef4444" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 12 : 8} fill={isHighlighted ? "rgba(79, 70, 229, 0.4)" : "rgba(239, 68, 68, 0.3)"} className="pulsing-dot" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 7 : 5} fill={isHighlighted ? "#4f46e5" : "#ef4444"} stroke={isHighlighted ? "#ffffff" : "none"} strokeWidth={isHighlighted ? 1.5 : 0} />
                   </g>
                 );
               })}
 
               {activeCategory === "food" && dbFood.map(food => {
                 const { x, y } = getSvgCoords(food.latitude || 40.8135, food.longitude || -74.0744);
+                const isHighlighted = highlightName && food.vendorName.toLowerCase().includes(highlightName.toLowerCase());
                 return (
                   <g key={food._id} className="cursor-pointer" onClick={() => handleNavigateTo(food)}>
-                    <circle cx={x} cy={y} r="8" fill="rgba(245, 158, 11, 0.3)" className="pulsing-dot" />
-                    <circle cx={x} cy={y} r="5" fill="#f59e0b" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 12 : 8} fill={isHighlighted ? "rgba(79, 70, 229, 0.4)" : "rgba(245, 158, 11, 0.3)"} className="pulsing-dot" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 7 : 5} fill={isHighlighted ? "#4f46e5" : "#f59e0b"} stroke={isHighlighted ? "#ffffff" : "none"} strokeWidth={isHighlighted ? 1.5 : 0} />
                   </g>
                 );
               })}
 
               {activeCategory === "services" && dbServices.map(srv => {
                 const { x, y } = getSvgCoords(srv.latitude, srv.longitude);
+                const isHighlighted = highlightName && srv.name.toLowerCase().includes(highlightName.toLowerCase());
                 return (
                   <g key={srv._id} className="cursor-pointer" onClick={() => handleNavigateTo(srv)}>
-                    <circle cx={x} cy={y} r="8" fill="rgba(20, 184, 166, 0.3)" className="pulsing-dot" />
-                    <circle cx={x} cy={y} r="5" fill="#14b8a6" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 12 : 8} fill={isHighlighted ? "rgba(79, 70, 229, 0.4)" : "rgba(20, 184, 166, 0.3)"} className="pulsing-dot" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 7 : 5} fill={isHighlighted ? "#4f46e5" : "#14b8a6"} stroke={isHighlighted ? "#ffffff" : "none"} strokeWidth={isHighlighted ? 1.5 : 0} />
                   </g>
                 );
               })}
 
               {activeCategory === "ada" && dbMarkers.filter(m => m.category === "seating" || m.category === "restroom").map(ada => {
                 const { x, y } = getSvgCoords(ada.latitude, ada.longitude);
+                const isHighlighted = highlightName && ada.name.toLowerCase().includes(highlightName.toLowerCase());
                 return (
                   <g key={ada._id} className="cursor-pointer" onClick={() => handleNavigateTo(ada)}>
-                    <circle cx={x} cy={y} r="8" fill="rgba(99, 102, 241, 0.3)" className="pulsing-dot" />
-                    <circle cx={x} cy={y} r="5" fill="#6366f1" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 12 : 8} fill={isHighlighted ? "rgba(79, 70, 229, 0.4)" : "rgba(99, 102, 241, 0.3)"} className="pulsing-dot" />
+                    <circle cx={x} cy={y} r={isHighlighted ? 7 : 5} fill={isHighlighted ? "#4f46e5" : "#6366f1"} stroke={isHighlighted ? "#ffffff" : "none"} strokeWidth={isHighlighted ? 1.5 : 0} />
                   </g>
                 );
               })}
