@@ -68,8 +68,26 @@ async function startServer() {
       }
     } : false,
   }));
+  const clientUrl = process.env.CLIENT_URL;
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173"
+  ];
+  if (clientUrl) {
+    allowedOrigins.push(clientUrl.replace(/\/$/, ""));
+  }
+
   app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+        callback(null, true);
+      } else {
+        logger.warn(`Origin blocked by CORS: ${origin}`);
+        callback(null, false);
+      }
+    },
     credentials: true,
   }));
   app.use(compression());
