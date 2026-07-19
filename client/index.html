@@ -10,9 +10,10 @@
     <meta name="description" content="AI-powered stadium assistant for fans, staff, and organizers. Navigation, crowd management, accessibility, and real-time support." />
     
     <!-- PWA & Theme color -->
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
     <meta name="theme-color" content="#1e3a8a" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="apple-touch-icon" href="/icon-192.svg" />
 
@@ -53,10 +54,19 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+    <script>
+      (function() {
+        const endpoint = "%VITE_ANALYTICS_ENDPOINT%";
+        const webId = "%VITE_ANALYTICS_WEBSITE_ID%";
+        if (endpoint && webId && !endpoint.startsWith("%") && !webId.startsWith("%")) {
+          const script = document.createElement("script");
+          script.defer = true;
+          script.src = `${endpoint}/umami`;
+          script.setAttribute("data-website-id", webId);
+          document.body.appendChild(script);
+        }
+      })();
+    </script>
   </body>
 
 </html>
