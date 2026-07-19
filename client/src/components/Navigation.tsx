@@ -68,7 +68,16 @@ export function Navigation() {
     }
   };
 
-  const displayItems = isAuthenticated && user
+  const isDashboardPage = location.startsWith("/fan/") || 
+                          location.startsWith("/volunteer/") || 
+                          location.startsWith("/organizer/") || 
+                          location.startsWith("/admin/") || 
+                          location === "/dashboard" ||
+                          location === "/profile" ||
+                          location === "/settings" ||
+                          location === "/role-selection";
+
+  const displayItems = isAuthenticated && user && isDashboardPage
     ? getNavItemsByRole(user.role)
     : [
         { label: "Home", href: "/" },
@@ -77,6 +86,7 @@ export function Navigation() {
         { label: "About", href: "/about" },
         { label: "Blog", href: "/blog" },
         { label: "Contact", href: "/contact" },
+        ...(isAuthenticated ? [{ label: "Dashboard", href: getDashboardHref() }] : [])
       ];
 
   const checkActive = (href: string) => {
@@ -107,22 +117,24 @@ export function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-lg border-b border-border shadow-sm">
+      <div className="container mx-auto px-4 py-3 md:py-3.5 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl text-indigo-600 hover:text-indigo-700 transition-colors">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-sm font-bold animate-pulse-soft">
-            SQ
-          </div>
-          <span>StadiumIQ</span>
+        <Link href="/" asChild>
+          <a className="flex items-center gap-2 font-bold text-xl text-indigo-600 hover:text-indigo-700 transition-colors flex-shrink-0">
+            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-sm font-bold animate-pulse-soft">
+              SQ
+            </div>
+            <span>StadiumIQ</span>
+          </a>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden xl:flex items-center justify-center flex-1 mx-6 gap-3 xl:gap-5 max-w-5xl">
+        <div className={isAuthenticated ? "hidden 2xl:flex items-center justify-center flex-1 mx-4 gap-2 2xl:gap-4 max-w-4xl min-w-0" : "hidden xl:flex items-center justify-center flex-1 mx-6 gap-3 xl:gap-5 max-w-5xl"}>
           {displayItems.map((item) => {
             const isActive = checkActive(item.href);
             return (
-              <Link key={item.href} href={getHref(item.href)} className={`text-xs xl:text-sm font-medium transition-colors whitespace-nowrap ${
+              <Link key={item.href} href={getHref(item.href)} className={`text-xs ${isAuthenticated ? '2xl:text-sm' : 'xl:text-sm'} font-medium transition-colors whitespace-nowrap ${
                 isActive
                   ? "text-indigo-600 dark:text-indigo-400 font-semibold animate-fade-in"
                   : "text-foreground/80 hover:text-indigo-600 dark:hover:text-indigo-400"
@@ -134,7 +146,7 @@ export function Navigation() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden xl:flex items-center gap-2 xl:gap-3 flex-shrink-0">
+        <div className={isAuthenticated ? "hidden 2xl:flex items-center gap-2 2xl:gap-3 flex-shrink-0" : "hidden xl:flex items-center gap-2 xl:gap-3 flex-shrink-0"}>
           <Button
             variant="ghost"
             size="sm"
@@ -200,7 +212,7 @@ export function Navigation() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="xl:hidden btn-press text-foreground"
+          className={`${isAuthenticated ? '2xl:hidden' : 'xl:hidden'} btn-press text-foreground`}
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
@@ -210,7 +222,7 @@ export function Navigation() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="xl:hidden border-t border-border bg-background animate-slide-in-down">
+        <div className={`${isAuthenticated ? '2xl:hidden' : 'xl:hidden'} border-t border-border bg-background/95 backdrop-blur-md animate-slide-in-down`}>
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {displayItems.map((item) => {
               const isActive = checkActive(item.href);

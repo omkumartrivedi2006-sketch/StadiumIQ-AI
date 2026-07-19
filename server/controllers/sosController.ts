@@ -15,6 +15,9 @@ export const sosController = {
       if (status) {
         filter.status = status;
       }
+      if (req.user && req.user.role === "fan") {
+        filter.userId = req.user.id;
+      }
 
       const result = await sosService.getAllSOSReports(filter, { page, limit });
       apiResponse.success(res, "SOS reports retrieved successfully", result);

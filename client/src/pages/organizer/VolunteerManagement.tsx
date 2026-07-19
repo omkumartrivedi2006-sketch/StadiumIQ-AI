@@ -18,7 +18,12 @@ export default function VolunteerManagement() {
     try {
       const response = await apiClient.get("/users?role=volunteer");
       if (response.data?.success && response.data?.data) {
-        setVolunteers(response.data.data);
+        const dataArray = Array.isArray(response.data.data)
+          ? response.data.data
+          : Array.isArray(response.data.data.docs)
+            ? response.data.data.docs
+            : [];
+        setVolunteers(dataArray);
       }
     } catch (e) {
       console.error("Failed to load volunteers:", e);

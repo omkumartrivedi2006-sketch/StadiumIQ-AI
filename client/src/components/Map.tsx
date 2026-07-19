@@ -53,7 +53,7 @@ function loadMapScript() {
       resolve(null);
     };
     script.onerror = () => {
-      console.error("Failed to load Google Maps script");
+      console.warn("Failed to load Google Maps script");
       resolve(null);
     };
     document.head.appendChild(script);

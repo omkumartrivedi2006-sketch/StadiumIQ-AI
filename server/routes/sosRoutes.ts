@@ -9,7 +9,7 @@ const router = Router();
 router.use(authenticateUser);
 
 router.post("/", validateSOS, handleValidationErrors, sosController.createSOSReport);
-router.get("/", authorizeRoles("admin", "volunteer"), sosController.getAllSOSReports);
+router.get("/", authorizeRoles("admin", "volunteer", "organizer", "fan"), sosController.getAllSOSReports);
 router.put("/:id", authorizeRoles("admin", "volunteer"), sosController.updateSOSReport);
 
 export default router;

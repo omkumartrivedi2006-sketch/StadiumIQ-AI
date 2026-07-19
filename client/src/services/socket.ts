@@ -1,9 +1,18 @@
 import { io, Socket } from "socket.io-client";
 
 // In local dev, Vite proxies /api, but Socket.IO connects directly to backend port 5000 (or uses origin)
-const SOCKET_URL = import.meta.env.PROD 
-  ? window.location.origin 
-  : "http://localhost:5000";
+const getSocketUrl = () => {
+  const envUrl = import.meta.env.VITE_SERVER_URL;
+  if (envUrl) {
+    // If it has /api suffix, remove it for socket connection
+    return envUrl.replace(/\/api$/, "");
+  }
+  return import.meta.env.PROD 
+    ? window.location.origin 
+    : "http://localhost:5000";
+};
+
+const SOCKET_URL = getSocketUrl();
 
 let socket: Socket | null = null;
 const fallbackListeners: Record<string, Set<Function>> = {};
